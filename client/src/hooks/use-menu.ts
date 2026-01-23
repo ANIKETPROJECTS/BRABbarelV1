@@ -1,27 +1,26 @@
 import { useQuery } from "@tanstack/react-query";
-import { api } from "@shared/routes";
-import { type CategoryWithItems } from "@shared/routes";
+import { staticMenuData } from "@/lib/staticData";
+import { type CategoryWithItems } from "@shared/schema";
 
 export function useCategories() {
   return useQuery({
-    queryKey: [api.categories.list.path],
+    queryKey: ["/api/categories"],
     queryFn: async () => {
-      const res = await fetch(api.categories.list.path, { credentials: "include" });
-      if (!res.ok) throw new Error("Failed to fetch menu");
-      return api.categories.list.responses[200].parse(await res.json());
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 500));
+      return staticMenuData as CategoryWithItems[];
     },
   });
 }
 
 export function useCategory(id: number) {
   return useQuery({
-    queryKey: [api.categories.get.path, id],
+    queryKey: ["/api/categories", id],
     queryFn: async () => {
-      const url = api.categories.get.path.replace(":id", String(id));
-      const res = await fetch(url, { credentials: "include" });
-      if (res.status === 404) return null;
-      if (!res.ok) throw new Error("Failed to fetch category");
-      return api.categories.get.responses[200].parse(await res.json());
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 500));
+      const category = staticMenuData.find(c => c.id === id);
+      return (category || null) as CategoryWithItems | null;
     },
     enabled: !!id,
   });
