@@ -1,0 +1,197 @@
+# Digital Menu Web App for Bomb Rolls and Bowls - Replit Prompt
+
+Create a mobile-first, single-page web application for "Bomb Rolls and Bowls" restaurant digital menu with the following exact specifications:
+
+## Brand Identity & Design Theme
+- **Restaurant Name**: Bomb Rolls and Bowls
+- **Tagline**: "Where Every Bite is a Flavor Bomb waiting to Detonate!"
+- **Color Palette**: 
+  - Primary Red: #E63946 or #DC143C
+  - Accent Yellow: #FFD700 or #F1C40F
+  - White: #FFFFFF
+  - Checkered pattern border (red and white checkers) for decorative elements
+- **Typography**: Bold, playful fonts that match the energetic brand personality
+- **Visual Style**: Fun, explosive, appetizing with retro diner vibes
+
+## Application Structure
+
+### 1. Welcome/Landing Screen
+- Full-screen splash page with:
+  - "BOMB ROLLS & BOWLS" logo prominently displayed (bold white text with yellow bomb icon)
+  - Tagline: "Welcome to Bomb Rolls and Bowls where Every Bite is a Flavor Bomb waiting to Detonate!"
+  - Red background with checkered border pattern (top and bottom)
+  - Large, animated "Explore Our Menu" button (yellow background, red text with outline)
+  - Smooth fade-in animation on load
+  - Button should have hover/tap effects
+  - Transition animation when navigating to menu (slide/fade effect)
+
+### 2. Main Menu Page
+
+#### A. Header Section
+- Sticky header with "BOMB ROLLS & BOWLS" branding
+- "Menu" text in stylized yellow script font
+- Red background with checkered pattern border
+- Back to home button (optional)
+
+#### B. Image Carousel/Slider
+- Auto-rotating carousel showcasing 5-6 featured dishes
+- Full-width, responsive design
+- Features:
+  - Touch swipe enabled for mobile
+  - Auto-play with 3-second intervals
+  - Navigation dots/indicators at bottom
+  - Previous/Next arrow buttons
+  - Smooth slide transitions
+- Use placeholder food images from Unsplash API or similar:
+  - Keywords: "indian rolls", "rice bowls", "tikka panini", "indian salad", "street food"
+
+#### C. Menu Categories Grid
+Display 4 main categories as cards in a 2x2 grid (mobile) or 4 columns (larger screens):
+
+1. **Bomb Rolls**
+2. **Bomb Bowls**
+3. **Bomb Salads**
+4. **Bomb Panini**
+
+Each category card should have:
+- Category image background (AI-generated/placeholder)
+- Category name in bold with yellow background bubble and red outline
+- Tap/click to expand and show items
+- Smooth accordion-style expansion
+- Yellow background (#FFD700) for card content
+
+#### D. Menu Items Display
+
+**Category 1: Bomb Rolls**
+*Description*: "Get ready for flavor explosions! The traditional Tikki Masala."
+
+Veg Items (Paneer):
+- Chatpata Roll (Aloo/Paneer) - ₹110/150 - "The spicy, tangy flavours enhanced from the best quality ingredients."
+- Angara Roll (Aloo/Paneer) - ₹120/160 - "Explosion of spicy, tangy and vibrant flavours infused with warm spices and other Indian spices."
+- Haryali Roll (Aloo/Paneer) - ₹120/160 - "Bursting with Chilli and cooling flavour notes of mint and coriander blended with some flavourful spices."
+- Makhmali Roll (Aloo/Paneer) - ₹130/170 - "A blast of rich and creamy flavours with a harmonious balance of shallots seeds coating with butter."
+
+Non-Veg Items (Chicken):
+- Chatpata Roll (Chicken) - ₹150
+- Angara Roll (Chicken) - ₹160
+- Haryali Roll (Chicken) - ₹160
+- Makhmali Roll (Chicken) - ₹170
+
+**Category 2: Bomb Bowls**
+*Description*: "Embark on a culinary journey with our enticing Rice Bowls. It's a blast of vibrant Indian Flavours and bold tastes, layered over a bed of makeledar rice and some Salad. All in all a complete meal in itself."
+
+Veg Items (Paneer):
+- Tikka Rice Bowl (Paneer) - ₹160
+- Achari Tikka Rice Bowl (Paneer) - ₹170
+- Pahadi Tikka Rice Bowl (Paneer) - ₹170
+- Malai Tikka Rice Bowl (Paneer) - ₹180
+
+Non-Veg Items (Chicken):
+- Tikka Rice Bowl (Chicken) - ₹160
+- Achari Tikka Rice Bowl (Chicken) - ₹170
+- Pahadi Tikka Rice Bowl (Chicken) - ₹170
+- Malai Tikka Rice Bowl (Chicken) - ₹180
+
+**Category 3: Bomb Salads**
+*Description*: "A healthier take on our flavour-full rolls. It's all the fun without any guilt."
+
+Veg Items (Paneer):
+- Chatpata Salad (Paneer) - ₹150
+- Angara Salad (Paneer) - ₹160
+- Haryali Salad (Paneer) - ₹160
+- Makhmali Salad (Paneer) - ₹170
+
+Non-Veg Items (Chicken):
+- Chatpata Salad (Chicken) - ₹150
+- Angara Salad (Chicken) - ₹160
+- Haryali Salad (Chicken) - ₹160
+- Makhmali Salad (Chicken) - ₹170
+
+**Category 4: Bomb Panini**
+
+Veg Items (Aloo/Paneer):
+- Tikka Panini (Aloo/Paneer) - ₹150/170
+- Achari Tikka Panini (Aloo/Paneer) - ₹160/180
+- Pahadi Tikka Panini (Aloo/Paneer) - ₹160/180
+- Malai Tikka Panini (Aloo/Paneer) - ₹170/190
+
+Non-Veg Items (Chicken):
+- Tikka Panini (Chicken) - ₹170
+- Achari Tikka Panini (Chicken) - ₹180
+- Pahadi Tikka Panini (Chicken) - ₹180
+- Malai Tikka Panini (Chicken) - ₹190
+
+#### E. Footer Section
+- Instagram handle: @bomb_rolls_and_bowls
+- Phone number: 7387744600
+- Yellow background buttons/badges with icons
+- Red checkered border pattern
+- "Veg Menu" / "Non-Veg Menu" toggle buttons (large, centered)
+
+## Technical Requirements
+
+### Mobile Optimization (Primary Focus)
+- Responsive design: Mobile-first (320px - 480px primary)
+- Touch-friendly buttons (min 44px tap targets)
+- Smooth scrolling and transitions
+- Fast loading times
+- Optimized images (lazy loading)
+- No horizontal scrolling
+
+### Technology Stack
+- **Frontend**: HTML5, CSS3, Vanilla JavaScript (or React if preferred)
+- **Styling**: CSS Grid/Flexbox for layouts, CSS animations
+- **Images**: 
+  - Use Unsplash API for food images: `https://source.unsplash.com/400x300/?indian-food,rolls` (modify keywords)
+  - Or use Lorem Picsum with overlay filters
+  - Or DiceBear/placeholder services with food emojis
+- **Icons**: Use emoji or Font Awesome for veg (🟢)/non-veg (🔴) indicators
+
+### Features to Implement
+1. Smooth page transitions (fade/slide effects)
+2. Category accordion expansion/collapse
+3. Auto-rotating image carousel with manual controls
+4. Veg/Non-Veg filter toggle
+5. Sticky header on scroll
+6. "Back to Top" button
+7. Loading animations
+8. Hover effects on all interactive elements
+9. Price display with rupee symbol formatting
+
+### Design Specifications
+- **Item Cards**: Yellow background, white borders, rounded corners, subtle shadows
+- **Buttons**: Yellow with red text, or red with yellow text, 3D effect with shadows
+- **Spacing**: Generous padding (16-24px) for touch-friendly UI
+- **Font Sizes**: 
+  - Headers: 24-32px
+  - Item names: 16-18px
+  - Descriptions: 14px
+  - Prices: 16px bold
+- **Borders**: Checkered pattern (10px squares, alternating red/white)
+
+### User Experience
+- One-tap category expansion
+- Clear visual hierarchy
+- Easy price scanning (right-aligned prices)
+- Visual separation between veg/non-veg items
+- Description text in collapsed state, full details on expand
+- Smooth, delightful animations (not overwhelming)
+
+## Deliverables
+- Fully functional, responsive web app
+- Clean, commented code
+- Optimized for mobile devices (iOS/Android browsers)
+- Fast load times (<2 seconds)
+- Works offline after initial load (optional PWA features)
+- No external dependencies if possible (vanilla JS preferred)
+
+## Optional Enhancements
+- Add to cart functionality
+- Share menu item feature
+- WhatsApp order integration
+- Dark mode toggle
+- Multiple language support (Hindi/English)
+- Nutritional information popups
+- Customer reviews/ratings section
+
+**Note**: Focus on creating an engaging, visually stunning mobile experience that reflects the explosive, fun personality of "Bomb Rolls and Bowls" brand while maintaining excellent usability and performance.
