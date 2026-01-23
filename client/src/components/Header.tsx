@@ -1,4 +1,4 @@
-import { Menu } from "lucide-react";
+import { Menu, Home } from "lucide-react";
 import { Link } from "wouter";
 import {
   Sheet,
@@ -6,21 +6,37 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import logoImage from "@assets/logo_(1)_1769147400424.png";
+import { useSplash } from "@/context/SplashContext";
 
 export function Header() {
+  const { setShowSplash } = useSplash();
+
   return (
     <header className="sticky top-0 z-40 w-full shadow-lg">
       <div className="bg-primary px-4 py-3 flex items-center justify-between border-b-4 border-black relative overflow-hidden">
         {/* Checkered decoration line at the very top edge */}
         <div className="absolute top-0 left-0 w-full h-1 bg-checkered-sm opacity-50" />
 
-        <Link href="/" className="flex items-center gap-2 group cursor-pointer hover:opacity-90 transition-opacity">
-          <img 
-            src={logoImage} 
-            alt="Bomb Rolls & Bowls Logo" 
-            className="w-12 h-12 object-contain"
-          />
-        </Link>
+        <div className="flex items-center gap-3">
+          <button 
+            onClick={() => setShowSplash(true)}
+            className="p-2 text-white hover:bg-white/10 rounded-lg transition-colors"
+            data-testid="button-back-welcome"
+          >
+            <Home className="w-6 h-6" />
+          </button>
+          
+          <Link href="/" className="flex items-center gap-2 group cursor-pointer hover:opacity-90 transition-opacity">
+            <img 
+              src={logoImage} 
+              alt="Bomb Rolls & Bowls Logo" 
+              className="w-10 h-10 object-contain"
+            />
+            <span className="font-display font-bold text-lg md:text-xl text-white drop-shadow-[2px_2px_0px_rgba(0,0,0,1)] tracking-wide">
+              BOMB ROLLS
+            </span>
+          </Link>
+        </div>
 
         <Sheet>
           <SheetTrigger asChild>
