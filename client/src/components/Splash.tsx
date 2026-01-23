@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Bomb } from "lucide-react";
+import logoImage from "@assets/logo_(1)_1769147400424.png";
 
 interface SplashProps {
   onEnter: () => void;
@@ -22,18 +22,11 @@ export function Splash({ onEnter }: SplashProps) {
           transition={{ type: "spring", stiffness: 260, damping: 20 }}
           className="relative"
         >
-          <div className="absolute -inset-8 bg-secondary rounded-full blur-xl opacity-20 animate-pulse" />
-          <Bomb className="w-32 h-32 text-secondary relative z-10 drop-shadow-lg" />
-        </motion.div>
-
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.3 }}
-        >
-          <h1 className="text-5xl md:text-6xl font-bold font-display text-white drop-shadow-[4px_4px_0px_rgba(0,0,0,1)] tracking-wider">
-            BOMB<br />ROLLS<br />& BOWLS
-          </h1>
+          <img 
+            src={logoImage} 
+            alt="Bomb Rolls & Bowls Logo" 
+            className="w-48 h-48 md:w-64 md:h-64 object-contain drop-shadow-2xl"
+          />
         </motion.div>
 
         <motion.p 

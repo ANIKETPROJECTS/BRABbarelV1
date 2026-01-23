@@ -1,10 +1,11 @@
-import { Bomb, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import { Link } from "wouter";
 import {
   Sheet,
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import logoImage from "@assets/logo_(1)_1769147400424.png";
 
 export function Header() {
   return (
@@ -14,12 +15,11 @@ export function Header() {
         <div className="absolute top-0 left-0 w-full h-1 bg-checkered-sm opacity-50" />
 
         <Link href="/" className="flex items-center gap-2 group cursor-pointer hover:opacity-90 transition-opacity">
-          <div className="bg-secondary p-1.5 rounded-lg border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-            <Bomb className="w-6 h-6 text-black" />
-          </div>
-          <span className="font-display font-bold text-xl md:text-2xl text-white drop-shadow-[2px_2px_0px_rgba(0,0,0,1)] tracking-wide">
-            BOMB ROLLS
-          </span>
+          <img 
+            src={logoImage} 
+            alt="Bomb Rolls & Bowls Logo" 
+            className="w-12 h-12 object-contain"
+          />
         </Link>
 
         <Sheet>
