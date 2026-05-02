@@ -1635,26 +1635,31 @@ const socialPosts = [
 ];
 
 const REELS = [
-  { shortcode: "DFfaQDsydTO", url: "https://www.instagram.com/reel/DFfaQDsydTO/" },
-  { shortcode: "DEOzc8eR0TF", url: "https://www.instagram.com/reel/DEOzc8eR0TF/" },
-  { shortcode: "DUAw6EeCDqN", url: "https://www.instagram.com/reel/DUAw6EeCDqN/" },
-  { shortcode: "DO8kLXjiJ8T", url: "https://www.instagram.com/reel/DO8kLXjiJ8T/" },
+  { file: "/videos/kathi_roll.mp4",   label: "Kathi Roll",    url: "https://www.instagram.com/reel/DFfaQDsydTO/" },
+  { file: "/videos/rice_bowl.mp4",    label: "Rice Bowl",     url: "https://www.instagram.com/reel/DEOzc8eR0TF/" },
+  { file: "/videos/paneer_roll.mp4",  label: "Paneer Roll",   url: "https://www.instagram.com/reel/DUAw6EeCDqN/" },
+  { file: "/videos/loaded_fries.mp4", label: "Loaded Fries",  url: "https://www.instagram.com/reel/DO8kLXjiJ8T/" },
 ];
 
-function ReelCard({ shortcode, delay }: { shortcode: string; delay: number }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [src, setSrc] = useState("");
+function ReelCard({ reel, delay }: { reel: typeof REELS[0]; delay: number }) {
+  const ref      = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     const obs = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setSrc(`https://www.instagram.com/reel/${shortcode}/embed/`); obs.disconnect(); } },
-      { threshold: 0.2 }
+      ([entry]) => {
+        setVisible(entry.isIntersecting);
+        if (entry.isIntersecting) videoRef.current?.play().catch(() => {});
+        else videoRef.current?.pause();
+      },
+      { threshold: 0.3 }
     );
     obs.observe(el);
     return () => obs.disconnect();
-  }, [shortcode]);
+  }, []);
 
   return (
     <FadeIn delay={delay}>
@@ -1662,30 +1667,42 @@ function ReelCard({ shortcode, delay }: { shortcode: string; delay: number }) {
         ref={ref}
         whileHover={{ y: -6, scale: 1.015 }}
         transition={{ type: "spring", stiffness: 80, damping: 18 }}
-        className="rounded-2xl border-2 border-black shadow-pop overflow-hidden bg-black relative"
+        className="rounded-2xl border-2 border-black shadow-pop overflow-hidden bg-black relative group"
+        style={{ aspectRatio: "9/16" }}
       >
-        {/* Pure-video crop — hides Instagram profile header & footer */}
-        <div className="reel-crop-wrap">
-          {src ? (
-            <iframe
-              src={src}
-              className="reel-crop-iframe"
-              allowFullScreen
-              allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-              title={`Reel ${shortcode}`}
-            />
-          ) : (
-            /* placeholder until in-view */
-            <div className="absolute inset-0 bg-black/80 flex items-center justify-center">
-              <div className="w-12 h-12 border-4 border-white/30 border-t-white rounded-full animate-spin" />
-            </div>
-          )}
+        {/* Full-container autoplaying video */}
+        <video
+          ref={videoRef}
+          src={reel.file}
+          className="absolute inset-0 w-full h-full object-cover"
+          autoPlay
+          muted
+          loop
+          playsInline
+        />
+
+        {/* Subtle gradient overlay at bottom */}
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/80 to-transparent pointer-events-none" />
+
+        {/* Label */}
+        <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
+          <span className="text-white font-display text-sm drop-shadow-md">{reel.label}</span>
+          <a
+            href={reel.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 bg-white/20 backdrop-blur-sm text-white px-2.5 py-1 rounded-full text-[10px] font-body font-semibold border border-white/30 hover:bg-white/30 transition-colors"
+          >
+            <SiInstagram className="w-3 h-3" /> View
+          </a>
         </div>
-        {/* Floating Instagram badge — bottom left */}
-        <div className="absolute bottom-3 left-3 flex items-center gap-1.5 bg-black/60 backdrop-blur-sm px-2.5 py-1 rounded-full pointer-events-none">
-          <SiInstagram className="text-white w-3 h-3" />
-          <span className="text-white font-body text-[10px] font-semibold">{BUSINESS.instagramHandle}</span>
-        </div>
+
+        {/* Play icon pulse on load */}
+        {!visible && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black/40">
+            <div className="w-14 h-14 rounded-full border-4 border-white/40 border-t-white animate-spin" />
+          </div>
+        )}
       </motion.div>
     </FadeIn>
   );
@@ -1727,10 +1744,10 @@ function SocialMediaSection() {
           </div>
         </FadeUp>
 
-        {/* Instagram Reels — cropped to pure video, lazy-loaded on scroll */}
+        {/* Instagram Reels — AI food videos, autoplaying on scroll */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 items-start">
           {REELS.map((reel, i) => (
-            <ReelCard key={reel.shortcode} shortcode={reel.shortcode} delay={i * 0.08} />
+            <ReelCard key={reel.file} reel={reel} delay={i * 0.08} />
           ))}
         </div>
 
