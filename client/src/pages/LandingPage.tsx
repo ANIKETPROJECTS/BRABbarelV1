@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence, useInView } from "framer-motion";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { motion, AnimatePresence, useInView, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
 import {
   MapPin, Phone, Mail, Star, ChevronUp, ArrowRight, Leaf, Flame,
   Clock, Heart, Shield, Smile, ChevronLeft, ChevronRight,
@@ -62,16 +62,16 @@ function useTypewriter(words: string[], speed = 90, deleteSpeed = 45, pauseTime 
   return displayed;
 }
 
-// ─── Scroll Animation Wrapper ────────────────────────────────────────
+// ─── Scroll Animation Wrappers ───────────────────────────────────────
 function FadeUp({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const isInView = useInView(ref, { once: true, margin: "-60px" });
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 50 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.65, delay, ease: [0.22, 1, 0.36, 1] }}
+      initial={{ opacity: 0, y: 60, filter: "blur(8px)" }}
+      animate={isInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
+      transition={{ duration: 0.75, delay, ease: [0.22, 1, 0.36, 1] }}
       className={className}
     >
       {children}
@@ -81,17 +81,99 @@ function FadeUp({ children, delay = 0, className = "" }: { children: React.React
 
 function FadeIn({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, scale: 0.92 }}
-      animate={isInView ? { opacity: 1, scale: 1 } : {}}
-      transition={{ duration: 0.55, delay, ease: "easeOut" }}
+      initial={{ opacity: 0, scale: 0.88, filter: "blur(6px)" }}
+      animate={isInView ? { opacity: 1, scale: 1, filter: "blur(0px)" } : {}}
+      transition={{ duration: 0.65, delay, ease: [0.22, 1, 0.36, 1] }}
       className={className}
     >
       {children}
     </motion.div>
+  );
+}
+
+// ─── Scroll Progress Bar ─────────────────────────────────────────────
+function ScrollProgress() {
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 300, damping: 30, restDelta: 0.001 });
+  return (
+    <motion.div
+      style={{ scaleX }}
+      className="scroll-progress-bar"
+    />
+  );
+}
+
+// ─── 3D Tilt Card ────────────────────────────────────────────────────
+function TiltCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const rotateX = useTransform(y, [-0.5, 0.5], [10, -10]);
+  const rotateY = useTransform(x, [-0.5, 0.5], [-10, 10]);
+  const springRotX = useSpring(rotateX, { stiffness: 200, damping: 20 });
+  const springRotY = useSpring(rotateY, { stiffness: 200, damping: 20 });
+
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    x.set((e.clientX - rect.left) / rect.width - 0.5);
+    y.set((e.clientY - rect.top) / rect.height - 0.5);
+  }, [x, y]);
+
+  const handleMouseLeave = useCallback(() => {
+    x.set(0); y.set(0);
+  }, [x, y]);
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ rotateX: springRotX, rotateY: springRotY, transformPerspective: 900 }}
+      className={`tilt-wrap ${className}`}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+// ─── Wave SVG Divider ────────────────────────────────────────────────
+function WaveDivider({ flip = false, fill = "#fff" }: { flip?: boolean; fill?: string }) {
+  return (
+    <div className={`w-full overflow-hidden leading-none ${flip ? "rotate-180" : ""}`} style={{ height: 64 }}>
+      <svg viewBox="0 0 1440 64" preserveAspectRatio="none" className="w-full h-full">
+        <path d="M0,32 C240,64 480,0 720,32 C960,64 1200,0 1440,32 L1440,64 L0,64 Z" fill={fill} />
+      </svg>
+    </div>
+  );
+}
+
+// ─── Floating Particles ──────────────────────────────────────────────
+function FloatingParticles({ count = 18, color = "rgba(255,215,0,0.18)" }: { count?: number; color?: string }) {
+  const particles = Array.from({ length: count }, (_, i) => ({
+    id: i,
+    size: Math.random() * 10 + 4,
+    x: Math.random() * 100,
+    delay: Math.random() * 5,
+    duration: Math.random() * 5 + 5,
+    drift: (Math.random() - 0.5) * 60,
+  }));
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+      {particles.map(p => (
+        <motion.div
+          key={p.id}
+          className="absolute rounded-full"
+          style={{ width: p.size, height: p.size, left: `${p.x}%`, bottom: -20, background: color }}
+          animate={{ y: [0, -160], x: [0, p.drift], opacity: [0, 0.9, 0], scale: [0.5, 1.3, 0.5] }}
+          transition={{ duration: p.duration, delay: p.delay, repeat: Infinity, ease: "easeOut" }}
+        />
+      ))}
+    </div>
   );
 }
 
@@ -290,6 +372,9 @@ function HeroSection() {
     "Bomb Salads",
   ]);
 
+  const { scrollY } = useScroll();
+  const bgY = useTransform(scrollY, [0, 700], [0, 180]);
+
   const stickers = [
     { emoji: "🌯", style: { top: "18%", left: "8%", fontSize: "3.5rem" }, delay: 0 },
     { emoji: "🍜", style: { top: "25%", right: "9%", fontSize: "3rem" }, delay: 0.8 },
@@ -303,15 +388,20 @@ function HeroSection() {
 
   return (
     <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Ken Burns animated background */}
+      {/* Ken Burns + Parallax background */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        <div
+        <motion.div
           className="absolute inset-0 w-full h-full bg-cover bg-center hero-ken-burns"
-          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=1920&q=80')" }}
+          style={{
+            backgroundImage: "url('https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=1920&q=80')",
+            y: bgY,
+            scale: 1.15,
+          }}
         />
       </div>
 
-      {/* Overlays */}
+      {/* Floating particles over hero */}
+      <FloatingParticles count={22} color="rgba(255,215,0,0.22)" />
 
       {/* Checkered borders */}
       <div className="absolute top-0 left-0 right-0 h-4 bg-checkered z-[3]" />
@@ -325,18 +415,24 @@ function HeroSection() {
       {/* Content */}
       <div className="relative z-[2] text-center text-white px-4 max-w-4xl mx-auto">
         <motion.div
-          initial={{ opacity: 0, scale: 0.6 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.7, type: "spring", stiffness: 180 }}
+          initial={{ opacity: 0, scale: 0.4, rotate: -15 }}
+          animate={{ opacity: 1, scale: 1, rotate: 0 }}
+          transition={{ duration: 0.8, type: "spring", stiffness: 160, damping: 12 }}
           className="mb-8"
         >
-          <img src={logoImage} alt="Logo" className="w-28 h-28 md:w-36 md:h-36 object-contain mx-auto drop-shadow-2xl" />
+          <motion.img
+            src={logoImage}
+            alt="Logo"
+            className="w-28 h-28 md:w-40 md:h-40 object-contain mx-auto drop-shadow-2xl"
+            animate={{ y: [0, -10, 0] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          />
         </motion.div>
 
         <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
+          initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
           className="font-display text-5xl md:text-7xl lg:text-8xl font-bold mb-4 drop-shadow-[4px_4px_0px_rgba(0,0,0,1)] leading-tight"
         >
           We Serve
@@ -344,10 +440,10 @@ function HeroSection() {
 
         {/* Typewriter */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
-          className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-secondary drop-shadow-[3px_3px_0px_rgba(0,0,0,1)] mb-6 min-h-[1.2em]"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.6, type: "spring", stiffness: 180 }}
+          className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-secondary drop-shadow-[3px_3px_0px_rgba(0,0,0,1)] mb-6 min-h-[1.2em] neon-glow"
         >
           {typeText}
           <motion.span
@@ -358,9 +454,9 @@ function HeroSection() {
         </motion.div>
 
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8 }}
+          initial={{ opacity: 0, y: 20, filter: "blur(6px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          transition={{ delay: 0.85, duration: 0.7 }}
           className="text-white/90 text-lg md:text-xl font-body max-w-xl mx-auto mb-10 leading-relaxed"
         >
           Where every bite is a{" "}
@@ -372,23 +468,23 @@ function HeroSection() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.0 }}
+          transition={{ delay: 1.05 }}
           className="flex flex-col sm:flex-row gap-4 justify-center items-center"
         >
           <Link href="/menu">
             <motion.button
-              whileHover={{ y: -3, boxShadow: "7px 7px 0px 0px black" }}
-              whileTap={{ y: 2, boxShadow: "2px 2px 0px 0px black" }}
-              className="px-8 py-4 bg-secondary text-black font-display text-xl font-bold rounded-xl border-2 border-black shadow-pop"
+              whileHover={{ y: -4, scale: 1.05, boxShadow: "8px 8px 0px 0px black" }}
+              whileTap={{ y: 2, scale: 0.97, boxShadow: "2px 2px 0px 0px black" }}
+              className="px-8 py-4 bg-secondary text-black font-display text-xl font-bold rounded-xl border-2 border-black shadow-pop glow-cta"
             >
               🍽️ Explore Menu
             </motion.button>
           </Link>
           <motion.button
-            whileHover={{ y: -3, boxShadow: "7px 7px 0px 0px black" }}
-            whileTap={{ y: 2, boxShadow: "2px 2px 0px 0px black" }}
+            whileHover={{ y: -4, scale: 1.05, boxShadow: "8px 8px 0px 0px rgba(255,255,255,0.5)" }}
+            whileTap={{ y: 2, scale: 0.97 }}
             onClick={() => document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" })}
-            className="px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-display text-xl font-bold rounded-xl border-2 border-white/60 hover:bg-white/20 transition-all"
+            className="px-8 py-4 bg-white/15 backdrop-blur-sm text-white font-display text-xl font-bold rounded-xl border-2 border-white/60 hover:bg-white/25 transition-all"
           >
             📍 Find Us
           </motion.button>
@@ -397,12 +493,20 @@ function HeroSection() {
         {/* Scroll indicator */}
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1, y: [0, 10, 0] }}
-          transition={{ delay: 1.4, y: { duration: 1.6, repeat: Infinity } }}
-          className="mt-16 flex flex-col items-center gap-2 text-white/60"
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.5 }}
+          className="mt-16 flex flex-col items-center gap-3 text-white/60 scroll-bounce"
         >
           <span className="text-xs font-body tracking-widest uppercase">Scroll Down</span>
-          <div className="w-px h-10 bg-white/30 mx-auto" />
+          <motion.div
+            className="w-6 h-10 rounded-full border-2 border-white/40 flex items-start justify-center pt-2"
+          >
+            <motion.div
+              className="w-1.5 h-2.5 bg-white/60 rounded-full"
+              animate={{ y: [0, 12, 0], opacity: [1, 0.3, 1] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            />
+          </motion.div>
         </motion.div>
       </div>
     </section>
@@ -410,29 +514,52 @@ function HeroSection() {
 }
 
 // ─── STATS BAR ───────────────────────────────────────────────────────
+function StatItem({ value, label, delay, icon }: { value: string; label: string; delay: number; icon: string }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 40, scale: 0.6 }}
+      animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+      transition={{ delay, duration: 0.6, type: "spring", stiffness: 200, damping: 15 }}
+      className="text-center text-white relative"
+    >
+      <motion.div
+        animate={isInView ? { rotateY: [0, 360] } : {}}
+        transition={{ delay: delay + 0.3, duration: 0.7, ease: "easeOut" }}
+        className="text-3xl mb-1"
+      >
+        {icon}
+      </motion.div>
+      <motion.div
+        className="font-display text-4xl md:text-5xl font-bold text-secondary drop-shadow-[3px_3px_0px_rgba(0,0,0,1)]"
+        animate={isInView ? { scale: [0.5, 1.2, 1] } : {}}
+        transition={{ delay: delay + 0.1, duration: 0.5, ease: "backOut" }}
+      >
+        {value}
+      </motion.div>
+      <div className="font-body text-sm md:text-base text-white/80 mt-1 uppercase tracking-wider">{label}</div>
+    </motion.div>
+  );
+}
+
 function StatsBar() {
   const stats = [
-    { value: "4.2★", label: "Google Rating" },
-    { value: "1,213", label: "Instagram Followers" },
-    { value: "30+", label: "Menu Items" },
-    { value: "199", label: "Posts & Reels" },
+    { value: "4.2★", label: "Google Rating",        icon: "⭐", delay: 0 },
+    { value: "1,213", label: "Instagram Followers",  icon: "📸", delay: 0.12 },
+    { value: "30+",   label: "Menu Items",           icon: "🍽️", delay: 0.24 },
+    { value: "199",   label: "Posts & Reels",        icon: "🎬", delay: 0.36 },
   ];
 
   return (
-    <section className="bg-primary border-y-4 border-black py-6 overflow-hidden relative">
-      <div className="absolute inset-y-0 right-0 w-32 bg-checkered opacity-10" />
-      <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6">
-        {stats.map((s, i) => (
-          <FadeUp key={s.label} delay={i * 0.1}>
-            <div className="text-center text-white">
-              <div className="font-display text-4xl md:text-5xl font-bold text-secondary drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]">
-                {s.value}
-              </div>
-              <div className="font-body text-sm md:text-base text-white/80 mt-1 uppercase tracking-wider">
-                {s.label}
-              </div>
-            </div>
-          </FadeUp>
+    <section className="bg-primary border-y-4 border-black py-10 overflow-hidden relative">
+      <div className="absolute inset-y-0 right-0 w-40 bg-checkered opacity-10" />
+      <div className="absolute inset-y-0 left-0 w-40 bg-checkered opacity-10" />
+      <FloatingParticles count={12} color="rgba(0,0,0,0.12)" />
+      <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 relative z-10">
+        {stats.map((s) => (
+          <StatItem key={s.label} value={s.value} label={s.label} delay={s.delay} icon={s.icon} />
         ))}
       </div>
     </section>
@@ -508,15 +635,23 @@ function WhyChooseUs() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {reasons.map((r, i) => (
-            <FadeIn key={r.title} delay={i * 0.08}>
-              <motion.div
-                whileHover={{ y: -6, boxShadow: "6px 6px 0px 0px black" }}
-                className={`rounded-2xl border-2 border-black p-6 shadow-pop bg-white cursor-default transition-shadow`}
-              >
-                <div className="text-4xl mb-3">{r.emoji}</div>
-                <h3 className="font-display text-xl text-black mb-2">{r.title}</h3>
-                <p className="font-body text-sm text-gray-600 leading-relaxed">{r.desc}</p>
-              </motion.div>
+            <FadeIn key={r.title} delay={i * 0.09}>
+              <TiltCard>
+                <motion.div
+                  whileHover={{ y: -8, boxShadow: "8px 8px 0px 0px black" }}
+                  className="rounded-2xl border-2 border-black p-6 shadow-pop bg-white cursor-default h-full card-shine"
+                >
+                  <motion.div
+                    className="text-5xl mb-4"
+                    whileHover={{ scale: 1.3, rotate: [0, -10, 10, 0] }}
+                    transition={{ duration: 0.4 }}
+                  >
+                    {r.emoji}
+                  </motion.div>
+                  <h3 className="font-display text-xl text-black mb-2">{r.title}</h3>
+                  <p className="font-body text-sm text-gray-600 leading-relaxed">{r.desc}</p>
+                </motion.div>
+              </TiltCard>
             </FadeIn>
           ))}
         </div>
@@ -601,16 +736,19 @@ function MenuShowcase() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {featuredItems.map((item, i) => (
-            <FadeIn key={item.name} delay={i * 0.07}>
-              <motion.div
-                whileHover={{ y: -8, boxShadow: "6px 6px 0px 0px black" }}
-                className={`rounded-2xl border-2 border-black overflow-hidden shadow-pop group ${item.bg}`}
-              >
+            <FadeIn key={item.name} delay={i * 0.08}>
+              <TiltCard>
+                <motion.div
+                  whileHover={{ y: -10, boxShadow: "8px 8px 0px 0px black" }}
+                  className={`rounded-2xl border-2 border-black overflow-hidden shadow-pop group ${item.bg} card-shine h-full`}
+                >
                 <div className="relative h-48 overflow-hidden">
-                  <img
+                  <motion.img
                     src={item.img}
                     alt={item.name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    className="w-full h-full object-cover"
+                    whileHover={{ scale: 1.12 }}
+                    transition={{ duration: 0.5, ease: "easeOut" }}
                   />
                   <div className="absolute top-3 left-3">
                     <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold border-2 border-black ${item.isVeg ? "bg-green-400 text-white" : "bg-primary text-white"}`}>
@@ -629,7 +767,8 @@ function MenuShowcase() {
                   <h3 className="font-display text-lg text-black mb-1">{item.name}</h3>
                   <p className="font-body text-sm text-gray-600 line-clamp-2 leading-relaxed">{item.desc}</p>
                 </div>
-              </motion.div>
+                </motion.div>
+              </TiltCard>
             </FadeIn>
           ))}
         </div>
@@ -714,70 +853,105 @@ function Testimonials() {
           </h2>
         </FadeUp>
 
-        <div className="relative min-h-[280px] flex items-center justify-center overflow-hidden">
+        <div className="relative min-h-[300px] flex items-center justify-center overflow-hidden">
           <AnimatePresence mode="wait" custom={dir}>
             <motion.div
               key={current}
               custom={dir}
-              initial={{ x: dir * 300, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: dir * -300, opacity: 0 }}
-              transition={{ duration: 0.4, ease: "easeInOut" }}
+              initial={{ x: dir * 400, opacity: 0, scale: 0.9 }}
+              animate={{ x: 0, opacity: 1, scale: 1 }}
+              exit={{ x: dir * -400, opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               className="w-full"
             >
-              <div className="bg-white rounded-2xl border-2 border-black shadow-pop p-8 mx-auto max-w-2xl">
-                <div className="flex items-center gap-4 mb-4">
-                  <img
+              <div
+                className="rounded-2xl border-2 border-white/20 p-8 mx-auto max-w-2xl relative overflow-hidden"
+                style={{
+                  background: "rgba(255,255,255,0.12)",
+                  backdropFilter: "blur(20px)",
+                  WebkitBackdropFilter: "blur(20px)",
+                  boxShadow: "0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2)"
+                }}
+              >
+                {/* Quote decoration */}
+                <div className="absolute top-4 right-6 font-display text-8xl text-white/10 leading-none select-none">"</div>
+
+                <div className="flex items-center gap-4 mb-5">
+                  <motion.img
                     src={testimonials[current].avatar}
                     alt={testimonials[current].name}
-                    className="w-14 h-14 rounded-full border-2 border-black bg-secondary"
+                    className="w-16 h-16 rounded-full border-3 border-secondary bg-secondary"
+                    style={{ border: "3px solid #FFD700" }}
+                    initial={{ scale: 0, rotate: -20 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{ delay: 0.15, type: "spring", stiffness: 300 }}
                   />
                   <div>
-                    <div className="font-display text-lg text-black">{testimonials[current].name}</div>
-                    <div className="flex gap-1">
+                    <div className="font-display text-xl text-white">{testimonials[current].name}</div>
+                    <div className="flex gap-1 mt-1">
                       {Array.from({ length: testimonials[current].rating }).map((_, i) => (
-                        <Star key={i} className="w-4 h-4 fill-secondary text-secondary" />
+                        <motion.div
+                          key={i}
+                          initial={{ scale: 0, rotate: -30 }}
+                          animate={{ scale: 1, rotate: 0 }}
+                          transition={{ delay: 0.2 + i * 0.07, type: "spring", stiffness: 400 }}
+                        >
+                          <Star className="w-4 h-4 fill-secondary text-secondary" />
+                        </motion.div>
                       ))}
                     </div>
                   </div>
                   <div className="ml-auto">
-                    <span className="bg-secondary text-black font-display text-xs px-3 py-1 rounded-full border-2 border-black shadow-pop-sm">
+                    <motion.span
+                      className="bg-secondary text-black font-display text-xs px-3 py-1.5 rounded-full border-2 border-black shadow-pop-sm block"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 0.3, type: "spring" }}
+                    >
                       {testimonials[current].tag}
-                    </span>
+                    </motion.span>
                   </div>
                 </div>
-                <p className="font-body text-gray-700 text-lg leading-relaxed italic">
+                <motion.p
+                  className="font-body text-white/90 text-lg leading-relaxed italic relative z-10"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                >
                   "{testimonials[current].text}"
-                </p>
+                </motion.p>
               </div>
             </motion.div>
           </AnimatePresence>
         </div>
 
         {/* Controls */}
-        <div className="flex items-center justify-center gap-4 mt-8">
+        <div className="flex items-center justify-center gap-4 mt-10">
           <motion.button
-            whileHover={{ scale: 1.1 }}
+            whileHover={{ scale: 1.15, y: -2 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => navigate(current - 1)}
-            className="w-12 h-12 bg-white text-black rounded-full border-2 border-black shadow-pop flex items-center justify-center"
+            className="w-12 h-12 text-black rounded-full border-2 border-black shadow-pop flex items-center justify-center"
+            style={{ background: "rgba(255,255,255,0.9)" }}
           >
             <ChevronLeft className="w-5 h-5" />
           </motion.button>
-          <div className="flex gap-2">
+          <div className="flex gap-3">
             {testimonials.map((_, i) => (
-              <button
+              <motion.button
                 key={i}
                 onClick={() => navigate(i)}
-                className={`w-3 h-3 rounded-full border-2 border-black transition-all ${i === current ? "bg-secondary scale-125" : "bg-white/40"}`}
+                animate={{ scale: i === current ? 1.4 : 1, backgroundColor: i === current ? "#FFD700" : "rgba(255,255,255,0.35)" }}
+                className="w-3 h-3 rounded-full border-2 border-white/40"
               />
             ))}
           </div>
           <motion.button
-            whileHover={{ scale: 1.1 }}
+            whileHover={{ scale: 1.15, y: -2 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => navigate(current + 1)}
-            className="w-12 h-12 bg-white text-black rounded-full border-2 border-black shadow-pop flex items-center justify-center"
+            className="w-12 h-12 text-black rounded-full border-2 border-black shadow-pop flex items-center justify-center"
+            style={{ background: "rgba(255,255,255,0.9)" }}
           >
             <ChevronRight className="w-5 h-5" />
           </motion.button>
@@ -1423,13 +1597,30 @@ function ScrollToTop() {
 export default function LandingPage() {
   return (
     <div className="min-h-screen">
+      <ScrollProgress />
       <Navbar />
       <HeroSection />
       <StatsBar />
+      {/* Red → Yellow wave */}
+      <div className="bg-primary" style={{ marginBottom: "-1px" }}>
+        <WaveDivider fill="#FFD700" />
+      </div>
       <WhyChooseUs />
+      {/* Yellow → White wave */}
+      <div className="bg-secondary" style={{ marginBottom: "-1px" }}>
+        <WaveDivider fill="#ffffff" />
+      </div>
       <MenuShowcase />
       <MenuPhotosSection />
+      {/* White → Red wave */}
+      <div className="bg-white" style={{ marginBottom: "-1px" }}>
+        <WaveDivider fill="#E63946" />
+      </div>
       <Testimonials />
+      {/* Red → Muted wave */}
+      <div className="bg-primary" style={{ marginBottom: "-1px" }}>
+        <WaveDivider fill="#f2efd9" />
+      </div>
       <SocialMediaSection />
       <ContactSection />
       <Footer />
