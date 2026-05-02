@@ -1626,27 +1626,7 @@ const REELS = [
   { shortcode: "DO8kLXjiJ8T", url: "https://www.instagram.com/reel/DO8kLXjiJ8T/" },
 ];
 
-declare global {
-  interface Window { instgrm?: { Embeds: { process: () => void } }; }
-}
-
 function SocialMediaSection() {
-  useEffect(() => {
-    const loadAndProcess = () => {
-      if (window.instgrm) {
-        window.instgrm.Embeds.process();
-        return;
-      }
-      if (document.getElementById("ig-embed-script")) return;
-      const s = document.createElement("script");
-      s.id = "ig-embed-script";
-      s.src = "https://www.instagram.com/embed.js";
-      s.async = true;
-      s.onload = () => window.instgrm?.Embeds.process();
-      document.body.appendChild(s);
-    };
-    loadAndProcess();
-  }, []);
 
   return (
     <section id="social" className="py-12 md:py-20 bg-muted relative overflow-hidden">
@@ -1683,38 +1663,30 @@ function SocialMediaSection() {
           </div>
         </FadeUp>
 
-        {/* Instagram Reels grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 items-start">
+        {/* Instagram Reels grid — direct iframe embeds */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 items-start">
           {REELS.map((reel, i) => (
             <FadeIn key={reel.shortcode} delay={i * 0.08}>
               <motion.div
-                whileHover={{ y: -6, scale: 1.01 }}
+                whileHover={{ y: -6, scale: 1.015 }}
                 transition={{ type: "spring", stiffness: 80, damping: 18 }}
-                className="rounded-2xl border-2 border-black shadow-pop overflow-hidden bg-white"
+                className="rounded-2xl border-2 border-black shadow-pop overflow-hidden bg-black flex flex-col"
               >
-                {/* Instagram badge */}
-                <div className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-pink-500 to-orange-500 border-b-2 border-black">
-                  <SiInstagram className="text-white w-4 h-4" />
-                  <span className="text-white font-body text-xs font-semibold tracking-wide">▶ Reel</span>
-                  <span className="ml-auto text-white/80 font-body text-xs">{BUSINESS.instagramHandle}</span>
+                {/* Top badge */}
+                <div className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-pink-500 via-fuchsia-500 to-orange-500 flex-shrink-0">
+                  <SiInstagram className="text-white w-4 h-4 flex-shrink-0" />
+                  <span className="text-white font-body text-xs font-bold tracking-wide">Reel</span>
+                  <span className="ml-auto text-white/80 font-body text-[10px] truncate">{BUSINESS.instagramHandle}</span>
                 </div>
-                {/* Embed container — Instagram script fills this */}
-                <div className="ig-reel-wrap">
-                  <blockquote
-                    className="instagram-media"
-                    data-instgrm-permalink={`${reel.url}?utm_source=ig_embed&utm_campaign=loading`}
-                    data-instgrm-version="14"
-                    style={{
-                      background: "#FFF",
-                      border: 0,
-                      borderRadius: 0,
-                      boxShadow: "none",
-                      margin: 0,
-                      padding: 0,
-                      width: "100%",
-                      minWidth: "unset",
-                      maxWidth: "100%",
-                    } as React.CSSProperties}
+                {/* 9:16 iframe — full video, no social chrome */}
+                <div className="relative w-full" style={{ paddingBottom: "177.78%" }}>
+                  <iframe
+                    src={`https://www.instagram.com/reel/${reel.shortcode}/embed/`}
+                    className="absolute inset-0 w-full h-full border-0"
+                    allowFullScreen
+                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                    loading="lazy"
+                    title={`Instagram Reel ${reel.shortcode}`}
                   />
                 </div>
               </motion.div>
