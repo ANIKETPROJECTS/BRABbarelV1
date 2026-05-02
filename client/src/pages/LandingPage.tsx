@@ -265,8 +265,6 @@ function HeroSection() {
       </div>
 
       {/* Overlays */}
-      <div className="absolute inset-0 bg-black/60 z-[1]" />
-      <div className="absolute inset-0 bg-primary/30 z-[1]" />
 
       {/* Checkered borders */}
       <div className="absolute top-0 left-0 right-0 h-4 bg-checkered z-[3]" />
