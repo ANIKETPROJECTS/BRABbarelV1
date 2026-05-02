@@ -1619,7 +1619,35 @@ const socialPosts = [
   },
 ];
 
+const REELS = [
+  { shortcode: "DFfaQDsydTO", url: "https://www.instagram.com/reel/DFfaQDsydTO/" },
+  { shortcode: "DEOzc8eR0TF", url: "https://www.instagram.com/reel/DEOzc8eR0TF/" },
+  { shortcode: "DUAw6EeCDqN", url: "https://www.instagram.com/reel/DUAw6EeCDqN/" },
+  { shortcode: "DO8kLXjiJ8T", url: "https://www.instagram.com/reel/DO8kLXjiJ8T/" },
+];
+
+declare global {
+  interface Window { instgrm?: { Embeds: { process: () => void } }; }
+}
+
 function SocialMediaSection() {
+  useEffect(() => {
+    const loadAndProcess = () => {
+      if (window.instgrm) {
+        window.instgrm.Embeds.process();
+        return;
+      }
+      if (document.getElementById("ig-embed-script")) return;
+      const s = document.createElement("script");
+      s.id = "ig-embed-script";
+      s.src = "https://www.instagram.com/embed.js";
+      s.async = true;
+      s.onload = () => window.instgrm?.Embeds.process();
+      document.body.appendChild(s);
+    };
+    loadAndProcess();
+  }, []);
+
   return (
     <section id="social" className="py-12 md:py-20 bg-muted relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4">
@@ -1642,6 +1670,8 @@ function SocialMediaSection() {
               <motion.a
                 key={s.label}
                 href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
                 whileHover={{ y: -3 }}
                 whileTap={{ y: 1 }}
                 className={`flex items-center gap-2 px-4 py-2 ${s.color} text-white font-body font-semibold text-sm rounded-xl border-2 border-black shadow-pop-sm`}
@@ -1653,42 +1683,41 @@ function SocialMediaSection() {
           </div>
         </FadeUp>
 
-        {/* Instagram grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {socialPosts.map((post, i) => (
-            <FadeIn key={post.id} delay={i * 0.06}>
-              <motion.a
-                href={BUSINESS.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ y: -6 }}
-                className="group relative rounded-2xl border-2 border-black overflow-hidden shadow-pop cursor-pointer aspect-square block"
+        {/* Instagram Reels grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 items-start">
+          {REELS.map((reel, i) => (
+            <FadeIn key={reel.shortcode} delay={i * 0.08}>
+              <motion.div
+                whileHover={{ y: -6, scale: 1.01 }}
+                transition={{ type: "spring", stiffness: 80, damping: 18 }}
+                className="rounded-2xl border-2 border-black shadow-pop overflow-hidden bg-white"
               >
-                <img
-                  src={post.img}
-                  alt={`Post ${post.id}`}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                {/* Reel indicator */}
-                {post.type === "reel" && (
-                  <div className="absolute top-3 right-3 bg-black/70 text-white text-xs font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
-                    ▶ Reel
-                  </div>
-                )}
-                {/* Hover overlay */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileHover={{ opacity: 1 }}
-                  className="absolute inset-0 bg-black/70 flex flex-col items-center justify-center p-4 text-white text-center"
-                >
-                  <div className="text-2xl font-bold mb-1">❤️ {post.likes}</div>
-                  <p className="text-xs font-body leading-snug line-clamp-3">{post.caption}</p>
-                </motion.div>
-                {/* Instagram corner icon */}
-                <div className="absolute bottom-3 left-3">
-                  <SiInstagram className="text-white/80 w-5 h-5 drop-shadow-md" />
+                {/* Instagram badge */}
+                <div className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-pink-500 to-orange-500 border-b-2 border-black">
+                  <SiInstagram className="text-white w-4 h-4" />
+                  <span className="text-white font-body text-xs font-semibold tracking-wide">▶ Reel</span>
+                  <span className="ml-auto text-white/80 font-body text-xs">{BUSINESS.instagramHandle}</span>
                 </div>
-              </motion.a>
+                {/* Embed container — Instagram script fills this */}
+                <div className="ig-reel-wrap">
+                  <blockquote
+                    className="instagram-media"
+                    data-instgrm-permalink={`${reel.url}?utm_source=ig_embed&utm_campaign=loading`}
+                    data-instgrm-version="14"
+                    style={{
+                      background: "#FFF",
+                      border: 0,
+                      borderRadius: 0,
+                      boxShadow: "none",
+                      margin: 0,
+                      padding: 0,
+                      width: "100%",
+                      minWidth: "unset",
+                      maxWidth: "100%",
+                    } as React.CSSProperties}
+                  />
+                </div>
+              </motion.div>
             </FadeIn>
           ))}
         </div>
