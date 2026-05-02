@@ -268,7 +268,7 @@ function Navbar() {
           <motion.img
             src={logoImage}
             alt="Bomb Rolls & Bowls"
-            className="w-12 h-12 sm:w-14 sm:h-14 object-contain drop-shadow-[2px_2px_0px_rgba(0,0,0,0.3)]"
+            className="w-16 h-16 sm:w-20 sm:h-20 object-contain drop-shadow-[2px_2px_0px_rgba(0,0,0,0.3)]"
             whileHover={{ rotate: [-5, 5, -5, 0], scale: 1.05 }}
             transition={{ duration: 0.4 }}
           />
