@@ -76,8 +76,8 @@ function FadeUp({ children, delay = 0, className = "" }: { children: React.React
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 60, filter: "blur(8px)" }}
-      animate={isInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
+      initial={{ opacity: 0, y: 60 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.75, delay, ease: [0.22, 1, 0.36, 1] }}
       className={className}
     >
@@ -92,8 +92,8 @@ function FadeIn({ children, delay = 0, className = "" }: { children: React.React
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, scale: 0.88, filter: "blur(6px)" }}
-      animate={isInView ? { opacity: 1, scale: 1, filter: "blur(0px)" } : {}}
+      initial={{ opacity: 0, scale: 0.88 }}
+      animate={isInView ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 0.65, delay, ease: [0.22, 1, 0.36, 1] }}
       className={className}
     >
@@ -239,8 +239,8 @@ function Navbar() {
       initial={{ y: -120, opacity: 0 }}
       animate={
         hidden
-          ? { y: "-120%", opacity: 0, scale: 0.96, filter: "blur(4px)" }
-          : { y: 0, opacity: 1, scale: 1, filter: "blur(0px)" }
+          ? { y: "-120%", opacity: 0, scale: 0.96 }
+          : { y: 0, opacity: 1, scale: 1 }
       }
       transition={{ duration: 0.42, ease: [0.32, 0.72, 0, 1] }}
       className="fixed top-0 left-0 right-0 z-50"
@@ -414,7 +414,7 @@ function HeroSection() {
   ];
 
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section id="hero" className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-20 md:pt-24">
       {/* Ken Burns + Parallax background */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <motion.div
@@ -457,8 +457,8 @@ function HeroSection() {
         </motion.div>
 
         <motion.h1
-          initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
           className="font-display text-5xl md:text-7xl lg:text-8xl font-bold mb-4 drop-shadow-[4px_4px_0px_rgba(0,0,0,1)] leading-tight"
         >
@@ -481,8 +481,8 @@ function HeroSection() {
         </motion.div>
 
         <motion.p
-          initial={{ opacity: 0, y: 20, filter: "blur(6px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.85, duration: 0.7 }}
           className="text-white/90 text-lg md:text-xl font-body max-w-xl mx-auto mb-10 leading-relaxed"
         >
