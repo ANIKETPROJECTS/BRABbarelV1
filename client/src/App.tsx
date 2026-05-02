@@ -5,34 +5,36 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AnimatePresence } from "framer-motion";
 import Home from "@/pages/Home";
+import LandingPage from "@/pages/LandingPage";
 import NotFound from "@/pages/not-found";
 import { Splash } from "@/components/Splash";
 import { SplashProvider, useSplash } from "@/context/SplashContext";
 
-function Router() {
-  return (
-    <Switch>
-      <Route path="/" component={Home} />
-      <Route component={NotFound} />
-    </Switch>
-  );
-}
-
-function AppContent() {
+function MenuRouter() {
   const { showSplash, setShowSplash } = useSplash();
-
   return (
     <>
       <AnimatePresence>
         {showSplash && <Splash onEnter={() => setShowSplash(false)} />}
       </AnimatePresence>
-      
-      <div className={showSplash ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100 transition-opacity duration-1000'}>
-        <Router />
+      <div className={showSplash ? "opacity-0 h-0 overflow-hidden" : "opacity-100 transition-opacity duration-1000"}>
+        <Home />
       </div>
-      
-      <Toaster />
     </>
+  );
+}
+
+function Router() {
+  return (
+    <Switch>
+      <Route path="/" component={LandingPage} />
+      <Route path="/menu">
+        <SplashProvider>
+          <MenuRouter />
+        </SplashProvider>
+      </Route>
+      <Route component={NotFound} />
+    </Switch>
   );
 }
 
@@ -40,9 +42,8 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <SplashProvider>
-          <AppContent />
-        </SplashProvider>
+        <Router />
+        <Toaster />
       </TooltipProvider>
     </QueryClientProvider>
   );
