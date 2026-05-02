@@ -2053,6 +2053,127 @@ function Footer() {
 }
 
 // ─── MENU PHOTOS SECTION ──────────────────────────────────────────────
+// ─── Zoomable Image ──────────────────────────────────────────────────
+function ZoomableImage({ src, alt }: { src: string; alt: string }) {
+  const [scale, setScale] = useState(1);
+  const [pos, setPos] = useState({ x: 0, y: 0 });
+  const lastDist = useRef<number | null>(null);
+  const dragOrigin = useRef({ mx: 0, my: 0, px: 0, py: 0 });
+  const isDragging = useRef(false);
+  const hasMoved = useRef(false);
+
+  const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
+  const reset = () => { setScale(1); setPos({ x: 0, y: 0 }); };
+
+  // Click cycles: 1 → 2 → 3 → reset
+  const handleClick = () => {
+    if (hasMoved.current) return;
+    setScale(s => {
+      if (s >= 2.5) { setPos({ x: 0, y: 0 }); return 1; }
+      return parseFloat((s * 1.5).toFixed(2));
+    });
+  };
+
+  // ── Mouse drag to pan ────────────────────────────────────────────
+  const onMouseDown = (e: React.MouseEvent) => {
+    if (scale <= 1) return;
+    isDragging.current = true;
+    hasMoved.current = false;
+    dragOrigin.current = { mx: e.clientX, my: e.clientY, px: pos.x, py: pos.y };
+  };
+  const onMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging.current) return;
+    const dx = e.clientX - dragOrigin.current.mx;
+    const dy = e.clientY - dragOrigin.current.my;
+    if (Math.abs(dx) + Math.abs(dy) > 3) hasMoved.current = true;
+    setPos({ x: dragOrigin.current.px + dx, y: dragOrigin.current.py + dy });
+  };
+  const onMouseUp = () => { isDragging.current = false; };
+
+  // ── Touch: pinch-to-zoom + drag ──────────────────────────────────
+  const touchOrigin = useRef({ tx: 0, ty: 0, px: 0, py: 0 });
+  const touchDist = (t: React.TouchEvent["touches"]) =>
+    Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    hasMoved.current = false;
+    if (e.touches.length === 2) {
+      lastDist.current = touchDist(e.touches);
+    } else if (e.touches.length === 1) {
+      touchOrigin.current = { tx: e.touches[0].clientX, ty: e.touches[0].clientY, px: pos.x, py: pos.y };
+    }
+  };
+  const onTouchMove = (e: React.TouchEvent) => {
+    hasMoved.current = true;
+    if (e.touches.length === 2 && lastDist.current !== null) {
+      const d = touchDist(e.touches);
+      const ratio = d / lastDist.current;
+      setScale(s => clamp(parseFloat((s * ratio).toFixed(3)), 1, 4));
+      lastDist.current = d;
+    } else if (e.touches.length === 1 && scale > 1) {
+      const dx = e.touches[0].clientX - touchOrigin.current.tx;
+      const dy = e.touches[0].clientY - touchOrigin.current.ty;
+      setPos({ x: touchOrigin.current.px + dx, y: touchOrigin.current.py + dy });
+    }
+  };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    lastDist.current = null;
+    if (e.touches.length === 0 && !hasMoved.current && scale <= 1) reset();
+    if (scale < 1.05) reset();
+  };
+
+  const isZoomed = scale > 1.05;
+
+  return (
+    <div
+      className="relative overflow-hidden select-none"
+      style={{ cursor: isZoomed ? (isDragging.current ? "grabbing" : "grab") : "zoom-in", touchAction: "none" }}
+      onClick={handleClick}
+      onMouseDown={onMouseDown}
+      onMouseMove={onMouseMove}
+      onMouseUp={onMouseUp}
+      onMouseLeave={onMouseUp}
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+    >
+      <motion.img
+        src={src}
+        alt={alt}
+        className="w-full h-auto object-cover pointer-events-none"
+        animate={{ scale, x: pos.x, y: pos.y }}
+        transition={{ type: "spring", stiffness: 260, damping: 28 }}
+        draggable={false}
+      />
+      {/* Zoom hint */}
+      <motion.div
+        className="absolute bottom-3 right-3 flex items-center gap-1.5 bg-black/55 text-white text-xs px-2.5 py-1.5 rounded-full font-body backdrop-blur-sm pointer-events-none"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.6 }}
+      >
+        {isZoomed ? (
+          <><span className="text-[10px]">✕</span> Reset</>
+        ) : (
+          <><span className="text-[10px]">🔍</span> Click or pinch to zoom</>
+        )}
+      </motion.div>
+      {/* Zoom level pill */}
+      {isZoomed && (
+        <motion.div
+          key={scale}
+          initial={{ opacity: 0, y: -6 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0 }}
+          className="absolute top-3 right-3 bg-black/60 text-white text-xs px-2 py-1 rounded-full font-display pointer-events-none"
+        >
+          {scale.toFixed(1)}×
+        </motion.div>
+      )}
+    </div>
+  );
+}
+
 function MenuPhotosSection() {
   return (
     <section className="py-12 md:py-20 bg-white relative overflow-hidden">
@@ -2090,15 +2211,11 @@ function MenuPhotosSection() {
             <FadeUp key={i} delay={i * 0.15}>
               <motion.div
                 whileHover={{ y: -6, boxShadow: "8px 8px 0px 0px black" }}
-                className="rounded-2xl border-2 border-black shadow-pop overflow-hidden bg-muted group"
+                className="rounded-2xl border-2 border-black shadow-pop overflow-hidden bg-muted"
               >
-                <div className="relative overflow-hidden">
-                  <img
-                    src={item.img}
-                    alt={item.label}
-                    className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute top-4 left-4">
+                <div className="relative">
+                  <ZoomableImage src={item.img} alt={item.label} />
+                  <div className="absolute top-4 left-4 z-10 pointer-events-none">
                     <span className={`${item.badgeColor} text-white font-display text-xs px-3 py-1 rounded-full border-2 border-black shadow-pop-sm`}>
                       {item.badge}
                     </span>
