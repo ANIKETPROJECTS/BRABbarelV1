@@ -25,6 +25,8 @@ const BUSINESS = {
   rating: "4.2",
   ratingCount: "324",
   whatsapp: "https://wa.me/917387744600",
+  instagramFollowers: "1,213",
+  instagramPosts: "199",
 };
 
 // ─── Typewriter Hook ────────────────────────────────────────────────
@@ -366,9 +368,9 @@ function HeroSection() {
 function StatsBar() {
   const stats = [
     { value: "4.2★", label: "Google Rating" },
-    { value: "324+", label: "Happy Reviews" },
+    { value: "1,213", label: "Instagram Followers" },
     { value: "30+", label: "Menu Items" },
-    { value: "Est. 2024", label: "Ambernath, Thane" },
+    { value: "199", label: "Posts & Reels" },
   ];
 
   return (
@@ -746,15 +748,15 @@ const socialPosts = [
     id: 1,
     type: "reel",
     img: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=500&q=80",
-    caption: "🌯 When the Haryali Roll hits different! Fresh, spicy and absolutely bomb. 💣 #BombRolls #Ambernath",
+    caption: "🌯 Paneer Chatpata Roll — the fan favourite! Crispy, tangy, and absolutely bomb. 💣 #BombRolls #PaneerChatpata",
     likes: "2.4K",
     platform: "instagram",
   },
   {
     id: 2,
     type: "post",
-    img: "https://images.unsplash.com/photo-1596797038530-2c107229654b?w=500&q=80",
-    caption: "🍜 Our Tikka Rice Bowls are the real deal. Order on Zomato/Swiggy today! #BombBowls #Thane",
+    img: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&q=80",
+    caption: "✨ You deserve a Healthy Treat! Our fresh salads and bowls are calling your name. #HealthyEating #BombBowls",
     likes: "1.8K",
     platform: "instagram",
   },
@@ -762,15 +764,15 @@ const socialPosts = [
     id: 3,
     type: "reel",
     img: "https://images.unsplash.com/photo-1529042410759-befb1204b468?w=500&q=80",
-    caption: "🧀 The crunch of our Malai Tikka Panini is something else! Come visit us at Shiv Mandir Rd 🔥",
+    caption: "🧀 Paneer Achari Panini dropping in hot! That pickle-spice kick is unreal 🔥 Come taste it yourself!",
     likes: "3.1K",
     platform: "instagram",
   },
   {
     id: 4,
     type: "post",
-    img: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&q=80",
-    caption: "🥗 Healthy doesn't mean boring. Our Bomb Salads are proof! Open 1 PM – 11 PM daily 🕐",
+    img: "https://images.unsplash.com/photo-1596797038530-2c107229654b?w=500&q=80",
+    caption: "🍜 Tikka Rice Bowl — the ultimate comfort food. Order now on Zomato or Swiggy! #BombBowls #Ambernath",
     likes: "1.2K",
     platform: "instagram",
   },
@@ -778,7 +780,7 @@ const socialPosts = [
     id: 5,
     type: "reel",
     img: "https://images.unsplash.com/photo-1574484284002-952d92456975?w=500&q=80",
-    caption: "😤 Angara Roll challenge! Can you handle the heat? 🌶️🌶️🌶️ #SpicyFood #BombRollsAmbernath",
+    caption: "😤 Angara Roll challenge! Can you handle the heat? 🌶️🌶️🌶️ Tag a friend who thinks they can! #SpicyFood",
     likes: "4.2K",
     platform: "instagram",
   },
@@ -786,7 +788,7 @@ const socialPosts = [
     id: 6,
     type: "post",
     img: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=500&q=80",
-    caption: "💛 Every flavor is crafted with love from Ambernath! Follow @bomb_rolls_and_bowls for more 💣",
+    caption: "💛 Bomb Specials dropping every week! Check our Highlights for the latest offers 👆 @bomb_rolls_and_bowls",
     likes: "2.7K",
     platform: "instagram",
   },
@@ -801,10 +803,10 @@ function SocialMediaSection() {
             ✦ Follow The Flavor ✦
           </div>
           <h2 className="font-display text-4xl md:text-6xl text-foreground drop-shadow-[3px_3px_0px_rgba(0,0,0,0.1)]">
-            @BombRollsAndBowls
+            @bomb_rolls_and_bowls
           </h2>
           <p className="font-body text-muted-foreground mt-4 max-w-xl mx-auto text-lg">
-            Follow us for daily food reels, behind-the-scenes, and exclusive deals!
+            Follow us on Instagram — {BUSINESS.instagramFollowers} followers · {BUSINESS.instagramPosts} posts of rolls, bowls, reels & behind-the-scenes!
           </p>
           <div className="flex items-center justify-center gap-4 mt-6">
             {[
@@ -862,6 +864,37 @@ function SocialMediaSection() {
             </FadeIn>
           ))}
         </div>
+
+        {/* Instagram Follow CTA Banner */}
+        <FadeUp className="mt-12">
+          <motion.a
+            href={BUSINESS.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ y: -4, boxShadow: "8px 8px 0px 0px black" }}
+            whileTap={{ y: 2 }}
+            className="flex flex-col sm:flex-row items-center justify-between gap-6 p-7 bg-gradient-to-r from-pink-500 via-purple-500 to-orange-500 rounded-2xl border-2 border-black shadow-pop cursor-pointer"
+            data-testid="link-instagram-follow"
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 bg-white rounded-2xl border-2 border-black flex items-center justify-center text-3xl shadow-pop-sm">
+                📸
+              </div>
+              <div>
+                <div className="font-display text-2xl text-white">Follow on Instagram</div>
+                <div className="font-body text-white/80 text-sm mt-0.5">
+                  {BUSINESS.instagramHandle} · {BUSINESS.instagramFollowers} followers · {BUSINESS.instagramPosts} posts
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="font-body text-white/70 text-sm hidden sm:block">Daily reels, specials & behind-the-scenes</span>
+              <div className="flex items-center gap-2 px-6 py-3 bg-white text-pink-600 font-bold rounded-xl border-2 border-black shadow-pop-sm font-body whitespace-nowrap">
+                <SiInstagram className="text-lg" /> Follow Us
+              </div>
+            </div>
+          </motion.a>
+        </FadeUp>
       </div>
     </section>
   );
