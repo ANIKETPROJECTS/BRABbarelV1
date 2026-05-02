@@ -6,7 +6,7 @@ import {
   Send, CheckCircle, MessageCircle, X, Zap, Timer, Users,
   ShoppingBag, Bike, Utensils, ChefHat, Sparkles
 } from "lucide-react";
-import { SiFacebook, SiInstagram, SiYoutube, SiZomato, SiSwiggy } from "react-icons/si";
+import { SiFacebook, SiInstagram, SiYoutube, SiZomato, SiSwiggy, SiWhatsapp } from "react-icons/si";
 import { Link } from "wouter";
 import logoImage from "@assets/logo_(1)_1769147400424.png";
 import menuVegImg from "@assets/WhatsApp_Image_2026-01-22_at_11.36.27_PM_1769147022848.jpeg";
@@ -961,7 +961,7 @@ function MenuItemModal({ item, onClose }: { item: MenuItem | null; onClose: () =
                     whileTap={{ y: 1 }}
                     className="flex flex-col items-center gap-1 p-3 bg-green-500 text-white rounded-xl border-2 border-black shadow-pop-sm font-body font-bold text-sm"
                   >
-                    <MessageCircle className="text-xl" /> WhatsApp
+                    <SiWhatsapp className="text-xl" /> WhatsApp
                   </motion.a>
                 </div>
               </div>
@@ -1288,7 +1288,7 @@ function OrderOnlineSection() {
     {
       name: "WhatsApp",
       tagline: "Direct personal order",
-      icon: <MessageCircle className="w-10 h-10" />,
+      icon: <SiWhatsapp className="w-10 h-10 text-4xl" />,
       bg: "bg-green-500",
       hoverBg: "hover:bg-green-600",
       badge: "Instant Reply",
@@ -1742,7 +1742,7 @@ function ContactSection() {
                   href: "tel:+917387744600",
                 },
                 {
-                  icon: <MessageCircle className="w-6 h-6 text-primary" />,
+                  icon: <SiWhatsapp className="w-6 h-6 text-green-500" />,
                   label: "WhatsApp Us",
                   value: BUSINESS.phoneDisplay,
                   sub: "Quick replies on WhatsApp",
@@ -2128,7 +2128,7 @@ function WhatsAppButton() {
       aria-label="Chat on WhatsApp"
       title="Chat on WhatsApp"
     >
-      💬
+      <SiWhatsapp className="w-7 h-7" />
     </motion.a>
   );
 }
