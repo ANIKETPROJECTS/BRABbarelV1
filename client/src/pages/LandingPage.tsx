@@ -3,7 +3,8 @@ import { motion, AnimatePresence, useInView, useScroll, useTransform, useSpring,
 import {
   MapPin, Phone, Mail, Star, ChevronUp, ArrowRight, Leaf, Flame,
   Clock, Heart, Shield, Smile, ChevronLeft, ChevronRight,
-  Send, CheckCircle, MessageCircle
+  Send, CheckCircle, MessageCircle, X, Zap, Timer, Users,
+  ShoppingBag, Bike, Utensils, ChefHat, Sparkles
 } from "lucide-react";
 import { SiFacebook, SiInstagram, SiYoutube, SiZomato, SiSwiggy } from "react-icons/si";
 import { Link } from "wouter";
@@ -661,129 +662,699 @@ function WhyChooseUs() {
 }
 
 // ─── MENU SHOWCASE ───────────────────────────────────────────────────
-const featuredItems = [
+type MenuItem = {
+  id: number; name: string; category: string; desc: string; fullDesc: string;
+  price: number; isVeg: boolean; img: string; bg: string;
+  spiceLevel: number; prepTime: string; serves: number;
+  highlights: string[]; ingredients: string[];
+};
+
+const featuredItems: MenuItem[] = [
   {
+    id: 1,
     name: "Chatpata Roll (Paneer)",
     category: "Bomb Rolls 🌯",
     desc: "Spicy, tangy and vibrant — made with paneer and the best quality ingredients.",
+    fullDesc: "Our all-time crowd favourite — fresh paneer tossed in our signature chatpata masala blend, wrapped in a soft handmade chapati with crisp onions, mint chutney and a tangy drizzle. The bold, zingy spice profile is balanced with cooling herbs for a perfect bite every single time.",
     price: 150,
     isVeg: true,
-    img: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=400&q=80",
+    img: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=800&q=80",
     bg: "bg-orange-50",
+    spiceLevel: 3,
+    prepTime: "8–10 min",
+    serves: 1,
+    highlights: ["🔥 Bestseller", "⚡ Quick Serve", "🌿 Fresh Daily"],
+    ingredients: ["Fresh Paneer", "Chatpata Masala", "Onion", "Capsicum", "Coriander", "Mint Chutney", "Wheat Chapati"],
   },
   {
+    id: 2,
     name: "Angara Roll (Chicken)",
     category: "Bomb Rolls 🌯",
     desc: "Explosion of spicy, tangy and vibrant flavours infused with warm spices.",
+    fullDesc: "The Angara Roll is built for true spice lovers — tender chicken marinated overnight in fiery angara spices, char-grilled to smoky perfection and wrapped in a soft chapati with zesty sauces. Bold, smoky, intensely flavoured and utterly addictive.",
     price: 160,
     isVeg: false,
-    img: "https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=400&q=80",
+    img: "https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=800&q=80",
     bg: "bg-red-50",
+    spiceLevel: 5,
+    prepTime: "10–12 min",
+    serves: 1,
+    highlights: ["🌶️ Very Spicy", "🔥 Non-Veg Special", "💣 Bomb Flavour"],
+    ingredients: ["Chicken", "Angara Spice Mix", "Onion", "Green Chilli", "Lemon Juice", "Garlic Mayo", "Wheat Chapati"],
   },
   {
+    id: 3,
     name: "Tikka Rice Bowl (Paneer)",
     category: "Bomb Bowls 🍜",
     desc: "Embark on a culinary rice bowl journey with tikka and aromatic basmati.",
+    fullDesc: "A rich, aromatic rice bowl featuring succulent paneer tikka served over fragrant long-grain basmati rice, drenched in a luscious tikka sauce with fresh raita and pickled onions. A hearty meal that's as satisfying as it is flavourful.",
     price: 160,
     isVeg: true,
-    img: "https://images.unsplash.com/photo-1596797038530-2c107229654b?w=400&q=80",
+    img: "https://images.unsplash.com/photo-1596797038530-2c107229654b?w=800&q=80",
     bg: "bg-yellow-50",
+    spiceLevel: 2,
+    prepTime: "12–15 min",
+    serves: 1,
+    highlights: ["🍚 Super Filling", "🌿 Aromatic", "⭐ Top Rated"],
+    ingredients: ["Paneer Tikka", "Basmati Rice", "Tikka Sauce", "Raita", "Pickled Onions", "Fresh Herbs", "Lemon"],
   },
   {
+    id: 4,
     name: "Malai Tikka Panini (Chicken)",
     category: "Bomb Panini 🥪",
     desc: "Crunchy, cheesy and exploding with rich, creamy malai tikka flavour.",
+    fullDesc: "A beautifully pressed panini packed with creamy malai chicken tikka, melted cheese and a garlic herb spread. Perfectly crunchy on the outside and indulgently creamy inside — this is comfort food elevated to an art form.",
     price: 190,
     isVeg: false,
-    img: "https://images.unsplash.com/photo-1528736235302-52922df5c122?w=400&q=80",
+    img: "https://images.unsplash.com/photo-1528736235302-52922df5c122?w=800&q=80",
     bg: "bg-amber-50",
+    spiceLevel: 2,
+    prepTime: "10–12 min",
+    serves: 1,
+    highlights: ["🧀 Extra Cheesy", "🔥 Grilled Fresh", "💛 Rich & Creamy"],
+    ingredients: ["Chicken Malai Tikka", "Mozzarella Cheese", "Garlic Herb Spread", "Capsicum", "Onion", "Ciabatta Bread"],
   },
   {
+    id: 5,
     name: "Haryali Salad (Paneer)",
     category: "Bomb Salads 🥗",
     desc: "Bursting with chilli and cooling flavour notes of mint and coriander.",
+    fullDesc: "A vibrant, energising salad bursting with freshness — crisp garden vegetables tossed with marinated paneer, a zingy mint-coriander dressing and a hint of green chilli heat. Light, colourful and full of bold flavour.",
     price: 160,
     isVeg: true,
-    img: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&q=80",
+    img: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&q=80",
     bg: "bg-green-50",
+    spiceLevel: 2,
+    prepTime: "8–10 min",
+    serves: 1,
+    highlights: ["🥗 Healthy Choice", "🌿 Super Fresh", "💚 Light & Clean"],
+    ingredients: ["Paneer", "Mixed Greens", "Cucumber", "Cherry Tomato", "Mint-Coriander Dressing", "Lemon", "Chilli Flakes"],
   },
   {
+    id: 6,
     name: "Makhmali Roll (Chicken)",
     category: "Bomb Rolls 🌯",
     desc: "A blast of rich and creamy flavours with a harmonious balance of spices.",
+    fullDesc: "The Makhmali Roll is the ultimate indulgence — tender chicken coated in a velvety makhmali cream sauce with warm aromatic spices, wrapped in a soft chapati. Silky, rich and deeply satisfying, this is the roll you will keep coming back for.",
     price: 170,
     isVeg: false,
-    img: "https://images.unsplash.com/photo-1574484284002-952d92456975?w=400&q=80",
+    img: "https://images.unsplash.com/photo-1574484284002-952d92456975?w=800&q=80",
     bg: "bg-rose-50",
+    spiceLevel: 2,
+    prepTime: "10–12 min",
+    serves: 1,
+    highlights: ["💛 Rich & Creamy", "🥰 Comfort Food", "⭐ Premium Quality"],
+    ingredients: ["Chicken", "Makhmali Cream Sauce", "Cashew Paste", "Aromatic Spices", "Onion", "Coriander", "Chapati"],
   },
 ];
 
-function MenuShowcase() {
+// ─── MENU ITEM DETAIL MODAL ───────────────────────────────────────────
+function MenuItemModal({ item, onClose }: { item: MenuItem | null; onClose: () => void }) {
+  useEffect(() => {
+    if (item) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [item]);
+
   return (
-    <section id="menu" className="py-20 bg-background relative overflow-hidden">
+    <AnimatePresence>
+      {item && (
+        <>
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100]"
+          />
+
+          {/* Drawer panel */}
+          <motion.div
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "100%" }}
+            transition={{ type: "spring", stiffness: 320, damping: 32 }}
+            className="fixed bottom-0 left-0 right-0 max-h-[92vh] overflow-y-auto bg-white rounded-t-3xl border-t-4 border-black z-[101] no-scrollbar"
+          >
+            {/* Drag handle */}
+            <div className="sticky top-0 z-10 bg-white pt-3 pb-2 px-4 flex items-center justify-between border-b-2 border-black/10">
+              <div className="mx-auto w-12 h-1.5 rounded-full bg-black/20 absolute left-1/2 -translate-x-1/2 top-2" />
+              <div className="w-8" />
+              <motion.button
+                whileHover={{ scale: 1.1, rotate: 90 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={onClose}
+                className="ml-auto w-9 h-9 bg-black text-white rounded-full flex items-center justify-center border-2 border-black shadow-pop-sm"
+              >
+                <X className="w-4 h-4" />
+              </motion.button>
+            </div>
+
+            {/* Hero image */}
+            <div className="relative w-full h-64 overflow-hidden">
+              <motion.img
+                src={item.img}
+                alt={item.name}
+                className="w-full h-full object-cover"
+                initial={{ scale: 1.1 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.5 }}
+              />
+              {/* Price badge */}
+              <motion.div
+                initial={{ scale: 0, rotate: -10 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ delay: 0.2, type: "spring" }}
+                className="absolute top-4 right-4 bg-secondary text-black font-display font-bold text-2xl px-4 py-2 rounded-2xl border-3 border-black shadow-pop"
+                style={{ border: "3px solid black" }}
+              >
+                ₹{item.price}
+              </motion.div>
+              {/* Veg/NonVeg badge */}
+              <div className="absolute top-4 left-4">
+                <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-bold border-2 border-black ${item.isVeg ? "bg-green-500 text-white" : "bg-primary text-white"}`}>
+                  <span className="w-2.5 h-2.5 rounded-full bg-white inline-block" />
+                  {item.isVeg ? "VEG" : "NON-VEG"}
+                </span>
+              </div>
+              {/* Category */}
+              <div className="absolute bottom-4 left-4">
+                <span className="bg-black/70 text-white font-display text-sm px-3 py-1 rounded-full backdrop-blur-sm">
+                  {item.category}
+                </span>
+              </div>
+            </div>
+
+            {/* Content */}
+            <div className="p-5 pb-8">
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="font-display text-3xl text-black mb-2"
+              >
+                {item.name}
+              </motion.h2>
+
+              {/* Highlights */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.15 }}
+                className="flex flex-wrap gap-2 mb-4"
+              >
+                {item.highlights.map((h, i) => (
+                  <motion.span
+                    key={h}
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.2 + i * 0.06, type: "spring" }}
+                    className="bg-secondary text-black font-body font-bold text-xs px-3 py-1 rounded-full border-2 border-black shadow-pop-sm"
+                  >
+                    {h}
+                  </motion.span>
+                ))}
+              </motion.div>
+
+              {/* Meta row */}
+              <div className="flex gap-4 mb-5">
+                <div className="flex items-center gap-1.5 bg-muted px-3 py-2 rounded-xl border-2 border-black/10">
+                  <Timer className="w-4 h-4 text-primary" />
+                  <span className="font-body text-sm font-semibold">{item.prepTime}</span>
+                </div>
+                <div className="flex items-center gap-1.5 bg-muted px-3 py-2 rounded-xl border-2 border-black/10">
+                  <Users className="w-4 h-4 text-primary" />
+                  <span className="font-body text-sm font-semibold">Serves {item.serves}</span>
+                </div>
+                <div className="flex items-center gap-1.5 bg-muted px-3 py-2 rounded-xl border-2 border-black/10">
+                  <span className="font-body text-sm font-semibold">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <span key={i} className={i < item.spiceLevel ? "text-red-500" : "text-gray-300"}>🌶</span>
+                    ))}
+                  </span>
+                </div>
+              </div>
+
+              {/* Full description */}
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="font-body text-gray-700 text-base leading-relaxed mb-5"
+              >
+                {item.fullDesc}
+              </motion.p>
+
+              {/* Ingredients */}
+              <div className="mb-6">
+                <div className="font-display text-lg text-black mb-3 flex items-center gap-2">
+                  <ChefHat className="w-5 h-5 text-primary" /> Ingredients
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {item.ingredients.map((ing, i) => (
+                    <motion.span
+                      key={ing}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.25 + i * 0.04 }}
+                      className="bg-white border-2 border-black text-black font-body text-xs px-3 py-1 rounded-full shadow-pop-sm"
+                    >
+                      {ing}
+                    </motion.span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Order CTA */}
+              <div className="border-t-2 border-black/10 pt-5">
+                <div className="font-display text-lg text-black mb-3">Order Now</div>
+                <div className="grid grid-cols-3 gap-3">
+                  <motion.a
+                    href={BUSINESS.zomato}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ y: -3, boxShadow: "4px 4px 0px 0px black" }}
+                    whileTap={{ y: 1 }}
+                    className="flex flex-col items-center gap-1 p-3 bg-red-500 text-white rounded-xl border-2 border-black shadow-pop-sm font-body font-bold text-sm"
+                  >
+                    <SiZomato className="text-xl" /> Zomato
+                  </motion.a>
+                  <motion.a
+                    href={BUSINESS.swiggy}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ y: -3, boxShadow: "4px 4px 0px 0px black" }}
+                    whileTap={{ y: 1 }}
+                    className="flex flex-col items-center gap-1 p-3 bg-orange-500 text-white rounded-xl border-2 border-black shadow-pop-sm font-body font-bold text-sm"
+                  >
+                    <SiSwiggy className="text-xl" /> Swiggy
+                  </motion.a>
+                  <motion.a
+                    href={BUSINESS.whatsapp}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ y: -3, boxShadow: "4px 4px 0px 0px black" }}
+                    whileTap={{ y: 1 }}
+                    className="flex flex-col items-center gap-1 p-3 bg-green-500 text-white rounded-xl border-2 border-black shadow-pop-sm font-body font-bold text-sm"
+                  >
+                    <MessageCircle className="text-xl" /> WhatsApp
+                  </motion.a>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+}
+
+function MenuShowcase() {
+  const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
+
+  return (
+    <>
+      <section id="menu" className="py-20 bg-background relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4">
+          <FadeUp className="text-center mb-14">
+            <div className="inline-block bg-secondary text-black font-display text-sm px-4 py-1 rounded-full border-2 border-black shadow-pop-sm mb-4">
+              ✦ Signature Dishes ✦
+            </div>
+            <h2 className="font-display text-4xl md:text-6xl text-foreground drop-shadow-[3px_3px_0px_rgba(0,0,0,0.1)]">
+              Our Bomb Menu
+            </h2>
+            <p className="font-body text-muted-foreground mt-4 max-w-xl mx-auto text-lg">
+              Tap any dish to see the full details. Every item is made fresh, on order, with no compromises.
+            </p>
+          </FadeUp>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            {featuredItems.map((item, i) => (
+              <FadeIn key={item.name} delay={i * 0.08}>
+                <TiltCard>
+                  <motion.div
+                    onClick={() => setSelectedItem(item)}
+                    whileHover={{ y: -10, boxShadow: "8px 8px 0px 0px black" }}
+                    className={`rounded-2xl border-2 border-black overflow-hidden shadow-pop group ${item.bg} card-shine h-full cursor-pointer`}
+                  >
+                    <div className="relative h-48 overflow-hidden">
+                      <motion.img
+                        src={item.img}
+                        alt={item.name}
+                        className="w-full h-full object-cover"
+                        whileHover={{ scale: 1.12 }}
+                        transition={{ duration: 0.5, ease: "easeOut" }}
+                      />
+                      <div className="absolute top-3 left-3">
+                        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold border-2 border-black ${item.isVeg ? "bg-green-400 text-white" : "bg-primary text-white"}`}>
+                          <span className="w-2 h-2 rounded-full bg-white" />
+                          {item.isVeg ? "VEG" : "NON-VEG"}
+                        </span>
+                      </div>
+                      <div className="absolute top-3 right-3">
+                        <span className="bg-secondary text-black font-display font-bold text-sm px-3 py-1 rounded-full border-2 border-black shadow-pop-sm">
+                          ₹{item.price}
+                        </span>
+                      </div>
+                      {/* Tap hint overlay */}
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          whileHover={{ opacity: 1, scale: 1 }}
+                          className="bg-white/90 text-black font-display text-sm px-4 py-2 rounded-xl border-2 border-black shadow-pop-sm opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          Tap to View Details →
+                        </motion.div>
+                      </div>
+                    </div>
+                    <div className="p-4">
+                      <div className="text-xs font-body text-primary font-bold uppercase tracking-wider mb-1">{item.category}</div>
+                      <h3 className="font-display text-lg text-black mb-1">{item.name}</h3>
+                      <p className="font-body text-sm text-gray-600 line-clamp-2 leading-relaxed">{item.desc}</p>
+                      <div className="mt-3 flex items-center justify-between">
+                        <div className="flex gap-0.5">
+                          {Array.from({ length: 5 }).map((_, idx) => (
+                            <span key={idx} className={`text-xs ${idx < item.spiceLevel ? "text-red-500" : "text-gray-300"}`}>🌶</span>
+                          ))}
+                        </div>
+                        <span className="text-xs font-body text-primary font-bold flex items-center gap-1">
+                          <Timer className="w-3 h-3" /> {item.prepTime}
+                        </span>
+                      </div>
+                    </div>
+                  </motion.div>
+                </TiltCard>
+              </FadeIn>
+            ))}
+          </div>
+
+          <FadeUp className="text-center">
+            <Link href="/menu">
+              <motion.button
+                whileHover={{ y: -3, boxShadow: "7px 7px 0px 0px black" }}
+                whileTap={{ y: 2 }}
+                className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white font-display text-xl rounded-xl border-2 border-black shadow-pop glow-cta"
+              >
+                View Full Menu <ArrowRight className="w-5 h-5" />
+              </motion.button>
+            </Link>
+          </FadeUp>
+        </div>
+      </section>
+
+      <MenuItemModal item={selectedItem} onClose={() => setSelectedItem(null)} />
+    </>
+  );
+}
+
+// ─── HOW TO ORDER ─────────────────────────────────────────────────────
+function HowToOrder() {
+  const steps = [
+    {
+      step: "01",
+      icon: "📱",
+      title: "Browse the Menu",
+      desc: "Explore our wide range of Rolls, Bowls, Salads & Paninis right here, or on Zomato & Swiggy.",
+      color: "bg-blue-100 border-blue-400",
+      accent: "#3B82F6",
+    },
+    {
+      step: "02",
+      icon: "🛒",
+      title: "Place Your Order",
+      desc: "Order online via Zomato or Swiggy for delivery, or walk in to Trishul Complex, Ambernath.",
+      color: "bg-orange-100 border-orange-400",
+      accent: "#F97316",
+    },
+    {
+      step: "03",
+      icon: "👨‍🍳",
+      title: "Freshly Prepared",
+      desc: "Every order is made fresh on demand — no pre-cooked shortcuts. Ready in 8–15 minutes.",
+      color: "bg-yellow-100 border-yellow-400",
+      accent: "#EAB308",
+    },
+    {
+      step: "04",
+      icon: "🚀",
+      title: "Delivered or Pick Up",
+      desc: "Enjoy your Bomb meal delivered hot to your door, or pick it straight from our outlet!",
+      color: "bg-green-100 border-green-400",
+      accent: "#22C55E",
+    },
+  ];
+
+  return (
+    <section className="py-20 bg-background relative overflow-hidden">
+      <div className="absolute right-0 top-0 bottom-0 w-20 bg-checkered opacity-[0.04]" />
       <div className="max-w-7xl mx-auto px-4">
         <FadeUp className="text-center mb-14">
-          <div className="inline-block bg-secondary text-black font-display text-sm px-4 py-1 rounded-full border-2 border-black shadow-pop-sm mb-4">
-            ✦ Signature Dishes ✦
+          <div className="inline-block bg-primary text-white font-display text-sm px-4 py-1 rounded-full border-2 border-black shadow-pop-sm mb-4">
+            ✦ Simple As 1-2-3 ✦
           </div>
           <h2 className="font-display text-4xl md:text-6xl text-foreground drop-shadow-[3px_3px_0px_rgba(0,0,0,0.1)]">
-            Our Bomb Menu
+            How To Order
           </h2>
           <p className="font-body text-muted-foreground mt-4 max-w-xl mx-auto text-lg">
-            A taste of what makes us special. Every item is made fresh, on order, with no compromises.
+            Getting your Bomb meal is quick and easy — pick your favourite, order and enjoy!
           </p>
         </FadeUp>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {featuredItems.map((item, i) => (
-            <FadeIn key={item.name} delay={i * 0.08}>
-              <TiltCard>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative">
+          {/* Connecting line (desktop) */}
+          <div className="hidden lg:block absolute top-12 left-[12.5%] right-[12.5%] h-0.5 bg-black/10 z-0" />
+
+          {steps.map((s, i) => (
+            <FadeIn key={s.step} delay={i * 0.12}>
+              <div className="relative z-10 text-center">
+                {/* Step bubble */}
                 <motion.div
-                  whileHover={{ y: -10, boxShadow: "8px 8px 0px 0px black" }}
-                  className={`rounded-2xl border-2 border-black overflow-hidden shadow-pop group ${item.bg} card-shine h-full`}
+                  whileHover={{ scale: 1.08, rotate: [0, -3, 3, 0] }}
+                  transition={{ duration: 0.3 }}
+                  className={`w-24 h-24 mx-auto rounded-2xl border-3 border-black shadow-pop flex items-center justify-center text-4xl mb-4 ${s.color} card-shine`}
+                  style={{ border: "3px solid black" }}
                 >
-                <div className="relative h-48 overflow-hidden">
-                  <motion.img
-                    src={item.img}
-                    alt={item.name}
-                    className="w-full h-full object-cover"
-                    whileHover={{ scale: 1.12 }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
-                  />
-                  <div className="absolute top-3 left-3">
-                    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold border-2 border-black ${item.isVeg ? "bg-green-400 text-white" : "bg-primary text-white"}`}>
-                      <span className={`w-2 h-2 rounded-full ${item.isVeg ? "bg-white" : "bg-white"}`} />
-                      {item.isVeg ? "VEG" : "NON-VEG"}
-                    </span>
-                  </div>
-                  <div className="absolute top-3 right-3">
-                    <span className="bg-secondary text-black font-display font-bold text-sm px-3 py-1 rounded-full border-2 border-black shadow-pop-sm">
-                      ₹{item.price}
-                    </span>
-                  </div>
-                </div>
-                <div className="p-4">
-                  <div className="text-xs font-body text-primary font-bold uppercase tracking-wider mb-1">{item.category}</div>
-                  <h3 className="font-display text-lg text-black mb-1">{item.name}</h3>
-                  <p className="font-body text-sm text-gray-600 line-clamp-2 leading-relaxed">{item.desc}</p>
-                </div>
+                  {s.icon}
                 </motion.div>
-              </TiltCard>
+                {/* Step number badge */}
+                <div
+                  className="absolute top-0 right-[calc(50%-48px+4px)] -translate-y-2 font-display text-xs text-white px-2 py-0.5 rounded-full border-2 border-black"
+                  style={{ background: s.accent }}
+                >
+                  {s.step}
+                </div>
+                <h3 className="font-display text-xl text-black mb-2">{s.title}</h3>
+                <p className="font-body text-sm text-gray-600 leading-relaxed max-w-[200px] mx-auto">{s.desc}</p>
+              </div>
             </FadeIn>
           ))}
         </div>
 
-        <FadeUp className="text-center">
-          <Link href="/menu">
-            <motion.button
-              whileHover={{ y: -3, boxShadow: "7px 7px 0px 0px black" }}
-              whileTap={{ y: 2 }}
-              className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white font-display text-xl rounded-xl border-2 border-black shadow-pop"
+        {/* CTA */}
+        <FadeUp className="text-center mt-14">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <motion.a
+              href={BUSINESS.zomato} target="_blank" rel="noopener noreferrer"
+              whileHover={{ y: -3, boxShadow: "6px 6px 0px 0px black" }}
+              whileTap={{ y: 1 }}
+              className="inline-flex items-center gap-3 px-7 py-4 bg-red-500 text-white font-display text-lg rounded-xl border-2 border-black shadow-pop"
             >
-              View Full Menu <ArrowRight className="w-5 h-5" />
-            </motion.button>
-          </Link>
+              <SiZomato className="text-xl" /> Order on Zomato
+            </motion.a>
+            <motion.a
+              href={BUSINESS.swiggy} target="_blank" rel="noopener noreferrer"
+              whileHover={{ y: -3, boxShadow: "6px 6px 0px 0px black" }}
+              whileTap={{ y: 1 }}
+              className="inline-flex items-center gap-3 px-7 py-4 bg-orange-500 text-white font-display text-lg rounded-xl border-2 border-black shadow-pop"
+            >
+              <SiSwiggy className="text-xl" /> Order on Swiggy
+            </motion.a>
+          </div>
         </FadeUp>
+      </div>
+    </section>
+  );
+}
+
+// ─── OUR STORY SECTION ────────────────────────────────────────────────
+function OurStory() {
+  const facts = [
+    { icon: "🌯", label: "Started With", value: "A Love of Rolls" },
+    { icon: "📍", label: "Based In", value: "Ambernath, Thane" },
+    { icon: "🕐", label: "Open Daily", value: "1 PM – 11 PM" },
+    { icon: "💛", label: "Our Promise", value: "Fresh Every Order" },
+  ];
+
+  return (
+    <section className="py-20 bg-white relative overflow-hidden">
+      <div className="absolute left-0 top-0 bottom-0 w-20 bg-checkered opacity-[0.04]" />
+      <div className="absolute top-20 right-10 w-60 h-60 rounded-full bg-secondary/20 blur-3xl blob-morph" />
+      <div className="absolute bottom-20 left-10 w-40 h-40 rounded-full bg-primary/10 blur-3xl blob-morph" />
+
+      <div className="max-w-7xl mx-auto px-4 relative">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
+          {/* Text side */}
+          <FadeUp>
+            <div className="inline-block bg-secondary text-black font-display text-sm px-4 py-1 rounded-full border-2 border-black shadow-pop-sm mb-5">
+              ✦ Our Story ✦
+            </div>
+            <h2 className="font-display text-4xl md:text-5xl text-black mb-6 drop-shadow-[3px_3px_0px_rgba(0,0,0,0.1)] leading-tight">
+              Born from a Passion for<br />
+              <span className="text-primary">Bold Flavours</span>
+            </h2>
+            <p className="font-body text-gray-700 text-lg leading-relaxed mb-5">
+              Bomb Rolls & Bowls was born out of a simple idea — what if every meal could be an unforgettable flavour experience? We started in Ambernath with a small menu, big spices and an even bigger dream.
+            </p>
+            <p className="font-body text-gray-600 text-base leading-relaxed mb-8">
+              Today we serve Rolls, Bowls, Salads and Paninis crafted fresh for every order. No shortcuts, no compromise — just clean ingredients, bold spices and a whole lot of heart in every bite.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              {["🌿 No Preservatives", "⚡ Made-to-Order", "❤️ Ambernath's Favourite", "🏆 4.2★ Rated"].map((tag, i) => (
+                <motion.span
+                  key={tag}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.08, type: "spring" }}
+                  className="bg-muted border-2 border-black text-black font-body font-semibold text-sm px-4 py-1.5 rounded-full shadow-pop-sm"
+                >
+                  {tag}
+                </motion.span>
+              ))}
+            </div>
+          </FadeUp>
+
+          {/* Visual side */}
+          <FadeIn delay={0.15}>
+            <div className="grid grid-cols-2 gap-4">
+              {facts.map((f, i) => (
+                <motion.div
+                  key={f.label}
+                  whileHover={{ y: -6, boxShadow: "6px 6px 0px 0px black" }}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1, type: "spring", stiffness: 200 }}
+                  className="bg-muted rounded-2xl border-2 border-black p-6 shadow-pop text-center card-shine"
+                >
+                  <div className="text-4xl mb-3">{f.icon}</div>
+                  <div className="font-display text-xs text-primary uppercase tracking-wider mb-1">{f.label}</div>
+                  <div className="font-display text-lg text-black">{f.value}</div>
+                </motion.div>
+              ))}
+              {/* Center logo */}
+              <motion.div
+                className="col-span-2 flex items-center justify-center py-4"
+                animate={{ rotate: [0, 3, -3, 0] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <img src={logoImage} alt="Bomb Rolls Logo" className="w-24 h-24 object-contain drop-shadow-xl" />
+              </motion.div>
+            </div>
+          </FadeIn>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── ORDER ONLINE PLATFORMS ───────────────────────────────────────────
+function OrderOnlineSection() {
+  const platforms = [
+    {
+      name: "Zomato",
+      tagline: "Fast delivery to your door",
+      icon: <SiZomato className="text-4xl" />,
+      bg: "bg-red-500",
+      hoverBg: "hover:bg-red-600",
+      badge: "4.2★ Rated",
+      detail: "20–35 min delivery",
+      url: BUSINESS.zomato,
+    },
+    {
+      name: "Swiggy",
+      tagline: "Quick & fresh to your home",
+      icon: <SiSwiggy className="text-4xl" />,
+      bg: "bg-orange-500",
+      hoverBg: "hover:bg-orange-600",
+      badge: "Top Rated",
+      detail: "25–40 min delivery",
+      url: BUSINESS.swiggy,
+    },
+    {
+      name: "WhatsApp",
+      tagline: "Direct personal order",
+      icon: <MessageCircle className="w-10 h-10" />,
+      bg: "bg-green-500",
+      hoverBg: "hover:bg-green-600",
+      badge: "Instant Reply",
+      detail: "Bulk orders welcome",
+      url: BUSINESS.whatsapp,
+    },
+    {
+      name: "Call Directly",
+      tagline: "Talk to us directly",
+      icon: <Phone className="w-10 h-10" />,
+      bg: "bg-blue-500",
+      hoverBg: "hover:bg-blue-600",
+      badge: "1–11 PM",
+      detail: BUSINESS.phoneDisplay,
+      url: `tel:+91${BUSINESS.phone}`,
+    },
+  ];
+
+  return (
+    <section className="py-20 bg-secondary relative overflow-hidden">
+      <div className="absolute top-0 left-0 right-0 h-4 bg-checkered border-b-4 border-black" />
+      <div className="absolute bottom-0 left-0 right-0 h-4 bg-checkered border-t-4 border-black" />
+      <FloatingParticles count={16} color="rgba(0,0,0,0.08)" />
+
+      <div className="max-w-7xl mx-auto px-4 pt-4 pb-4 relative z-10">
+        <FadeUp className="text-center mb-14">
+          <div className="inline-block bg-primary text-white font-display text-sm px-4 py-1 rounded-full border-2 border-black shadow-pop-sm mb-4">
+            ✦ Order Anytime ✦
+          </div>
+          <h2 className="font-display text-4xl md:text-6xl text-black drop-shadow-[3px_3px_0px_rgba(0,0,0,0.15)]">
+            Order Online Now
+          </h2>
+          <p className="font-body text-black/70 mt-4 max-w-xl mx-auto text-lg">
+            Choose your favourite platform — we're live on Zomato, Swiggy and WhatsApp. Fresh food, delivered fast.
+          </p>
+        </FadeUp>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {platforms.map((p, i) => (
+            <FadeIn key={p.name} delay={i * 0.1}>
+              <TiltCard>
+                <motion.a
+                  href={p.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ y: -10, boxShadow: "8px 8px 0px 0px black" }}
+                  whileTap={{ y: 2, boxShadow: "2px 2px 0px 0px black" }}
+                  className={`block ${p.bg} ${p.hoverBg} text-white rounded-2xl border-2 border-black shadow-pop p-6 text-center transition-colors card-shine`}
+                >
+                  <div className="w-16 h-16 mx-auto mb-4 bg-white/20 rounded-2xl border-2 border-white/30 flex items-center justify-center">
+                    {p.icon}
+                  </div>
+                  <div className="font-display text-2xl mb-1">{p.name}</div>
+                  <div className="font-body text-white/80 text-sm mb-4">{p.tagline}</div>
+                  <div className="bg-black/20 rounded-xl px-4 py-2 border border-white/20 mb-3">
+                    <div className="font-display text-lg">{p.badge}</div>
+                    <div className="font-body text-xs text-white/70">{p.detail}</div>
+                  </div>
+                  <div className="flex items-center justify-center gap-2 font-display text-sm">
+                    Order Now <ArrowRight className="w-4 h-4" />
+                  </div>
+                </motion.a>
+              </TiltCard>
+            </FadeIn>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -1601,23 +2172,50 @@ export default function LandingPage() {
       <Navbar />
       <HeroSection />
       <StatsBar />
-      {/* Red → Yellow wave */}
+
+      {/* Red → Yellow */}
       <div className="bg-primary" style={{ marginBottom: "-1px" }}>
         <WaveDivider fill="#FFD700" />
       </div>
       <WhyChooseUs />
-      {/* Yellow → White wave */}
+
+      {/* Yellow → White */}
+      <div className="bg-secondary" style={{ marginBottom: "-1px" }}>
+        <WaveDivider fill="#ffffff" />
+      </div>
+      <HowToOrder />
+
+      {/* White → Yellow */}
+      <div className="bg-white" style={{ marginBottom: "-1px" }}>
+        <WaveDivider fill="#FFD700" />
+      </div>
+      <OrderOnlineSection />
+
+      {/* Yellow → White */}
       <div className="bg-secondary" style={{ marginBottom: "-1px" }}>
         <WaveDivider fill="#ffffff" />
       </div>
       <MenuShowcase />
+
+      {/* White → White (subtle) */}
+      <div className="bg-white" style={{ marginBottom: "-1px" }}>
+        <WaveDivider fill="#fafafa" />
+      </div>
+      <OurStory />
+
+      {/* White → White */}
+      <div className="bg-white" style={{ marginBottom: "-1px" }}>
+        <WaveDivider fill="#ffffff" />
+      </div>
       <MenuPhotosSection />
-      {/* White → Red wave */}
+
+      {/* White → Red */}
       <div className="bg-white" style={{ marginBottom: "-1px" }}>
         <WaveDivider fill="#E63946" />
       </div>
       <Testimonials />
-      {/* Red → Muted wave */}
+
+      {/* Red → Muted */}
       <div className="bg-primary" style={{ marginBottom: "-1px" }}>
         <WaveDivider fill="#f2efd9" />
       </div>
