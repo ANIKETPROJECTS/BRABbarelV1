@@ -417,7 +417,7 @@ function HeroSection() {
   ];
 
   return (
-    <section id="hero" className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-20 md:pt-24">
+    <section id="hero" className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-[96px] md:pt-[112px]">
       {/* Ken Burns + Parallax background */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <motion.div
@@ -448,12 +448,12 @@ function HeroSection() {
           initial={{ opacity: 0, scale: 0.4, rotate: -15 }}
           animate={{ opacity: 1, scale: 1, rotate: 0 }}
           transition={{ duration: 0.8, type: "spring", stiffness: 160, damping: 12 }}
-          className="mb-8"
+          className="mb-3 sm:mb-6"
         >
           <motion.img
             src={logoImage}
             alt="Logo"
-            className="w-28 h-28 md:w-40 md:h-40 object-contain mx-auto drop-shadow-2xl"
+            className="w-20 h-20 sm:w-28 sm:h-28 md:w-36 md:h-36 object-contain mx-auto drop-shadow-2xl"
             animate={{ y: [0, -10, 0] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
           />
@@ -463,7 +463,7 @@ function HeroSection() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-          className="font-display text-5xl md:text-7xl lg:text-8xl font-bold mb-4 drop-shadow-[4px_4px_0px_rgba(0,0,0,1)] leading-tight"
+          className="font-display text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold mb-2 sm:mb-4 drop-shadow-[4px_4px_0px_rgba(0,0,0,1)] leading-tight"
         >
           We Serve
         </motion.h1>
@@ -473,7 +473,7 @@ function HeroSection() {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.6, type: "spring", stiffness: 180 }}
-          className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-secondary drop-shadow-[3px_3px_0px_rgba(0,0,0,1)] mb-6 min-h-[1.2em] neon-glow"
+          className="font-display text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-secondary drop-shadow-[3px_3px_0px_rgba(0,0,0,1)] mb-3 sm:mb-6 min-h-[1.2em] neon-glow"
         >
           {typeText}
           <motion.span
@@ -487,7 +487,7 @@ function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.85, duration: 0.7 }}
-          className="text-white/90 text-lg md:text-xl font-body max-w-xl mx-auto mb-10 leading-relaxed"
+          className="text-white/90 text-base sm:text-lg md:text-xl font-body max-w-xl mx-auto mb-6 sm:mb-10 leading-relaxed"
         >
           Where every bite is a{" "}
           <span className="text-secondary font-bold">flavor bomb</span>{" "}
@@ -527,7 +527,7 @@ function HeroSection() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5 }}
-          className="mt-16 flex flex-col items-center gap-3 text-white/60 scroll-bounce"
+          className="mt-8 sm:mt-12 flex flex-col items-center gap-3 text-white/60 scroll-bounce"
         >
           <span className="text-xs font-body tracking-widest uppercase">Scroll Down</span>
           <motion.div
