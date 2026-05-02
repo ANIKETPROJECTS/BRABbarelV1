@@ -18,6 +18,9 @@ import logoImage from "@assets/logo_(1)_1769147400424.png";
 import menuVegImg from "@assets/WhatsApp_Image_2026-01-22_at_11.36.27_PM_1769147022848.jpeg";
 import menuNonVegImg from "@assets/WhatsApp_Image_2026-01-22_at_11.36.28_PM_1769147032153.jpeg";
 
+const F3D = "https://cdn.jsdelivr.net/gh/microsoft/fluentui-emoji@main/assets/";
+const e3d = (name: string, file: string) => `${F3D}${encodeURIComponent(name)}/3D/${file}_3d.png`;
+
 // ─── Real Business Constants ─────────────────────────────────────────
 const BUSINESS = {
   phone: "7387744600",
@@ -185,17 +188,17 @@ function FloatingParticles({ count = 18, color = "rgba(255,215,0,0.18)" }: { cou
 }
 
 // ─── Floating Food Sticker ───────────────────────────────────────────
-function FloatingSticker({ emoji, style, delay = 0, amplitude = 18 }: {
-  emoji: string; style: React.CSSProperties; delay?: number; amplitude?: number;
+function FloatingSticker({ imgSrc, style, delay = 0, amplitude = 18, size = "w-14 h-14" }: {
+  imgSrc: string; style: React.CSSProperties; delay?: number; amplitude?: number; size?: string;
 }) {
   return (
     <motion.div
       className="absolute select-none pointer-events-none z-10 hidden md:block"
       style={style}
-      animate={{ y: [0, -amplitude, 0], rotate: [-6, 6, -6], scale: [1, 1.08, 1] }}
+      animate={{ y: [0, -amplitude, 0], rotate: [-6, 6, -6], scale: [1, 1.1, 1] }}
       transition={{ duration: 3.5 + delay * 0.4, repeat: Infinity, delay, ease: "easeInOut" }}
     >
-      {emoji}
+      <img src={imgSrc} className={`${size} object-contain drop-shadow-2xl`} alt="" />
     </motion.div>
   );
 }
@@ -403,14 +406,14 @@ function HeroSection() {
   const bgY = useTransform(scrollY, [0, 700], [0, 180]);
 
   const stickers = [
-    { emoji: "🌯", style: { top: "18%", left: "8%", fontSize: "3.5rem" }, delay: 0 },
-    { emoji: "🍜", style: { top: "25%", right: "9%", fontSize: "3rem" }, delay: 0.8 },
-    { emoji: "🌶️", style: { bottom: "28%", left: "6%", fontSize: "2.8rem" }, delay: 1.4 },
-    { emoji: "🫙", style: { top: "55%", right: "7%", fontSize: "2.5rem" }, delay: 0.4 },
-    { emoji: "🧆", style: { bottom: "20%", right: "15%", fontSize: "3rem" }, delay: 1.0 },
-    { emoji: "🥗", style: { top: "12%", left: "22%", fontSize: "2.2rem" }, delay: 1.8 },
-    { emoji: "🍱", style: { top: "10%", right: "22%", fontSize: "2.4rem" }, delay: 0.6 },
-    { emoji: "🧀", style: { bottom: "32%", left: "18%", fontSize: "2rem" }, delay: 2.0 },
+    { imgSrc: e3d("Burrito", "burrito"),                   style: { top: "18%", left: "8%" },    delay: 0,   size: "w-16 h-16" },
+    { imgSrc: e3d("Shallow pan of food", "shallow_pan_of_food"), style: { top: "25%", right: "9%" }, delay: 0.8, size: "w-14 h-14" },
+    { imgSrc: e3d("Hot pepper", "hot_pepper"),             style: { bottom: "28%", left: "6%" }, delay: 1.4, size: "w-14 h-14" },
+    { imgSrc: e3d("Salt", "salt"),                         style: { top: "55%", right: "7%" },   delay: 0.4, size: "w-12 h-12" },
+    { imgSrc: e3d("Taco", "taco"),                         style: { bottom: "20%", right: "15%" }, delay: 1.0, size: "w-16 h-16" },
+    { imgSrc: e3d("Green salad", "green_salad"),           style: { top: "12%", left: "22%" },   delay: 1.8, size: "w-12 h-12" },
+    { imgSrc: e3d("Bento box", "bento_box"),               style: { top: "10%", right: "22%" },  delay: 0.6, size: "w-14 h-14" },
+    { imgSrc: e3d("Cheese wedge", "cheese_wedge"),         style: { bottom: "32%", left: "18%" }, delay: 2.0, size: "w-12 h-12" },
   ];
 
   return (
@@ -436,7 +439,7 @@ function HeroSection() {
 
       {/* Floating stickers */}
       {stickers.map((s, i) => (
-        <FloatingSticker key={i} emoji={s.emoji} style={s.style} delay={s.delay} />
+        <FloatingSticker key={i} imgSrc={s.imgSrc} style={s.style} delay={s.delay} size={s.size} />
       ))}
 
       {/* Content */}
@@ -504,7 +507,8 @@ function HeroSection() {
               whileTap={{ y: 2, scale: 0.97, boxShadow: "2px 2px 0px 0px black" }}
               className="px-6 sm:px-8 py-3 sm:py-4 bg-secondary text-black font-display text-lg sm:text-xl font-bold rounded-xl border-2 border-black shadow-pop glow-cta"
             >
-              🍽️ Explore Menu
+              <img src={e3d("Fork and knife", "fork_and_knife")} className="w-7 h-7 inline-block mr-2 object-contain align-middle" alt="" />
+              Explore Menu
             </motion.button>
           </Link>
           <motion.button
@@ -513,7 +517,8 @@ function HeroSection() {
             onClick={() => document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" })}
             className="px-6 sm:px-8 py-3 sm:py-4 bg-white/15 backdrop-blur-sm text-white font-display text-lg sm:text-xl font-bold rounded-xl border-2 border-white/60 hover:bg-white/25 transition-all"
           >
-            📍 Find Us
+            <img src={e3d("Round pushpin", "round_pushpin")} className="w-7 h-7 inline-block mr-2 object-contain align-middle" alt="" />
+            Find Us
           </motion.button>
         </motion.div>
 
@@ -541,13 +546,11 @@ function HeroSection() {
 }
 
 // ─── STATS BAR ───────────────────────────────────────────────────────
-function StatItem({ value, label, delay, GiIcon, SiIcon, iconColor }: {
-  value: string; label: string; delay: number;
-  GiIcon?: React.ElementType; SiIcon?: React.ElementType; iconColor: string;
+function StatItem({ value, label, delay, imgUrl }: {
+  value: string; label: string; delay: number; imgUrl: string;
 }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
-  const Icon = GiIcon ?? SiIcon;
   return (
     <motion.div
       ref={ref}
@@ -558,10 +561,10 @@ function StatItem({ value, label, delay, GiIcon, SiIcon, iconColor }: {
     >
       <motion.div
         animate={isInView ? { rotateY: [0, 360] } : {}}
-        transition={{ delay: delay + 0.3, duration: 0.7, ease: "easeOut" }}
-        className="flex justify-center mb-1"
+        transition={{ delay: delay + 0.3, duration: 0.8, ease: "easeOut" }}
+        className="flex justify-center mb-2"
       >
-        {Icon && <Icon className={`w-9 h-9 ${iconColor}`} />}
+        <img src={imgUrl} className="w-12 h-12 object-contain drop-shadow-2xl" alt={label} />
       </motion.div>
       <motion.div
         className="font-display text-4xl md:text-5xl font-bold text-secondary drop-shadow-[3px_3px_0px_rgba(0,0,0,1)]"
@@ -577,10 +580,10 @@ function StatItem({ value, label, delay, GiIcon, SiIcon, iconColor }: {
 
 function StatsBar() {
   const stats = [
-    { value: "4.2★", label: "Google Rating",        Gi: GiStarMedal,   giColor: "text-yellow-300", delay: 0 },
-    { value: "1,213", label: "Instagram Followers", Si: SiInstagram,   siColor: "text-pink-200",   delay: 0.12 },
-    { value: "30+",   label: "Menu Items",           Gi: GiHotMeal,     giColor: "text-orange-200", delay: 0.24 },
-    { value: "199",   label: "Posts & Reels",        Si: SiInstagram,   siColor: "text-purple-200", delay: 0.36 },
+    { value: "4.2★",  label: "Google Rating",        img3d: e3d("Glowing star",   "glowing_star"),   delay: 0 },
+    { value: "1,213", label: "Instagram Followers",   img3d: e3d("Camera",         "camera"),         delay: 0.12 },
+    { value: "30+",   label: "Menu Items",             img3d: e3d("Sandwich",       "sandwich"),       delay: 0.24 },
+    { value: "199",   label: "Posts & Reels",          img3d: e3d("Clapper board",  "clapper_board"),  delay: 0.36 },
   ];
 
   return (
@@ -590,11 +593,7 @@ function StatsBar() {
       <FloatingParticles count={12} color="rgba(0,0,0,0.12)" />
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 relative z-10">
         {stats.map((s) => (
-          <StatItem key={s.label} value={s.value} label={s.label} delay={s.delay}
-            GiIcon={"Gi" in s ? (s as any).Gi : undefined}
-            SiIcon={"Si" in s ? (s as any).Si : undefined}
-            iconColor={"giColor" in s ? (s as any).giColor : (s as any).siColor}
-          />
+          <StatItem key={s.label} value={s.value} label={s.label} delay={s.delay} imgUrl={s.img3d} />
         ))}
       </div>
     </section>
@@ -605,64 +604,52 @@ function StatsBar() {
 function WhyChooseUs() {
   const reasons = [
     {
-      Gi: GiFallingLeaf,
-      giColor: "text-green-600",
+      img3d: e3d("Leafy green", "leafy_green"),
       bgColor: "bg-green-50",
       borderColor: "border-green-300",
-      loopAnim: { rotate: [-10, 10] } as any,
+      loopAnim: { rotate: [-8, 8] } as any,
       title: "Fresh Ingredients",
       desc: "Every roll, bowl and panini is made with the freshest, highest-quality ingredients sourced daily.",
-      color: "bg-green-100 border-green-400",
     },
     {
-      Gi: GiChiliPepper,
-      giColor: "text-orange-600",
+      img3d: e3d("Fire", "fire"),
       bgColor: "bg-orange-50",
       borderColor: "border-orange-300",
-      loopAnim: { y: [0, -5, 0] } as any,
+      loopAnim: { y: [0, -6, 0], scale: [1, 1.06, 1] } as any,
       title: "Bold Flavors",
       desc: "From Chatpata to Haryali — every flavor profile is a handcrafted explosion of spices.",
-      color: "bg-orange-100 border-orange-400",
     },
     {
-      Gi: GiSpeedometer,
-      giColor: "text-yellow-600",
+      img3d: e3d("High voltage", "high_voltage"),
       bgColor: "bg-yellow-50",
       borderColor: "border-yellow-300",
-      loopAnim: { rotate: [-8, 8] } as any,
+      loopAnim: { scale: [1, 1.1, 1] } as any,
       title: "Quick Service",
       desc: "Made to order and served hot in minutes. Because hunger can't wait!",
-      color: "bg-yellow-100 border-yellow-400",
     },
     {
-      Gi: GiBowlOfRice,
-      giColor: "text-emerald-600",
+      img3d: e3d("Bowl with spoon", "bowl_with_spoon"),
       bgColor: "bg-emerald-50",
       borderColor: "border-emerald-300",
-      loopAnim: { y: [0, -4, 0] } as any,
+      loopAnim: { y: [0, -5, 0] } as any,
       title: "Veg & Non-Veg",
       desc: "A rich variety of vegetarian and non-vegetarian options for every food lover.",
-      color: "bg-emerald-100 border-emerald-400",
     },
     {
-      Gi: GiTakeMyMoney,
-      giColor: "text-blue-600",
+      img3d: e3d("Money bag", "money_bag"),
       bgColor: "bg-blue-50",
       borderColor: "border-blue-300",
-      loopAnim: { scale: [1, 1.08, 1] } as any,
+      loopAnim: { rotate: [-6, 6] } as any,
       title: "Affordable Pricing",
       desc: "Starting from just ₹110 — delicious food doesn't have to be expensive.",
-      color: "bg-blue-100 border-blue-400",
     },
     {
-      Gi: GiHeartWings,
-      giColor: "text-red-600",
+      img3d: e3d("Red heart", "red_heart"),
       bgColor: "bg-red-50",
       borderColor: "border-red-300",
-      loopAnim: { scale: [1, 1.12, 1] } as any,
+      loopAnim: { scale: [1, 1.15, 1] } as any,
       title: "Made with Love",
       desc: "Each dish is crafted with passion and served with a smile. You can taste the difference.",
-      color: "bg-red-100 border-red-400",
     },
   ];
 
@@ -687,30 +674,27 @@ function WhyChooseUs() {
         </FadeUp>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {reasons.map((r, i) => {
-            const IconComp = r.Gi;
-            return (
-              <FadeIn key={r.title} delay={i * 0.09}>
-                <TiltCard>
+          {reasons.map((r, i) => (
+            <FadeIn key={r.title} delay={i * 0.09}>
+              <TiltCard>
+                <motion.div
+                  whileHover={{ y: -8, boxShadow: "8px 8px 0px 0px black" }}
+                  className="rounded-2xl border-2 border-black p-6 shadow-pop bg-white cursor-default h-full card-shine"
+                >
                   <motion.div
-                    whileHover={{ y: -8, boxShadow: "8px 8px 0px 0px black" }}
-                    className="rounded-2xl border-2 border-black p-6 shadow-pop bg-white cursor-default h-full card-shine"
+                    className={`w-24 h-24 mb-5 rounded-2xl flex items-center justify-center border-2 ${r.borderColor} ${r.bgColor} shadow-md`}
+                    animate={r.loopAnim}
+                    transition={{ repeat: Infinity, repeatType: "reverse", duration: 2.2, ease: "easeInOut" }}
+                    whileHover={{ scale: 1.15, rotate: [0, -8, 8, 0], transition: { duration: 0.35 } }}
                   >
-                    <motion.div
-                      className={`w-20 h-20 mb-5 rounded-2xl flex items-center justify-center border-2 ${r.borderColor} ${r.bgColor} shadow-sm`}
-                      animate={r.loopAnim}
-                      transition={{ repeat: Infinity, repeatType: "reverse", duration: 2.2, ease: "easeInOut" }}
-                      whileHover={{ scale: 1.18, rotate: [0, -8, 8, 0], transition: { duration: 0.35 } }}
-                    >
-                      <IconComp className={`w-10 h-10 ${r.giColor}`} />
-                    </motion.div>
-                    <h3 className="font-display text-xl text-black mb-2">{r.title}</h3>
-                    <p className="font-body text-sm text-gray-600 leading-relaxed">{r.desc}</p>
+                    <img src={r.img3d} className="w-14 h-14 object-contain drop-shadow-lg" alt={r.title} />
                   </motion.div>
-                </TiltCard>
-              </FadeIn>
-            );
-          })}
+                  <h3 className="font-display text-xl text-black mb-2">{r.title}</h3>
+                  <p className="font-body text-sm text-gray-600 leading-relaxed">{r.desc}</p>
+                </motion.div>
+              </TiltCard>
+            </FadeIn>
+          ))}
         </div>
       </div>
     </section>
@@ -1132,9 +1116,8 @@ function HowToOrder() {
   const steps = [
     {
       step: "01",
-      Gi: GiMeal,
-      giColor: "text-blue-600",
-      loopAnim: { y: [0, -5, 0] } as any,
+      img3d: e3d("Fork and knife", "fork_and_knife"),
+      loopAnim: { rotate: [-5, 5] } as any,
       title: "Browse the Menu",
       desc: "Explore our wide range of Rolls, Bowls, Salads & Paninis right here, or on Zomato & Swiggy.",
       color: "bg-blue-100 border-blue-400",
@@ -1142,9 +1125,8 @@ function HowToOrder() {
     },
     {
       step: "02",
-      Gi: GiShoppingCart,
-      giColor: "text-orange-600",
-      loopAnim: { x: [0, 4, 0] } as any,
+      img3d: e3d("Shopping cart", "shopping_cart"),
+      loopAnim: { x: [0, 5, 0] } as any,
       title: "Place Your Order",
       desc: "Order online via Zomato or Swiggy for delivery, or walk in to Trishul Complex, Ambernath.",
       color: "bg-orange-100 border-orange-400",
@@ -1152,9 +1134,8 @@ function HowToOrder() {
     },
     {
       step: "03",
-      Gi: GiChefToque,
-      giColor: "text-yellow-600",
-      loopAnim: { rotate: [-5, 5] } as any,
+      img3d: e3d("Cooking", "cooking"),
+      loopAnim: { rotate: [-4, 4], y: [0, -3, 0] } as any,
       title: "Freshly Prepared",
       desc: "Every order is made fresh on demand — no pre-cooked shortcuts. Ready in 8–15 minutes.",
       color: "bg-yellow-100 border-yellow-400",
@@ -1162,9 +1143,8 @@ function HowToOrder() {
     },
     {
       step: "04",
-      Gi: GiDeliveryDrone,
-      giColor: "text-green-600",
-      loopAnim: { y: [0, -4, 0], x: [0, 3, 0] } as any,
+      img3d: e3d("Delivery truck", "delivery_truck"),
+      loopAnim: { x: [0, 6, 0] } as any,
       title: "Delivered or Pick Up",
       desc: "Enjoy your Bomb meal delivered hot to your door, or pick it straight from our outlet!",
       color: "bg-green-100 border-green-400",
@@ -1192,20 +1172,18 @@ function HowToOrder() {
           {/* Connecting line (desktop) */}
           <div className="hidden lg:block absolute top-12 left-[12.5%] right-[12.5%] h-0.5 bg-black/10 z-0" />
 
-          {steps.map((s, i) => {
-            const StepIcon = s.Gi;
-            return (
+          {steps.map((s, i) => (
             <FadeIn key={s.step} delay={i * 0.12}>
               <div className="relative z-10 text-center">
                 {/* Step bubble */}
                 <motion.div
                   animate={s.loopAnim}
-                  transition={{ repeat: Infinity, repeatType: "reverse", duration: 2, ease: "easeInOut" }}
-                  whileHover={{ scale: 1.1, rotate: [0, -5, 5, 0], transition: { duration: 0.3 } }}
-                  className={`w-24 h-24 mx-auto rounded-2xl shadow-pop flex items-center justify-center mb-4 ${s.color} card-shine`}
+                  transition={{ repeat: Infinity, repeatType: "reverse", duration: 2.2, ease: "easeInOut" }}
+                  whileHover={{ scale: 1.12, rotate: [0, -6, 6, 0], transition: { duration: 0.3 } }}
+                  className={`w-28 h-28 mx-auto rounded-2xl shadow-pop flex items-center justify-center mb-4 ${s.color} card-shine`}
                   style={{ border: "3px solid black" }}
                 >
-                  <StepIcon className={`w-12 h-12 ${s.giColor}`} />
+                  <img src={s.img3d} className="w-16 h-16 object-contain drop-shadow-xl" alt={s.title} />
                 </motion.div>
                 {/* Step number badge */}
                 <div
@@ -1218,8 +1196,7 @@ function HowToOrder() {
                 <p className="font-body text-sm text-gray-600 leading-relaxed max-w-xs mx-auto">{s.desc}</p>
               </div>
             </FadeIn>
-            );
-          })}
+          ))}
         </div>
 
         {/* CTA */}
@@ -1251,10 +1228,10 @@ function HowToOrder() {
 // ─── OUR STORY SECTION ────────────────────────────────────────────────
 function OurStory() {
   const facts = [
-    { Gi: GiRolledCloth,    giColor: "text-primary",   label: "Started With", value: "A Love of Rolls" },
-    { Gi: GiPositionMarker, giColor: "text-red-500",    label: "Based In",     value: "Ambernath, Thane" },
-    { Gi: GiClockwork,      giColor: "text-yellow-600", label: "Open Daily",   value: "1 PM – 11 PM" },
-    { Gi: GiHeartPlus,      giColor: "text-pink-500",   label: "Our Promise",  value: "Fresh Every Order" },
+    { img3d: e3d("Stuffed flatbread",              "stuffed_flatbread"),              label: "Started With", value: "A Love of Rolls" },
+    { img3d: e3d("Round pushpin",                  "round_pushpin"),                  label: "Based In",     value: "Ambernath, Thane" },
+    { img3d: e3d("Alarm clock",                    "alarm_clock"),                    label: "Open Daily",   value: "1 PM – 11 PM" },
+    { img3d: e3d("Smiling face with heart-eyes",   "smiling_face_with_heart-eyes"),   label: "Our Promise",  value: "Fresh Every Order" },
   ];
 
   return (
@@ -1310,7 +1287,7 @@ function OurStory() {
                   className="bg-muted rounded-2xl border-2 border-black p-6 shadow-pop text-center card-shine"
                 >
                   <div className="flex justify-center mb-3">
-                    {(() => { const FactIcon = f.Gi; return <FactIcon className={`w-9 h-9 ${f.giColor}`} />; })()}
+                    <img src={f.img3d} className="w-14 h-14 object-contain drop-shadow-xl mx-auto" alt={f.label} />
                   </div>
                   <div className="font-display text-xs text-primary uppercase tracking-wider mb-1">{f.label}</div>
                   <div className="font-display text-lg text-black">{f.value}</div>
