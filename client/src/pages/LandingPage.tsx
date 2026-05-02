@@ -1622,9 +1622,12 @@ function SocialMediaSection() {
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {socialPosts.map((post, i) => (
             <FadeIn key={post.id} delay={i * 0.06}>
-              <motion.div
+              <motion.a
+                href={BUSINESS.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
                 whileHover={{ y: -6, boxShadow: "6px 6px 0px 0px black" }}
-                className="group relative rounded-2xl border-2 border-black overflow-hidden shadow-pop cursor-pointer aspect-square"
+                className="group relative rounded-2xl border-2 border-black overflow-hidden shadow-pop cursor-pointer aspect-square block"
               >
                 <img
                   src={post.img}
@@ -1650,7 +1653,7 @@ function SocialMediaSection() {
                 <div className="absolute bottom-3 left-3">
                   <SiInstagram className="text-white/80 w-5 h-5 drop-shadow-md" />
                 </div>
-              </motion.div>
+              </motion.a>
             </FadeIn>
           ))}
         </div>
@@ -1667,8 +1670,8 @@ function SocialMediaSection() {
             data-testid="link-instagram-follow"
           >
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-white rounded-2xl border-2 border-black flex items-center justify-center text-3xl shadow-pop-sm">
-                📸
+              <div className="w-16 h-16 bg-gradient-to-br from-pink-500 to-orange-500 rounded-2xl border-2 border-black flex items-center justify-center shadow-pop-sm">
+                <SiInstagram className="text-white w-8 h-8" />
               </div>
               <div>
                 <div className="font-display text-2xl text-white">Follow on Instagram</div>
