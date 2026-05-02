@@ -198,7 +198,17 @@
 }
 
 /* ── NEW: Tilt perspective wrapper ─────────────────── */
-.tilt-wrap { transform-style: preserve-3d; }
+.tilt-wrap {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* ── Card lift — GPU-only, no paint ────────────────── */
+.card-lift {
+  will-change: transform;
+  transition: transform 0.2s ease;
+}
+.card-lift:hover { transform: translateY(-8px); }
 
 /* ── NEW: Blob Morph (background decoration) ────────── */
 @keyframes blobMorph {

@@ -836,18 +836,18 @@ function MenuItemModal({ item, onClose }: { item: MenuItem | null; onClose: () =
             className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100]"
           />
 
-          {/* Drawer panel */}
+          {/* Dialog panel — bottom-sheet on mobile, centered on desktop */}
           <motion.div
-            initial={{ y: "100%" }}
-            animate={{ y: 0 }}
-            exit={{ y: "100%" }}
-            transition={{ type: "spring", stiffness: 320, damping: 32 }}
-            className="fixed bottom-0 left-0 right-0 max-h-[92vh] overflow-y-auto bg-white rounded-t-3xl border-t-4 border-black z-[101] no-scrollbar"
+            initial={{ y: "100%", opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: "100%", opacity: 0 }}
+            transition={{ type: "spring", stiffness: 280, damping: 30 }}
+            className="fixed bottom-0 left-0 right-0 md:bottom-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-2xl max-h-[92vh] md:max-h-[88vh] overflow-y-auto bg-white rounded-t-3xl md:rounded-3xl border-t-4 md:border-4 border-black z-[101] no-scrollbar"
           >
-            {/* Drag handle */}
+            {/* Close row */}
             <div className="sticky top-0 z-10 bg-white pt-3 pb-2 px-4 flex items-center justify-between border-b-2 border-black/10">
-              <div className="mx-auto w-12 h-1.5 rounded-full bg-black/20 absolute left-1/2 -translate-x-1/2 top-2" />
-              <div className="w-8" />
+              <div className="mx-auto w-12 h-1.5 rounded-full bg-black/20 absolute left-1/2 -translate-x-1/2 top-2 md:hidden" />
+              <div className="w-8 md:hidden" />
               <motion.button
                 whileHover={{ scale: 1.1, rotate: 90 }}
                 whileTap={{ scale: 0.9 }}
@@ -859,7 +859,7 @@ function MenuItemModal({ item, onClose }: { item: MenuItem | null; onClose: () =
             </div>
 
             {/* Hero image */}
-            <div className="relative w-full h-64 overflow-hidden">
+            <div className="relative w-full h-56 md:h-64 overflow-hidden">
               <motion.img
                 src={item.img}
                 alt={item.name}
