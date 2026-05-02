@@ -117,7 +117,7 @@ function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    const onScroll = () => setScrolled(window.scrollY > 60);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -137,44 +137,79 @@ function Navbar() {
 
   return (
     <motion.nav
-      initial={{ y: -80 }}
+      initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-primary shadow-lg border-b-4 border-black" : "bg-transparent"}`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-foreground shadow-[0_4px_0px_0px_black]"
+          : "bg-foreground/95 backdrop-blur-sm"
+      }`}
     >
-      {/* Checkered top stripe */}
-      {scrolled && <div className="h-1 w-full bg-checkered-sm opacity-60 absolute top-0 left-0" />}
-      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-        {/* Logo */}
-        <button onClick={() => scrollTo("#hero")} className="flex items-center gap-2 group">
+      {/* Top checkered stripe */}
+      <div className="h-2 w-full bg-checkered" />
+
+      {/* Main header bar */}
+      <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between gap-6">
+
+        {/* Logo + Brand */}
+        <button
+          onClick={() => scrollTo("#hero")}
+          className="flex items-center gap-3 group flex-shrink-0"
+          data-testid="button-logo-home"
+        >
           <motion.img
             src={logoImage}
             alt="Bomb Rolls & Bowls"
-            className="w-10 h-10 object-contain"
-            whileHover={{ rotate: [0, -8, 8, 0] }}
+            className="w-16 h-16 object-contain drop-shadow-[3px_3px_0px_rgba(0,0,0,0.6)]"
+            whileHover={{ rotate: [-5, 5, -5, 0], scale: 1.05 }}
             transition={{ duration: 0.4 }}
           />
-          <span className={`font-display font-bold text-lg tracking-wide drop-shadow-[2px_2px_0px_rgba(0,0,0,1)] transition-colors ${scrolled ? "text-white" : "text-white"}`}>
-            BOMB ROLLS & BOWLS
-          </span>
+          <div className="text-left hidden sm:block">
+            <div className="font-display text-xl leading-none text-white drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]">
+              BOMB ROLLS
+            </div>
+            <div className="font-display text-xl leading-none text-secondary drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]">
+              & BOWLS
+            </div>
+            <div className="font-body text-[10px] text-white/50 tracking-widest uppercase mt-0.5">
+              Ambernath · Thane
+            </div>
+          </div>
         </button>
 
-        {/* Desktop links */}
-        <div className="hidden md:flex items-center gap-6">
+        {/* Desktop nav links */}
+        <div className="hidden lg:flex items-center gap-1 flex-1 justify-center">
           {links.map(l => (
-            <button
+            <motion.button
               key={l.label}
               onClick={() => scrollTo(l.href)}
-              className={`font-display text-sm font-semibold transition-all hover:scale-105 ${scrolled ? "text-white hover:text-secondary" : "text-white/90 hover:text-white"}`}
+              whileHover={{ y: -2 }}
+              whileTap={{ y: 1 }}
+              className="font-display text-base text-white/80 hover:text-secondary px-4 py-2 rounded-xl hover:bg-white/10 transition-all"
             >
               {l.label}
-            </button>
+            </motion.button>
           ))}
+        </div>
+
+        {/* Right side actions */}
+        <div className="hidden md:flex items-center gap-3 flex-shrink-0">
+          <motion.a
+            href={`tel:+91${BUSINESS.phone}`}
+            whileHover={{ y: -2 }}
+            className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 text-white font-body text-sm rounded-xl border border-white/20 transition-all"
+          >
+            <Phone className="w-4 h-4 text-secondary" />
+            <span className="hidden xl:block">{BUSINESS.phoneDisplay}</span>
+            <span className="xl:hidden">Call</span>
+          </motion.a>
           <Link href="/menu">
             <motion.button
-              whileHover={{ y: -2, boxShadow: "6px 6px 0px 0px black" }}
-              whileTap={{ y: 2, boxShadow: "2px 2px 0px 0px black" }}
-              className="px-5 py-2 bg-secondary text-black font-display font-bold text-sm rounded-xl border-2 border-black shadow-pop"
+              whileHover={{ y: -2, boxShadow: "6px 6px 0px 0px rgba(0,0,0,0.8)" }}
+              whileTap={{ y: 2, boxShadow: "2px 2px 0px 0px rgba(0,0,0,0.8)" }}
+              className="px-5 py-2.5 bg-secondary text-black font-display text-base rounded-xl border-2 border-black shadow-pop"
+              data-testid="button-digital-menu"
             >
               Digital Menu →
             </motion.button>
@@ -184,22 +219,25 @@ function Navbar() {
         {/* Mobile hamburger */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden flex flex-col gap-1.5 p-2"
+          className="lg:hidden flex flex-col gap-1.5 p-2 ml-auto"
           data-testid="button-mobile-menu"
         >
           {[0, 1, 2].map(i => (
             <motion.span
               key={i}
-              className="block h-0.5 w-6 bg-white rounded-full"
+              className="block h-0.5 w-7 bg-white rounded-full"
               animate={mobileOpen ? {
                 rotate: i === 0 ? 45 : i === 2 ? -45 : 0,
                 y: i === 0 ? 8 : i === 2 ? -8 : 0,
                 opacity: i === 1 ? 0 : 1
-              } : {}}
+              } : { rotate: 0, y: 0, opacity: 1 }}
             />
           ))}
         </button>
       </div>
+
+      {/* Bottom accent stripe */}
+      <div className="h-1 w-full bg-gradient-to-r from-primary via-secondary to-primary opacity-80" />
 
       {/* Mobile menu */}
       <AnimatePresence>
@@ -208,23 +246,32 @@ function Navbar() {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="md:hidden bg-primary border-t-4 border-black overflow-hidden"
+            className="lg:hidden bg-foreground border-t-2 border-white/10 overflow-hidden"
           >
-            <div className="px-6 py-4 flex flex-col gap-4">
+            <div className="px-6 py-5 flex flex-col gap-2">
               {links.map(l => (
-                <button
+                <motion.button
                   key={l.label}
+                  whileHover={{ x: 6 }}
                   onClick={() => scrollTo(l.href)}
-                  className="font-display text-xl text-white text-left hover:text-secondary transition-colors"
+                  className="font-display text-2xl text-white hover:text-secondary text-left py-2 border-b border-white/10 transition-colors"
                 >
                   {l.label}
-                </button>
+                </motion.button>
               ))}
-              <Link href="/menu">
-                <button className="mt-2 px-5 py-3 bg-secondary text-black font-display font-bold rounded-xl border-2 border-black shadow-pop w-full">
-                  Digital Menu →
-                </button>
-              </Link>
+              <div className="pt-3 flex flex-col gap-3">
+                <a
+                  href={`tel:+91${BUSINESS.phone}`}
+                  className="flex items-center gap-3 px-4 py-3 bg-white/10 text-white rounded-xl font-body"
+                >
+                  <Phone className="w-5 h-5 text-secondary" /> {BUSINESS.phoneDisplay}
+                </a>
+                <Link href="/menu">
+                  <button className="px-5 py-3 bg-secondary text-black font-display text-lg rounded-xl border-2 border-black shadow-pop w-full">
+                    Digital Menu →
+                  </button>
+                </Link>
+              </div>
             </div>
           </motion.div>
         )}
