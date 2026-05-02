@@ -1497,6 +1497,7 @@ function TestimonialCard({ t, position }: { t: typeof testimonials[0]; position:
 
 function Testimonials() {
   const [current, setCurrent] = useState(0);
+  const [paused, setPaused] = useState(false);
   const n = testimonials.length;
 
   const navigate = useCallback((next: number) => {
@@ -1504,9 +1505,10 @@ function Testimonials() {
   }, [n]);
 
   useEffect(() => {
+    if (paused) return;
     const id = setInterval(() => navigate(current + 1), 3500);
     return () => clearInterval(id);
-  }, [current, navigate]);
+  }, [current, navigate, paused]);
 
   const prev = (current - 1 + n) % n;
   const next = (current + 1) % n;
@@ -1527,8 +1529,13 @@ function Testimonials() {
           </h2>
         </FadeUp>
 
-        {/* Stacked 3-card stage */}
-        <div className="relative flex items-center justify-center" style={{ height: 320 }}>
+        {/* Stacked 3-card stage — pauses on hover */}
+        <div
+          className="relative flex items-center justify-center"
+          style={{ height: 360 }}
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+        >
           <TestimonialCard t={testimonials[prev]}    position="left"   />
           <TestimonialCard t={testimonials[next]}    position="right"  />
           <TestimonialCard t={testimonials[current]} position="center" />
