@@ -7,6 +7,12 @@ import {
   ShoppingBag, Bike, Utensils, ChefHat, Sparkles
 } from "lucide-react";
 import { SiFacebook, SiInstagram, SiYoutube, SiZomato, SiSwiggy, SiWhatsapp } from "react-icons/si";
+import {
+  GiFallingLeaf, GiChiliPepper, GiSpeedometer, GiBowlOfRice, GiTakeMyMoney, GiHeartWings,
+  GiMeal, GiShoppingCart, GiChefToque, GiDeliveryDrone, GiStarMedal, GiHotMeal,
+  GiRolledCloth, GiPositionMarker, GiClockwork, GiHeartPlus
+} from "react-icons/gi";
+import { FaLocationDot, FaEnvelope, FaBowlFood, FaFire, FaLeaf, FaBolt, FaFaceSmile, FaShieldHalved, FaHeart, FaTruckFast } from "react-icons/fa6";
 import { Link } from "wouter";
 import logoImage from "@assets/logo_(1)_1769147400424.png";
 import menuVegImg from "@assets/WhatsApp_Image_2026-01-22_at_11.36.27_PM_1769147022848.jpeg";
@@ -535,9 +541,13 @@ function HeroSection() {
 }
 
 // ─── STATS BAR ───────────────────────────────────────────────────────
-function StatItem({ value, label, delay, icon }: { value: string; label: string; delay: number; icon: string }) {
+function StatItem({ value, label, delay, GiIcon, SiIcon, iconColor }: {
+  value: string; label: string; delay: number;
+  GiIcon?: React.ElementType; SiIcon?: React.ElementType; iconColor: string;
+}) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
+  const Icon = GiIcon ?? SiIcon;
   return (
     <motion.div
       ref={ref}
@@ -549,9 +559,9 @@ function StatItem({ value, label, delay, icon }: { value: string; label: string;
       <motion.div
         animate={isInView ? { rotateY: [0, 360] } : {}}
         transition={{ delay: delay + 0.3, duration: 0.7, ease: "easeOut" }}
-        className="text-3xl mb-1"
+        className="flex justify-center mb-1"
       >
-        {icon}
+        {Icon && <Icon className={`w-9 h-9 ${iconColor}`} />}
       </motion.div>
       <motion.div
         className="font-display text-4xl md:text-5xl font-bold text-secondary drop-shadow-[3px_3px_0px_rgba(0,0,0,1)]"
@@ -567,10 +577,10 @@ function StatItem({ value, label, delay, icon }: { value: string; label: string;
 
 function StatsBar() {
   const stats = [
-    { value: "4.2★", label: "Google Rating",        icon: "⭐", delay: 0 },
-    { value: "1,213", label: "Instagram Followers",  icon: "📸", delay: 0.12 },
-    { value: "30+",   label: "Menu Items",           icon: "🍽️", delay: 0.24 },
-    { value: "199",   label: "Posts & Reels",        icon: "🎬", delay: 0.36 },
+    { value: "4.2★", label: "Google Rating",        Gi: GiStarMedal,   giColor: "text-yellow-300", delay: 0 },
+    { value: "1,213", label: "Instagram Followers", Si: SiInstagram,   siColor: "text-pink-200",   delay: 0.12 },
+    { value: "30+",   label: "Menu Items",           Gi: GiHotMeal,     giColor: "text-orange-200", delay: 0.24 },
+    { value: "199",   label: "Posts & Reels",        Si: SiInstagram,   siColor: "text-purple-200", delay: 0.36 },
   ];
 
   return (
@@ -580,7 +590,11 @@ function StatsBar() {
       <FloatingParticles count={12} color="rgba(0,0,0,0.12)" />
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 relative z-10">
         {stats.map((s) => (
-          <StatItem key={s.label} value={s.value} label={s.label} delay={s.delay} icon={s.icon} />
+          <StatItem key={s.label} value={s.value} label={s.label} delay={s.delay}
+            GiIcon={"Gi" in s ? (s as any).Gi : undefined}
+            SiIcon={"Si" in s ? (s as any).Si : undefined}
+            iconColor={"giColor" in s ? (s as any).giColor : (s as any).siColor}
+          />
         ))}
       </div>
     </section>
@@ -591,43 +605,61 @@ function StatsBar() {
 function WhyChooseUs() {
   const reasons = [
     {
-      icon: <Leaf className="w-8 h-8" />,
-      emoji: "🌿",
+      Gi: GiFallingLeaf,
+      giColor: "text-green-600",
+      bgColor: "bg-green-50",
+      borderColor: "border-green-300",
+      loopAnim: { rotate: [-10, 10] } as any,
       title: "Fresh Ingredients",
       desc: "Every roll, bowl and panini is made with the freshest, highest-quality ingredients sourced daily.",
       color: "bg-green-100 border-green-400",
     },
     {
-      icon: <Flame className="w-8 h-8" />,
-      emoji: "🌶️",
+      Gi: GiChiliPepper,
+      giColor: "text-orange-600",
+      bgColor: "bg-orange-50",
+      borderColor: "border-orange-300",
+      loopAnim: { y: [0, -5, 0] } as any,
       title: "Bold Flavors",
       desc: "From Chatpata to Haryali — every flavor profile is a handcrafted explosion of spices.",
       color: "bg-orange-100 border-orange-400",
     },
     {
-      icon: <Clock className="w-8 h-8" />,
-      emoji: "⚡",
+      Gi: GiSpeedometer,
+      giColor: "text-yellow-600",
+      bgColor: "bg-yellow-50",
+      borderColor: "border-yellow-300",
+      loopAnim: { rotate: [-8, 8] } as any,
       title: "Quick Service",
       desc: "Made to order and served hot in minutes. Because hunger can't wait!",
       color: "bg-yellow-100 border-yellow-400",
     },
     {
-      icon: <Shield className="w-8 h-8" />,
-      emoji: "🥗",
+      Gi: GiBowlOfRice,
+      giColor: "text-emerald-600",
+      bgColor: "bg-emerald-50",
+      borderColor: "border-emerald-300",
+      loopAnim: { y: [0, -4, 0] } as any,
       title: "Veg & Non-Veg",
       desc: "A rich variety of vegetarian and non-vegetarian options for every food lover.",
       color: "bg-emerald-100 border-emerald-400",
     },
     {
-      icon: <Smile className="w-8 h-8" />,
-      emoji: "😊",
+      Gi: GiTakeMyMoney,
+      giColor: "text-blue-600",
+      bgColor: "bg-blue-50",
+      borderColor: "border-blue-300",
+      loopAnim: { scale: [1, 1.08, 1] } as any,
       title: "Affordable Pricing",
       desc: "Starting from just ₹110 — delicious food doesn't have to be expensive.",
       color: "bg-blue-100 border-blue-400",
     },
     {
-      icon: <Heart className="w-8 h-8" />,
-      emoji: "❤️",
+      Gi: GiHeartWings,
+      giColor: "text-red-600",
+      bgColor: "bg-red-50",
+      borderColor: "border-red-300",
+      loopAnim: { scale: [1, 1.12, 1] } as any,
       title: "Made with Love",
       desc: "Each dish is crafted with passion and served with a smile. You can taste the difference.",
       color: "bg-red-100 border-red-400",
@@ -655,26 +687,30 @@ function WhyChooseUs() {
         </FadeUp>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {reasons.map((r, i) => (
-            <FadeIn key={r.title} delay={i * 0.09}>
-              <TiltCard>
-                <motion.div
-                  whileHover={{ y: -8, boxShadow: "8px 8px 0px 0px black" }}
-                  className="rounded-2xl border-2 border-black p-6 shadow-pop bg-white cursor-default h-full card-shine"
-                >
+          {reasons.map((r, i) => {
+            const IconComp = r.Gi;
+            return (
+              <FadeIn key={r.title} delay={i * 0.09}>
+                <TiltCard>
                   <motion.div
-                    className="text-5xl mb-4"
-                    whileHover={{ scale: 1.3, rotate: [0, -10, 10, 0] }}
-                    transition={{ duration: 0.4 }}
+                    whileHover={{ y: -8, boxShadow: "8px 8px 0px 0px black" }}
+                    className="rounded-2xl border-2 border-black p-6 shadow-pop bg-white cursor-default h-full card-shine"
                   >
-                    {r.emoji}
+                    <motion.div
+                      className={`w-20 h-20 mb-5 rounded-2xl flex items-center justify-center border-2 ${r.borderColor} ${r.bgColor} shadow-sm`}
+                      animate={r.loopAnim}
+                      transition={{ repeat: Infinity, repeatType: "reverse", duration: 2.2, ease: "easeInOut" }}
+                      whileHover={{ scale: 1.18, rotate: [0, -8, 8, 0], transition: { duration: 0.35 } }}
+                    >
+                      <IconComp className={`w-10 h-10 ${r.giColor}`} />
+                    </motion.div>
+                    <h3 className="font-display text-xl text-black mb-2">{r.title}</h3>
+                    <p className="font-body text-sm text-gray-600 leading-relaxed">{r.desc}</p>
                   </motion.div>
-                  <h3 className="font-display text-xl text-black mb-2">{r.title}</h3>
-                  <p className="font-body text-sm text-gray-600 leading-relaxed">{r.desc}</p>
-                </motion.div>
-              </TiltCard>
-            </FadeIn>
-          ))}
+                </TiltCard>
+              </FadeIn>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -1096,7 +1132,9 @@ function HowToOrder() {
   const steps = [
     {
       step: "01",
-      icon: "📱",
+      Gi: GiMeal,
+      giColor: "text-blue-600",
+      loopAnim: { y: [0, -5, 0] } as any,
       title: "Browse the Menu",
       desc: "Explore our wide range of Rolls, Bowls, Salads & Paninis right here, or on Zomato & Swiggy.",
       color: "bg-blue-100 border-blue-400",
@@ -1104,7 +1142,9 @@ function HowToOrder() {
     },
     {
       step: "02",
-      icon: "🛒",
+      Gi: GiShoppingCart,
+      giColor: "text-orange-600",
+      loopAnim: { x: [0, 4, 0] } as any,
       title: "Place Your Order",
       desc: "Order online via Zomato or Swiggy for delivery, or walk in to Trishul Complex, Ambernath.",
       color: "bg-orange-100 border-orange-400",
@@ -1112,7 +1152,9 @@ function HowToOrder() {
     },
     {
       step: "03",
-      icon: "👨‍🍳",
+      Gi: GiChefToque,
+      giColor: "text-yellow-600",
+      loopAnim: { rotate: [-5, 5] } as any,
       title: "Freshly Prepared",
       desc: "Every order is made fresh on demand — no pre-cooked shortcuts. Ready in 8–15 minutes.",
       color: "bg-yellow-100 border-yellow-400",
@@ -1120,7 +1162,9 @@ function HowToOrder() {
     },
     {
       step: "04",
-      icon: "🚀",
+      Gi: GiDeliveryDrone,
+      giColor: "text-green-600",
+      loopAnim: { y: [0, -4, 0], x: [0, 3, 0] } as any,
       title: "Delivered or Pick Up",
       desc: "Enjoy your Bomb meal delivered hot to your door, or pick it straight from our outlet!",
       color: "bg-green-100 border-green-400",
@@ -1148,17 +1192,20 @@ function HowToOrder() {
           {/* Connecting line (desktop) */}
           <div className="hidden lg:block absolute top-12 left-[12.5%] right-[12.5%] h-0.5 bg-black/10 z-0" />
 
-          {steps.map((s, i) => (
+          {steps.map((s, i) => {
+            const StepIcon = s.Gi;
+            return (
             <FadeIn key={s.step} delay={i * 0.12}>
               <div className="relative z-10 text-center">
                 {/* Step bubble */}
                 <motion.div
-                  whileHover={{ scale: 1.08, rotate: [0, -3, 3, 0] }}
-                  transition={{ duration: 0.3 }}
-                  className={`w-24 h-24 mx-auto rounded-2xl border-3 border-black shadow-pop flex items-center justify-center text-4xl mb-4 ${s.color} card-shine`}
+                  animate={s.loopAnim}
+                  transition={{ repeat: Infinity, repeatType: "reverse", duration: 2, ease: "easeInOut" }}
+                  whileHover={{ scale: 1.1, rotate: [0, -5, 5, 0], transition: { duration: 0.3 } }}
+                  className={`w-24 h-24 mx-auto rounded-2xl shadow-pop flex items-center justify-center mb-4 ${s.color} card-shine`}
                   style={{ border: "3px solid black" }}
                 >
-                  {s.icon}
+                  <StepIcon className={`w-12 h-12 ${s.giColor}`} />
                 </motion.div>
                 {/* Step number badge */}
                 <div
@@ -1171,7 +1218,8 @@ function HowToOrder() {
                 <p className="font-body text-sm text-gray-600 leading-relaxed max-w-xs mx-auto">{s.desc}</p>
               </div>
             </FadeIn>
-          ))}
+            );
+          })}
         </div>
 
         {/* CTA */}
@@ -1203,10 +1251,10 @@ function HowToOrder() {
 // ─── OUR STORY SECTION ────────────────────────────────────────────────
 function OurStory() {
   const facts = [
-    { icon: "🌯", label: "Started With", value: "A Love of Rolls" },
-    { icon: "📍", label: "Based In", value: "Ambernath, Thane" },
-    { icon: "🕐", label: "Open Daily", value: "1 PM – 11 PM" },
-    { icon: "💛", label: "Our Promise", value: "Fresh Every Order" },
+    { Gi: GiRolledCloth,    giColor: "text-primary",   label: "Started With", value: "A Love of Rolls" },
+    { Gi: GiPositionMarker, giColor: "text-red-500",    label: "Based In",     value: "Ambernath, Thane" },
+    { Gi: GiClockwork,      giColor: "text-yellow-600", label: "Open Daily",   value: "1 PM – 11 PM" },
+    { Gi: GiHeartPlus,      giColor: "text-pink-500",   label: "Our Promise",  value: "Fresh Every Order" },
   ];
 
   return (
@@ -1261,7 +1309,9 @@ function OurStory() {
                   transition={{ delay: i * 0.1, type: "spring", stiffness: 200 }}
                   className="bg-muted rounded-2xl border-2 border-black p-6 shadow-pop text-center card-shine"
                 >
-                  <div className="text-4xl mb-3">{f.icon}</div>
+                  <div className="flex justify-center mb-3">
+                    {(() => { const FactIcon = f.Gi; return <FactIcon className={`w-9 h-9 ${f.giColor}`} />; })()}
+                  </div>
                   <div className="font-display text-xs text-primary uppercase tracking-wider mb-1">{f.label}</div>
                   <div className="font-display text-lg text-black">{f.value}</div>
                 </motion.div>
@@ -1751,7 +1801,7 @@ function ContactSection() {
             <div className="space-y-6">
               {[
                 {
-                  icon: <MapPin className="w-6 h-6 text-primary" />,
+                  icon: <FaLocationDot className="w-6 h-6 text-primary" />,
                   label: "Find Us",
                   value: "Shop 8, Trishul Commercial Complex, Opp. Shiv Basav Nagar, Shiv Mandir Rd, Ambernath, Thane – 421501",
                   sub: "Open Daily · " + BUSINESS.hours,
