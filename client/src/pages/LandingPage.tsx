@@ -1,13 +1,31 @@
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence, useScroll, useTransform, useInView } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import {
   MapPin, Phone, Mail, Star, ChevronUp, ArrowRight, Leaf, Flame,
-  Clock, Award, Heart, Zap, Shield, Smile, ChevronLeft, ChevronRight,
-  Instagram, Facebook, Youtube, Send, CheckCircle
+  Clock, Heart, Shield, Smile, ChevronLeft, ChevronRight,
+  Send, CheckCircle, MessageCircle
 } from "lucide-react";
 import { SiFacebook, SiInstagram, SiYoutube, SiZomato, SiSwiggy } from "react-icons/si";
 import { Link } from "wouter";
 import logoImage from "@assets/logo_(1)_1769147400424.png";
+import menuVegImg from "@assets/WhatsApp_Image_2026-01-22_at_11.36.27_PM_1769147022848.jpeg";
+import menuNonVegImg from "@assets/WhatsApp_Image_2026-01-22_at_11.36.28_PM_1769147032153.jpeg";
+
+// ─── Real Business Constants ─────────────────────────────────────────
+const BUSINESS = {
+  phone: "7387744600",
+  phoneDisplay: "+91 73877 44600",
+  address: "Shop 8, Trishul Commercial Complex,\nOpp. Shiv Basav Nagar, Shiv Mandir Rd,\nAmbernath, Thane – 421501",
+  addressShort: "Ambernath, Thane, Maharashtra",
+  hours: "1:00 PM – 11:00 PM · Daily",
+  instagram: "https://www.instagram.com/bomb_rolls_and_bowls/",
+  instagramHandle: "@bomb_rolls_and_bowls",
+  zomato: "https://www.zomato.com/mumbai/bomb-rolls-bowls-ambernath-thane/order",
+  swiggy: "https://www.swiggy.com/restaurants/bomb-rolls-and-bowls-trishul-commercialcomplex-ambarnath-mumbai-917034",
+  rating: "4.2",
+  ratingCount: "324",
+  whatsapp: "https://wa.me/917387744600",
+};
 
 // ─── Typewriter Hook ────────────────────────────────────────────────
 function useTypewriter(words: string[], speed = 90, deleteSpeed = 45, pauseTime = 2200) {
@@ -347,10 +365,10 @@ function HeroSection() {
 // ─── STATS BAR ───────────────────────────────────────────────────────
 function StatsBar() {
   const stats = [
+    { value: "4.2★", label: "Google Rating" },
+    { value: "324+", label: "Happy Reviews" },
     { value: "30+", label: "Menu Items" },
-    { value: "4", label: "Food Categories" },
-    { value: "100%", label: "Fresh Daily" },
-    { value: "2024", label: "Established" },
+    { value: "Est. 2024", label: "Ambernath, Thane" },
   ];
 
   return (
@@ -591,35 +609,35 @@ const testimonials = [
     name: "Priya Sharma",
     rating: 5,
     avatar: "https://api.dicebear.com/7.x/fun-emoji/svg?seed=priya",
-    text: "Tried the Haryali Paneer Roll and OMG it was absolutely incredible! The mint-coriander combo hits like a flavor explosion. Will definitely be coming back!",
+    text: "Tried the Haryali Paneer Roll and OMG it was absolutely incredible! The mint-coriander combo hits like a flavor explosion. Best food in Ambernath — will definitely be back!",
     tag: "Haryali Roll",
   },
   {
     name: "Rohan Mehta",
     rating: 5,
     avatar: "https://api.dicebear.com/7.x/fun-emoji/svg?seed=rohan",
-    text: "The Malai Tikka Panini is hands-down the best thing I've eaten in Pune this year. Crispy, cheesy, creamy — everything you could want!",
+    text: "The Malai Tikka Panini is hands-down the best thing I've eaten in Thane this year. Crispy, cheesy, creamy — everything you could want! Bomb Rolls never disappoints.",
     tag: "Malai Tikka Panini",
   },
   {
     name: "Sneha Patil",
     rating: 5,
     avatar: "https://api.dicebear.com/7.x/fun-emoji/svg?seed=sneha",
-    text: "So glad they have amazing veg options! The Makhmali Paneer Roll is literally restaurant-quality food at street food prices. Obsessed!",
+    text: "So glad they have amazing veg options! The Makhmali Paneer Roll is literally restaurant-quality food at street food prices. My go-to spot in Ambernath!",
     tag: "Makhmali Roll",
   },
   {
     name: "Arjun Desai",
     rating: 5,
     avatar: "https://api.dicebear.com/7.x/fun-emoji/svg?seed=arjun",
-    text: "Ordered the Tikka Rice Bowl for lunch and it was so filling and delicious. Super quick service and the packaging was great too!",
+    text: "Ordered from Zomato and it arrived hot and fresh. The Tikka Rice Bowl was so filling and delicious. Super quick delivery and the packaging was great too!",
     tag: "Tikka Rice Bowl",
   },
   {
     name: "Ananya Joshi",
     rating: 5,
     avatar: "https://api.dicebear.com/7.x/fun-emoji/svg?seed=ananya",
-    text: "The Angara Chicken Roll is SPICY in the best possible way! Loved every single bite. The staff is super friendly too. Perfect spot!",
+    text: "The Angara Chicken Roll is SPICY in the best possible way! Loved every single bite. The staff is super friendly at the Shiv Mandir Rd outlet. A true hidden gem!",
     tag: "Angara Roll",
   },
 ];
@@ -728,7 +746,7 @@ const socialPosts = [
     id: 1,
     type: "reel",
     img: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=500&q=80",
-    caption: "🌯 When the Haryali Roll hits different! Fresh, spicy and absolutely bomb. 💣 #BombRolls",
+    caption: "🌯 When the Haryali Roll hits different! Fresh, spicy and absolutely bomb. 💣 #BombRolls #Ambernath",
     likes: "2.4K",
     platform: "instagram",
   },
@@ -736,7 +754,7 @@ const socialPosts = [
     id: 2,
     type: "post",
     img: "https://images.unsplash.com/photo-1596797038530-2c107229654b?w=500&q=80",
-    caption: "🍜 Our Tikka Rice Bowls are the real deal. Order yours today! #BombBowls #FoodieIndia",
+    caption: "🍜 Our Tikka Rice Bowls are the real deal. Order on Zomato/Swiggy today! #BombBowls #Thane",
     likes: "1.8K",
     platform: "instagram",
   },
@@ -744,7 +762,7 @@ const socialPosts = [
     id: 3,
     type: "reel",
     img: "https://images.unsplash.com/photo-1529042410759-befb1204b468?w=500&q=80",
-    caption: "🧀 The crunch of our Malai Tikka Panini is something else! Watch till end! 🔥",
+    caption: "🧀 The crunch of our Malai Tikka Panini is something else! Come visit us at Shiv Mandir Rd 🔥",
     likes: "3.1K",
     platform: "instagram",
   },
@@ -752,7 +770,7 @@ const socialPosts = [
     id: 4,
     type: "post",
     img: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&q=80",
-    caption: "🥗 Healthy doesn't mean boring. Our Bomb Salads are proof! #EatHealthy",
+    caption: "🥗 Healthy doesn't mean boring. Our Bomb Salads are proof! Open 1 PM – 11 PM daily 🕐",
     likes: "1.2K",
     platform: "instagram",
   },
@@ -760,7 +778,7 @@ const socialPosts = [
     id: 5,
     type: "reel",
     img: "https://images.unsplash.com/photo-1574484284002-952d92456975?w=500&q=80",
-    caption: "😤 Angara Roll challenge! Can you handle the heat? 🌶️🌶️🌶️ #SpicyFood",
+    caption: "😤 Angara Roll challenge! Can you handle the heat? 🌶️🌶️🌶️ #SpicyFood #BombRollsAmbernath",
     likes: "4.2K",
     platform: "instagram",
   },
@@ -768,7 +786,7 @@ const socialPosts = [
     id: 6,
     type: "post",
     img: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=500&q=80",
-    caption: "💛 Every flavor is crafted with love. Come taste the Bomb difference! #BombRollsAndBowls",
+    caption: "💛 Every flavor is crafted with love from Ambernath! Follow @bomb_rolls_and_bowls for more 💣",
     likes: "2.7K",
     platform: "instagram",
   },
@@ -790,7 +808,7 @@ function SocialMediaSection() {
           </p>
           <div className="flex items-center justify-center gap-4 mt-6">
             {[
-              { icon: <SiInstagram />, label: "Instagram", color: "bg-gradient-to-br from-pink-500 to-orange-500", href: "#" },
+              { icon: <SiInstagram />, label: "Instagram", color: "bg-gradient-to-br from-pink-500 to-orange-500", href: BUSINESS.instagram },
               { icon: <SiFacebook />, label: "Facebook", color: "bg-blue-600", href: "#" },
               { icon: <SiYoutube />, label: "YouTube", color: "bg-red-600", href: "#" },
             ].map(s => (
@@ -889,20 +907,23 @@ function ContactSection() {
                 {
                   icon: <MapPin className="w-6 h-6 text-primary" />,
                   label: "Find Us",
-                  value: "Bomb Rolls & Bowls, Pune, Maharashtra",
-                  sub: "Open daily · 11 AM – 10 PM",
+                  value: "Shop 8, Trishul Commercial Complex, Opp. Shiv Basav Nagar, Shiv Mandir Rd, Ambernath, Thane – 421501",
+                  sub: "Open Daily · " + BUSINESS.hours,
+                  href: "https://maps.google.com/?q=Bomb+Rolls+Bowls+Ambernath+Thane",
                 },
                 {
                   icon: <Phone className="w-6 h-6 text-primary" />,
                   label: "Call Us",
-                  value: "+91 98765 43210",
-                  sub: "Mon–Sun · 10 AM – 9 PM",
+                  value: BUSINESS.phoneDisplay,
+                  sub: "Available during business hours",
+                  href: "tel:+917387744600",
                 },
                 {
-                  icon: <Mail className="w-6 h-6 text-primary" />,
-                  label: "Email Us",
-                  value: "hello@bombrollsandbowls.com",
-                  sub: "We reply within 24 hours",
+                  icon: <MessageCircle className="w-6 h-6 text-primary" />,
+                  label: "WhatsApp Us",
+                  value: BUSINESS.phoneDisplay,
+                  sub: "Quick replies on WhatsApp",
+                  href: BUSINESS.whatsapp,
                 },
               ].map((item, i) => (
                 <motion.div
@@ -911,7 +932,8 @@ function ContactSection() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
-                  className="flex items-start gap-4 p-5 bg-muted rounded-2xl border-2 border-black shadow-pop-sm"
+                  className="flex items-start gap-4 p-5 bg-muted rounded-2xl border-2 border-black shadow-pop-sm hover:shadow-pop transition-shadow cursor-pointer"
+                  onClick={() => item.href && window.open(item.href, "_blank")}
                 >
                   <div className="w-12 h-12 bg-secondary rounded-xl border-2 border-black flex items-center justify-center flex-shrink-0 shadow-pop-sm">
                     {item.icon}
@@ -924,23 +946,52 @@ function ContactSection() {
                 </motion.div>
               ))}
 
+              {/* Google Rating Badge */}
+              <div className="flex items-center gap-3 p-4 bg-white rounded-2xl border-2 border-black shadow-pop-sm">
+                <div className="text-3xl font-display font-bold text-foreground">{BUSINESS.rating}</div>
+                <div>
+                  <div className="flex gap-0.5">
+                    {[1,2,3,4,5].map(i => (
+                      <Star key={i} className={`w-4 h-4 ${i <= 4 ? "fill-secondary text-secondary" : "fill-secondary/40 text-secondary/40"}`} />
+                    ))}
+                  </div>
+                  <div className="font-body text-xs text-muted-foreground mt-0.5">{BUSINESS.ratingCount}+ Google Reviews</div>
+                </div>
+                <div className="ml-auto">
+                  <div className="w-10 h-10 bg-white rounded-full border-2 border-black flex items-center justify-center text-lg">⭐</div>
+                </div>
+              </div>
+
               {/* Zomato / Swiggy */}
-              <div className="pt-2">
+              <div className="pt-1">
                 <p className="font-display text-lg text-black mb-3">Order Online 🛵</p>
-                <div className="flex gap-3">
+                <div className="flex flex-wrap gap-3">
                   <motion.a
-                    href="#"
+                    href={BUSINESS.zomato}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     whileHover={{ y: -3, boxShadow: "5px 5px 0px 0px black" }}
                     className="flex items-center gap-2 px-5 py-3 bg-red-500 text-white font-bold rounded-xl border-2 border-black shadow-pop-sm font-body"
                   >
                     <SiZomato className="text-xl" /> Zomato
                   </motion.a>
                   <motion.a
-                    href="#"
+                    href={BUSINESS.swiggy}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     whileHover={{ y: -3, boxShadow: "5px 5px 0px 0px black" }}
                     className="flex items-center gap-2 px-5 py-3 bg-orange-500 text-white font-bold rounded-xl border-2 border-black shadow-pop-sm font-body"
                   >
                     <SiSwiggy className="text-xl" /> Swiggy
+                  </motion.a>
+                  <motion.a
+                    href={BUSINESS.whatsapp}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ y: -3, boxShadow: "5px 5px 0px 0px black" }}
+                    className="flex items-center gap-2 px-5 py-3 bg-green-500 text-white font-bold rounded-xl border-2 border-black shadow-pop-sm font-body"
+                  >
+                    💬 WhatsApp
                   </motion.a>
                 </div>
               </div>
@@ -1045,15 +1096,15 @@ function Footer() {
               <img src={logoImage} alt="Logo" className="w-12 h-12 object-contain" />
               <div>
                 <div className="font-display text-xl text-white">Bomb Rolls & Bowls</div>
-                <div className="font-body text-xs text-white/50">Est. 2024 · Pune, India</div>
+                <div className="font-body text-xs text-white/50">Est. 2024 · Ambernath, Thane</div>
               </div>
             </div>
             <p className="font-body text-sm text-white/60 leading-relaxed max-w-xs">
-              Where every bite is a flavor bomb waiting to detonate! Crafted with the boldest spices, served with love.
+              Where every bite is a flavor bomb waiting to detonate! Rolls, Bowls, Salads & Paninis crafted with the boldest spices, served with love from Ambernath, Thane.
             </p>
             <div className="flex gap-3 mt-5">
               {[
-                { icon: <SiInstagram />, href: "#" },
+                { icon: <SiInstagram />, href: BUSINESS.instagram },
                 { icon: <SiFacebook />, href: "#" },
                 { icon: <SiYoutube />, href: "#" },
               ].map((s, i) => (
@@ -1096,29 +1147,166 @@ function Footer() {
             <h4 className="font-display text-lg text-secondary mb-4">Order Now</h4>
             <div className="space-y-3">
               <div className="font-body text-sm text-white/60">
-                <span className="text-white font-semibold">Hours:</span> Mon–Sun · 11 AM – 10 PM
+                <span className="text-white font-semibold">Hours:</span> {BUSINESS.hours}
               </div>
-              <div className="flex gap-2">
-                <a href="#" className="flex items-center gap-1 px-3 py-2 bg-red-500 text-white font-bold text-xs rounded-lg border border-red-400 font-body">
+              <div className="font-body text-sm text-white/60">
+                <span className="text-white font-semibold">📞</span> {BUSINESS.phoneDisplay}
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <a href={BUSINESS.zomato} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 px-3 py-2 bg-red-500 text-white font-bold text-xs rounded-lg border border-red-400 font-body">
                   <SiZomato /> Zomato
                 </a>
-                <a href="#" className="flex items-center gap-1 px-3 py-2 bg-orange-500 text-white font-bold text-xs rounded-lg border border-orange-400 font-body">
+                <a href={BUSINESS.swiggy} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 px-3 py-2 bg-orange-500 text-white font-bold text-xs rounded-lg border border-orange-400 font-body">
                   <SiSwiggy /> Swiggy
+                </a>
+                <a href={BUSINESS.instagram} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 px-3 py-2 bg-gradient-to-br from-pink-500 to-orange-500 text-white font-bold text-xs rounded-lg font-body">
+                  <SiInstagram /> Instagram
                 </a>
               </div>
               <p className="font-body text-xs text-white/40 mt-3">
-                📍 Pune, Maharashtra, India
+                📍 Ambernath, Thane, Maharashtra
               </p>
             </div>
           </div>
         </div>
 
         <div className="mt-10 pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-3 text-white/40 text-xs font-body">
-          <span>© 2024 Bomb Rolls & Bowls. All rights reserved.</span>
-          <span>Made with 💣 in Pune, India</span>
+          <span>© 2024 Bomb Rolls & Bowls. All rights reserved. · Ambernath, Thane</span>
+          <span>Made with 💣 in Ambernath · {BUSINESS.phoneDisplay}</span>
         </div>
       </div>
     </footer>
+  );
+}
+
+// ─── MENU PHOTOS SECTION ──────────────────────────────────────────────
+function MenuPhotosSection() {
+  return (
+    <section className="py-20 bg-white relative overflow-hidden">
+      <div className="absolute inset-0 opacity-[0.03] bg-checkered" />
+      <div className="max-w-7xl mx-auto px-4 relative">
+        <FadeUp className="text-center mb-14">
+          <div className="inline-block bg-secondary text-black font-display text-sm px-4 py-1 rounded-full border-2 border-black shadow-pop-sm mb-4">
+            ✦ Real Menu Cards ✦
+          </div>
+          <h2 className="font-display text-4xl md:text-6xl text-foreground drop-shadow-[3px_3px_0px_rgba(0,0,0,0.1)]">
+            Our Full Menu
+          </h2>
+          <p className="font-body text-muted-foreground mt-4 max-w-xl mx-auto text-lg">
+            Rolls, Bowls, Salads & Paninis — something for everyone. Veg & Non-Veg options available.
+          </p>
+        </FadeUp>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          {[
+            {
+              img: menuVegImg,
+              label: "🌿 Veg Menu",
+              badge: "Pure Veg Options",
+              badgeColor: "bg-green-500",
+              desc: "Haryali Rolls, Makhmali Paneer, Veg Bowls, Paninis & more",
+            },
+            {
+              img: menuNonVegImg,
+              label: "🍗 Non-Veg Menu",
+              badge: "Chicken & More",
+              badgeColor: "bg-primary",
+              desc: "Angara Chicken, Malai Tikka, Chicken Bowls & more",
+            },
+          ].map((item, i) => (
+            <FadeUp key={i} delay={i * 0.15}>
+              <motion.div
+                whileHover={{ y: -6, boxShadow: "8px 8px 0px 0px black" }}
+                className="rounded-2xl border-2 border-black shadow-pop overflow-hidden bg-muted group"
+              >
+                <div className="relative overflow-hidden">
+                  <img
+                    src={item.img}
+                    alt={item.label}
+                    className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute top-4 left-4">
+                    <span className={`${item.badgeColor} text-white font-display text-xs px-3 py-1 rounded-full border-2 border-black shadow-pop-sm`}>
+                      {item.badge}
+                    </span>
+                  </div>
+                </div>
+                <div className="p-5 flex items-center justify-between">
+                  <div>
+                    <div className="font-display text-xl text-foreground">{item.label}</div>
+                    <div className="font-body text-sm text-muted-foreground mt-1">{item.desc}</div>
+                  </div>
+                  <motion.a
+                    href="#menu"
+                    onClick={e => { e.preventDefault(); document.querySelector("#menu")?.scrollIntoView({ behavior: "smooth" }); }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex items-center gap-1 px-4 py-2 bg-secondary text-black font-bold text-sm rounded-xl border-2 border-black shadow-pop-sm font-body whitespace-nowrap"
+                  >
+                    View <ArrowRight className="w-3 h-3" />
+                  </motion.a>
+                </div>
+              </motion.div>
+            </FadeUp>
+          ))}
+        </div>
+
+        {/* Order CTA */}
+        <FadeUp className="text-center mt-10">
+          <div className="inline-flex flex-wrap items-center justify-center gap-3">
+            <motion.a
+              href={BUSINESS.zomato}
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ y: -3, boxShadow: "5px 5px 0px 0px black" }}
+              className="flex items-center gap-2 px-6 py-3 bg-red-500 text-white font-bold rounded-xl border-2 border-black shadow-pop-sm font-body"
+            >
+              <SiZomato className="text-lg" /> Order on Zomato
+            </motion.a>
+            <motion.a
+              href={BUSINESS.swiggy}
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ y: -3, boxShadow: "5px 5px 0px 0px black" }}
+              className="flex items-center gap-2 px-6 py-3 bg-orange-500 text-white font-bold rounded-xl border-2 border-black shadow-pop-sm font-body"
+            >
+              <SiSwiggy className="text-lg" /> Order on Swiggy
+            </motion.a>
+            <motion.a
+              href={BUSINESS.whatsapp}
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ y: -3, boxShadow: "5px 5px 0px 0px black" }}
+              className="flex items-center gap-2 px-6 py-3 bg-green-600 text-white font-bold rounded-xl border-2 border-black shadow-pop-sm font-body"
+            >
+              💬 WhatsApp Order
+            </motion.a>
+          </div>
+        </FadeUp>
+      </div>
+    </section>
+  );
+}
+
+// ─── WHATSAPP FLOATING BUTTON ─────────────────────────────────────────
+function WhatsAppButton() {
+  return (
+    <motion.a
+      href={BUSINESS.whatsapp}
+      target="_blank"
+      rel="noopener noreferrer"
+      initial={{ scale: 0, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ delay: 2, type: "spring", stiffness: 200 }}
+      whileHover={{ scale: 1.1, y: -3, boxShadow: "5px 5px 0px 0px black" }}
+      whileTap={{ scale: 0.95 }}
+      className="fixed bottom-24 right-6 z-50 w-14 h-14 bg-green-500 text-white rounded-2xl border-2 border-black shadow-pop flex items-center justify-center text-2xl"
+      data-testid="button-whatsapp-float"
+      aria-label="Chat on WhatsApp"
+      title="Chat on WhatsApp"
+    >
+      💬
+    </motion.a>
   );
 }
 
@@ -1162,10 +1350,12 @@ export default function LandingPage() {
       <StatsBar />
       <WhyChooseUs />
       <MenuShowcase />
+      <MenuPhotosSection />
       <Testimonials />
       <SocialMediaSection />
       <ContactSection />
       <Footer />
+      <WhatsAppButton />
       <ScrollToTop />
     </div>
   );
