@@ -68,8 +68,11 @@
 }
 
 /* ── Retro Pop Shadows ─────────────────────────────── */
-.shadow-pop   { box-shadow: 4px 4px 0px 0px rgba(0,0,0,1); }
-.shadow-pop-sm { box-shadow: 2px 2px 0px 0px rgba(0,0,0,1); }
+.shadow-pop   { box-shadow: 4px 4px 0px 0px rgba(0,0,0,1); transition: box-shadow 0.22s ease, transform 0.22s ease; }
+.shadow-pop-sm { box-shadow: 2px 2px 0px 0px rgba(0,0,0,1); transition: box-shadow 0.22s ease; }
+.hover-shadow-lg:hover { box-shadow: 8px 8px 0px 0px black; }
+.hover-shadow-md:hover { box-shadow: 6px 6px 0px 0px black; }
+.hover-shadow-sm:hover { box-shadow: 5px 5px 0px 0px black; }
 .shadow-pop-hover:hover {
   transform: translate(-2px, -2px);
   box-shadow: 6px 6px 0px 0px rgba(0,0,0,1);

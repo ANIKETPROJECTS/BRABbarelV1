@@ -124,8 +124,8 @@ function TiltCard({ children, className = "" }: { children: React.ReactNode; cla
   const y = useMotionValue(0);
   const rotateX = useTransform(y, [-0.5, 0.5], [10, -10]);
   const rotateY = useTransform(x, [-0.5, 0.5], [-10, 10]);
-  const springRotX = useSpring(rotateX, { stiffness: 200, damping: 20 });
-  const springRotY = useSpring(rotateY, { stiffness: 200, damping: 20 });
+  const springRotX = useSpring(rotateX, { stiffness: 80, damping: 18, restDelta: 0.001 });
+  const springRotY = useSpring(rotateY, { stiffness: 80, damping: 18, restDelta: 0.001 });
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     if (!ref.current) return;
@@ -195,7 +195,7 @@ function FloatingSticker({ imgSrc, style, delay = 0, amplitude = 18, size = "w-1
     <motion.div
       className="absolute select-none pointer-events-none z-10 hidden md:block"
       style={style}
-      animate={{ y: [0, -amplitude, 0], rotate: [-6, 6, -6], scale: [1, 1.1, 1] }}
+      animate={{ y: [0, -amplitude, 0], rotate: [-4, 4, -4] }}
       transition={{ duration: 3.5 + delay * 0.4, repeat: Infinity, delay, ease: "easeInOut" }}
     >
       <img src={imgSrc} className={`${size} object-contain drop-shadow-2xl`} alt="" />
@@ -317,7 +317,7 @@ function Navbar() {
           </motion.a>
           <Link href="/menu">
             <motion.button
-              whileHover={{ y: -2, boxShadow: "5px 5px 0px 0px black" }}
+              whileHover={{ y: -2 }}
               whileTap={{ y: 2, boxShadow: "2px 2px 0px 0px black" }}
               className="px-5 py-2.5 bg-primary text-white font-display text-sm rounded-xl border-2 border-black shadow-pop-sm"
               data-testid="button-digital-menu"
@@ -435,7 +435,7 @@ function HeroSection() {
       </div>
 
       {/* Floating particles over hero */}
-      <FloatingParticles count={22} color="rgba(255,215,0,0.22)" />
+      <FloatingParticles count={10} color="rgba(255,215,0,0.22)" />
 
       {/* Checkered borders */}
       <div className="absolute top-0 left-0 right-0 h-4 bg-checkered z-[3]" />
@@ -452,7 +452,7 @@ function HeroSection() {
           initial={{ opacity: 0, scale: 0.4, rotate: -15 }}
           animate={{ opacity: 1, scale: 1, rotate: 0 }}
           transition={{ duration: 0.8, type: "spring", stiffness: 160, damping: 12 }}
-          className="mb-3 sm:mb-6"
+          className="mb-3 sm:mb-6 mt-6 sm:mt-10"
         >
           <motion.img
             src={logoImage}
@@ -594,7 +594,7 @@ function StatsBar() {
     <section className="bg-primary border-y-4 border-black py-10 overflow-hidden relative">
       <div className="absolute inset-y-0 right-0 w-40 bg-checkered opacity-10" />
       <div className="absolute inset-y-0 left-0 w-40 bg-checkered opacity-10" />
-      <FloatingParticles count={12} color="rgba(0,0,0,0.12)" />
+      <FloatingParticles count={6} color="rgba(0,0,0,0.12)" />
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 relative z-10">
         {stats.map((s) => (
           <StatItem key={s.label} value={s.value} label={s.label} delay={s.delay} imgUrl={s.img3d} />
@@ -981,7 +981,7 @@ function MenuItemModal({ item, onClose }: { item: MenuItem | null; onClose: () =
                     href={BUSINESS.zomato}
                     target="_blank"
                     rel="noopener noreferrer"
-                    whileHover={{ y: -3, boxShadow: "4px 4px 0px 0px black" }}
+                    whileHover={{ y: -3 }}
                     whileTap={{ y: 1 }}
                     className="flex flex-col items-center gap-1 p-3 bg-red-500 text-white rounded-xl border-2 border-black shadow-pop-sm font-body font-bold text-sm"
                   >
@@ -991,7 +991,7 @@ function MenuItemModal({ item, onClose }: { item: MenuItem | null; onClose: () =
                     href={BUSINESS.swiggy}
                     target="_blank"
                     rel="noopener noreferrer"
-                    whileHover={{ y: -3, boxShadow: "4px 4px 0px 0px black" }}
+                    whileHover={{ y: -3 }}
                     whileTap={{ y: 1 }}
                     className="flex flex-col items-center gap-1 p-3 bg-orange-500 text-white rounded-xl border-2 border-black shadow-pop-sm font-body font-bold text-sm"
                   >
@@ -1001,7 +1001,7 @@ function MenuItemModal({ item, onClose }: { item: MenuItem | null; onClose: () =
                     href={BUSINESS.whatsapp}
                     target="_blank"
                     rel="noopener noreferrer"
-                    whileHover={{ y: -3, boxShadow: "4px 4px 0px 0px black" }}
+                    whileHover={{ y: -3 }}
                     whileTap={{ y: 1 }}
                     className="flex flex-col items-center gap-1 p-3 bg-green-500 text-white rounded-xl border-2 border-black shadow-pop-sm font-body font-bold text-sm"
                   >
@@ -1362,7 +1362,7 @@ function OrderOnlineSection() {
     <section className="py-12 md:py-20 bg-secondary relative overflow-hidden">
       <div className="absolute top-0 left-0 right-0 h-4 bg-checkered border-b-4 border-black" />
       <div className="absolute bottom-0 left-0 right-0 h-4 bg-checkered border-t-4 border-black" />
-      <FloatingParticles count={16} color="rgba(0,0,0,0.08)" />
+      <FloatingParticles count={8} color="rgba(0,0,0,0.08)" />
 
       <div className="max-w-7xl mx-auto px-4 pt-4 pb-4 relative z-10">
         <FadeUp className="text-center mb-8 md:mb-14">
@@ -1658,7 +1658,7 @@ function SocialMediaSection() {
               <motion.a
                 key={s.label}
                 href={s.href}
-                whileHover={{ y: -3, boxShadow: "4px 4px 0px 0px black" }}
+                whileHover={{ y: -3 }}
                 whileTap={{ y: 1 }}
                 className={`flex items-center gap-2 px-4 py-2 ${s.color} text-white font-body font-semibold text-sm rounded-xl border-2 border-black shadow-pop-sm`}
               >
