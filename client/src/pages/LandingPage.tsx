@@ -17,6 +17,7 @@ import { Link } from "wouter";
 import logoImage from "@assets/logo_(1)_1769147400424.png";
 import menuVegImg from "@assets/WhatsApp_Image_2026-01-22_at_11.36.27_PM_1769147022848.jpeg";
 import menuNonVegImg from "@assets/WhatsApp_Image_2026-01-22_at_11.36.28_PM_1769147032153.jpeg";
+import contactBg from "@assets/contact_bg.png";
 
 const F3D = "https://cdn.jsdelivr.net/gh/microsoft/fluentui-emoji@main/assets/";
 const e3d = (name: string, file: string) => `${F3D}${encodeURIComponent(name)}/3D/${file}_3d.png`;
@@ -1740,21 +1741,24 @@ function ContactSection() {
   };
 
   return (
-    <section id="contact" className="py-12 md:py-20 bg-white relative overflow-hidden">
-      <div className="absolute top-0 left-0 right-0 h-4 bg-checkered border-b-4 border-black" />
-      <div className="absolute bottom-0 left-0 right-0 h-4 bg-checkered border-t-4 border-black" />
-      <div className="absolute top-0 left-0 w-40 h-40 bg-secondary opacity-20 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 right-0 w-60 h-60 bg-primary opacity-10 rounded-full blur-3xl" />
+    <section id="contact" className="py-12 md:py-20 relative overflow-hidden">
+      {/* Background image with dark overlay */}
+      <div className="absolute inset-0 z-0">
+        <img src={contactBg} alt="" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-black/70" />
+      </div>
+      <div className="absolute top-0 left-0 right-0 h-4 bg-checkered border-b-4 border-black z-10" />
+      <div className="absolute bottom-0 left-0 right-0 h-4 bg-checkered border-t-4 border-black z-10" />
 
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-4 relative z-10">
         <FadeUp className="text-center mb-8 md:mb-14">
           <div className="inline-block bg-secondary text-black font-display text-sm px-4 py-1 rounded-full border-2 border-black shadow-pop-sm mb-4">
             ✦ Get In Touch ✦
           </div>
-          <h2 className="font-display text-4xl md:text-6xl text-foreground">
+          <h2 className="font-display text-4xl md:text-6xl text-white drop-shadow-[3px_3px_0px_rgba(0,0,0,0.8)]">
             Contact Us
           </h2>
-          <p className="font-body text-muted-foreground mt-4 max-w-xl mx-auto text-lg">
+          <p className="font-body text-white/80 mt-4 max-w-xl mx-auto text-lg">
             Have a question or want to place a bulk order? We'd love to hear from you!
           </p>
         </FadeUp>
@@ -1792,39 +1796,39 @@ function ContactSection() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
-                  className="flex items-start gap-4 p-5 bg-muted rounded-2xl border-2 border-black shadow-pop-sm hover:shadow-pop transition-shadow cursor-pointer"
+                  className="flex items-start gap-4 p-5 bg-white/10 backdrop-blur-sm rounded-2xl border-2 border-white/30 shadow-pop-sm hover:bg-white/20 transition-colors cursor-pointer"
                   onClick={() => item.href && window.open(item.href, "_blank")}
                 >
                   <div className="w-12 h-12 bg-secondary rounded-xl border-2 border-black flex items-center justify-center flex-shrink-0 shadow-pop-sm">
                     {item.icon}
                   </div>
                   <div>
-                    <div className="font-display text-sm text-primary uppercase tracking-wider">{item.label}</div>
-                    <div className="font-body font-semibold text-foreground mt-0.5">{item.value}</div>
-                    <div className="font-body text-xs text-muted-foreground mt-0.5">{item.sub}</div>
+                    <div className="font-display text-sm text-secondary uppercase tracking-wider">{item.label}</div>
+                    <div className="font-body font-semibold text-white mt-0.5">{item.value}</div>
+                    <div className="font-body text-xs text-white/60 mt-0.5">{item.sub}</div>
                   </div>
                 </motion.div>
               ))}
 
               {/* Google Rating Badge */}
-              <div className="flex items-center gap-3 p-4 bg-white rounded-2xl border-2 border-black shadow-pop-sm">
-                <div className="text-3xl font-display font-bold text-foreground">{BUSINESS.rating}</div>
+              <div className="flex items-center gap-3 p-4 bg-white/10 backdrop-blur-sm rounded-2xl border-2 border-white/30 shadow-pop-sm">
+                <div className="text-3xl font-display font-bold text-white">{BUSINESS.rating}</div>
                 <div>
                   <div className="flex gap-0.5">
                     {[1,2,3,4,5].map(i => (
                       <Star key={i} className={`w-4 h-4 ${i <= 4 ? "fill-secondary text-secondary" : "fill-secondary/40 text-secondary/40"}`} />
                     ))}
                   </div>
-                  <div className="font-body text-xs text-muted-foreground mt-0.5">{BUSINESS.ratingCount}+ Google Reviews</div>
+                  <div className="font-body text-xs text-white/60 mt-0.5">{BUSINESS.ratingCount}+ Google Reviews</div>
                 </div>
                 <div className="ml-auto">
-                  <div className="w-10 h-10 bg-white rounded-full border-2 border-black flex items-center justify-center text-lg">⭐</div>
+                  <div className="w-10 h-10 bg-white/20 rounded-full border-2 border-white/30 flex items-center justify-center text-lg">⭐</div>
                 </div>
               </div>
 
               {/* Zomato / Swiggy */}
               <div className="pt-1">
-                <p className="font-display text-lg text-black mb-3">Order Online 🛵</p>
+                <p className="font-display text-lg text-white mb-3">Order Online 🛵</p>
                 <div className="flex flex-wrap gap-3">
                   <motion.a
                     href={BUSINESS.zomato}
@@ -1862,44 +1866,44 @@ function ContactSection() {
           <FadeUp delay={0.2}>
             <form
               onSubmit={handleSubmit}
-              className="bg-muted rounded-2xl border-2 border-black shadow-pop p-5 sm:p-8 space-y-5"
+              className="bg-white/10 backdrop-blur-md rounded-2xl border-2 border-white/30 shadow-pop p-5 sm:p-8 space-y-5"
             >
-              <h3 className="font-display text-2xl text-black">Send a Message 💬</h3>
+              <h3 className="font-display text-2xl text-white">Send a Message 💬</h3>
 
               <div>
-                <label className="block font-body text-sm font-semibold text-foreground mb-1">Your Name</label>
+                <label className="block font-body text-sm font-semibold text-white mb-1">Your Name</label>
                 <input
                   type="text"
                   required
                   value={formState.name}
                   onChange={e => setFormState(s => ({ ...s, name: e.target.value }))}
                   placeholder="e.g. Priya Sharma"
-                  className="w-full px-4 py-3 bg-white border-2 border-black rounded-xl font-body text-sm focus:outline-none focus:border-primary shadow-pop-sm"
+                  className="w-full px-4 py-3 bg-white/90 border-2 border-white/40 rounded-xl font-body text-sm focus:outline-none focus:border-secondary shadow-pop-sm"
                   data-testid="input-contact-name"
                 />
               </div>
 
               <div>
-                <label className="block font-body text-sm font-semibold text-foreground mb-1">Phone Number</label>
+                <label className="block font-body text-sm font-semibold text-white mb-1">Phone Number</label>
                 <input
                   type="tel"
                   value={formState.phone}
                   onChange={e => setFormState(s => ({ ...s, phone: e.target.value }))}
                   placeholder="+91 98765 43210"
-                  className="w-full px-4 py-3 bg-white border-2 border-black rounded-xl font-body text-sm focus:outline-none focus:border-primary shadow-pop-sm"
+                  className="w-full px-4 py-3 bg-white/90 border-2 border-white/40 rounded-xl font-body text-sm focus:outline-none focus:border-secondary shadow-pop-sm"
                   data-testid="input-contact-phone"
                 />
               </div>
 
               <div>
-                <label className="block font-body text-sm font-semibold text-foreground mb-1">Message</label>
+                <label className="block font-body text-sm font-semibold text-white mb-1">Message</label>
                 <textarea
                   required
                   rows={4}
                   value={formState.message}
                   onChange={e => setFormState(s => ({ ...s, message: e.target.value }))}
                   placeholder="Tell us what you'd like..."
-                  className="w-full px-4 py-3 bg-white border-2 border-black rounded-xl font-body text-sm focus:outline-none focus:border-primary shadow-pop-sm resize-none"
+                  className="w-full px-4 py-3 bg-white/90 border-2 border-white/40 rounded-xl font-body text-sm focus:outline-none focus:border-secondary shadow-pop-sm resize-none"
                   data-testid="textarea-contact-message"
                 />
               </div>
