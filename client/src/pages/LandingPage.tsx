@@ -1434,14 +1434,82 @@ const testimonials = [
   },
 ];
 
+function TestimonialCard({ t, position }: { t: typeof testimonials[0]; position: "left" | "center" | "right" }) {
+  const isCenter = position === "center";
+  const isLeft   = position === "left";
+
+  const variants = {
+    left:   { x: "-42%", scale: 0.82, rotate: -6,  zIndex: 1, opacity: 0.72, filter: "brightness(0.7)" },
+    center: { x: "0%",   scale: 1,    rotate: 0,   zIndex: 3, opacity: 1,    filter: "brightness(1)"   },
+    right:  { x: "42%",  scale: 0.82, rotate:  6,  zIndex: 1, opacity: 0.72, filter: "brightness(0.7)" },
+  };
+
+  return (
+    <motion.div
+      layout
+      key={t.name}
+      animate={variants[position]}
+      transition={{ type: "spring", stiffness: 120, damping: 22 }}
+      className="absolute w-full max-w-md"
+      style={{ transformOrigin: isLeft ? "right center" : isLeft === false && !isCenter ? "left center" : "center" }}
+    >
+      <div
+        className="rounded-2xl border-2 p-5 sm:p-7 relative overflow-hidden select-none"
+        style={{
+          background: isCenter ? "rgba(255,255,255,0.18)" : "rgba(255,255,255,0.09)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          borderColor: isCenter ? "rgba(255,215,0,0.6)" : "rgba(255,255,255,0.15)",
+          boxShadow: isCenter
+            ? "0 12px 48px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.25)"
+            : "0 4px 20px rgba(0,0,0,0.25)",
+        }}
+      >
+        <div className="absolute top-3 right-5 font-display text-7xl text-white/10 leading-none select-none pointer-events-none">"</div>
+
+        <div className="flex flex-wrap items-center gap-3 mb-4">
+          <img
+            src={t.avatar}
+            alt={t.name}
+            className="w-14 h-14 rounded-full flex-shrink-0"
+            style={{ border: "3px solid #FFD700" }}
+          />
+          <div className="min-w-0">
+            <div className="font-display text-lg text-white truncate">{t.name}</div>
+            <div className="flex gap-0.5 mt-0.5">
+              {Array.from({ length: t.rating }).map((_, i) => (
+                <Star key={i} className="w-3.5 h-3.5 fill-secondary text-secondary" />
+              ))}
+            </div>
+          </div>
+          <span className="ml-auto bg-secondary text-black font-display text-xs px-3 py-1 rounded-full border-2 border-black shadow-pop-sm whitespace-nowrap flex-shrink-0">
+            {t.tag}
+          </span>
+        </div>
+
+        <p className="font-body text-white/90 text-base leading-relaxed italic line-clamp-4 relative z-10">
+          "{t.text}"
+        </p>
+      </div>
+    </motion.div>
+  );
+}
+
 function Testimonials() {
   const [current, setCurrent] = useState(0);
-  const [dir, setDir] = useState(1);
+  const n = testimonials.length;
 
-  const navigate = (next: number) => {
-    setDir(next > current ? 1 : -1);
-    setCurrent((next + testimonials.length) % testimonials.length);
-  };
+  const navigate = useCallback((next: number) => {
+    setCurrent((next + n) % n);
+  }, [n]);
+
+  useEffect(() => {
+    const id = setInterval(() => navigate(current + 1), 3500);
+    return () => clearInterval(id);
+  }, [current, navigate]);
+
+  const prev = (current - 1 + n) % n;
+  const next = (current + 1) % n;
 
   return (
     <section id="testimonials" className="py-12 md:py-20 bg-primary relative overflow-hidden">
@@ -1449,8 +1517,8 @@ function Testimonials() {
       <div className="absolute bottom-0 left-0 right-0 h-4 bg-checkered border-t-4 border-black" />
       <div className="absolute inset-0 bg-checkered opacity-[0.04]" />
 
-      <div className="max-w-4xl mx-auto px-4 relative">
-        <FadeUp className="text-center mb-8 md:mb-14">
+      <div className="max-w-3xl mx-auto px-4 relative">
+        <FadeUp className="text-center mb-10 md:mb-16">
           <div className="inline-block bg-secondary text-black font-display text-sm px-4 py-1 rounded-full border-2 border-black shadow-pop-sm mb-4">
             ✦ Happy Customers ✦
           </div>
@@ -1459,80 +1527,15 @@ function Testimonials() {
           </h2>
         </FadeUp>
 
-        <div className="relative min-h-[400px] sm:min-h-[300px] flex items-center justify-center overflow-hidden">
-          <AnimatePresence mode="wait" custom={dir}>
-            <motion.div
-              key={current}
-              custom={dir}
-              initial={{ x: dir * 400, opacity: 0, scale: 0.9 }}
-              animate={{ x: 0, opacity: 1, scale: 1 }}
-              exit={{ x: dir * -400, opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              className="w-full"
-            >
-              <div
-                className="rounded-2xl border-2 border-white/20 p-5 sm:p-8 mx-auto max-w-2xl relative overflow-hidden"
-                style={{
-                  background: "rgba(255,255,255,0.12)",
-                  backdropFilter: "blur(20px)",
-                  WebkitBackdropFilter: "blur(20px)",
-                  boxShadow: "0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2)"
-                }}
-              >
-                {/* Quote decoration */}
-                <div className="absolute top-4 right-6 font-display text-8xl text-white/10 leading-none select-none">"</div>
-
-                <div className="flex flex-wrap items-center gap-3 mb-4 sm:mb-5">
-                  <motion.img
-                    src={testimonials[current].avatar}
-                    alt={testimonials[current].name}
-                    className="w-16 h-16 rounded-full border-3 border-secondary bg-secondary"
-                    style={{ border: "3px solid #FFD700" }}
-                    initial={{ scale: 0, rotate: -20 }}
-                    animate={{ scale: 1, rotate: 0 }}
-                    transition={{ delay: 0.15, type: "spring", stiffness: 300 }}
-                  />
-                  <div>
-                    <div className="font-display text-xl text-white">{testimonials[current].name}</div>
-                    <div className="flex gap-1 mt-1">
-                      {Array.from({ length: testimonials[current].rating }).map((_, i) => (
-                        <motion.div
-                          key={i}
-                          initial={{ scale: 0, rotate: -30 }}
-                          animate={{ scale: 1, rotate: 0 }}
-                          transition={{ delay: 0.2 + i * 0.07, type: "spring", stiffness: 400 }}
-                        >
-                          <Star className="w-4 h-4 fill-secondary text-secondary" />
-                        </motion.div>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="ml-auto">
-                    <motion.span
-                      className="bg-secondary text-black font-display text-xs px-3 py-1.5 rounded-full border-2 border-black shadow-pop-sm block"
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ delay: 0.3, type: "spring" }}
-                    >
-                      {testimonials[current].tag}
-                    </motion.span>
-                  </div>
-                </div>
-                <motion.p
-                  className="font-body text-white/90 text-lg leading-relaxed italic relative z-10"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
-                >
-                  "{testimonials[current].text}"
-                </motion.p>
-              </div>
-            </motion.div>
-          </AnimatePresence>
+        {/* Stacked 3-card stage */}
+        <div className="relative flex items-center justify-center" style={{ height: 320 }}>
+          <TestimonialCard t={testimonials[prev]}    position="left"   />
+          <TestimonialCard t={testimonials[next]}    position="right"  />
+          <TestimonialCard t={testimonials[current]} position="center" />
         </div>
 
         {/* Controls */}
-        <div className="flex items-center justify-center gap-4 mt-10">
+        <div className="flex items-center justify-center gap-4 mt-14">
           <motion.button
             whileHover={{ scale: 1.15, y: -2 }}
             whileTap={{ scale: 0.9 }}
@@ -1542,16 +1545,21 @@ function Testimonials() {
           >
             <ChevronLeft className="w-5 h-5" />
           </motion.button>
+
           <div className="flex gap-3">
             {testimonials.map((_, i) => (
               <motion.button
                 key={i}
                 onClick={() => navigate(i)}
-                animate={{ scale: i === current ? 1.4 : 1, backgroundColor: i === current ? "#FFD700" : "rgba(255,255,255,0.35)" }}
+                animate={{
+                  scale: i === current ? 1.4 : 1,
+                  backgroundColor: i === current ? "#FFD700" : "rgba(255,255,255,0.35)"
+                }}
                 className="w-3 h-3 rounded-full border-2 border-white/40"
               />
             ))}
           </div>
+
           <motion.button
             whileHover={{ scale: 1.15, y: -2 }}
             whileTap={{ scale: 0.9 }}
