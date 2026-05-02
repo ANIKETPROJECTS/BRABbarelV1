@@ -1626,8 +1626,57 @@ const REELS = [
   { shortcode: "DO8kLXjiJ8T", url: "https://www.instagram.com/reel/DO8kLXjiJ8T/" },
 ];
 
-function SocialMediaSection() {
+function ReelCard({ shortcode, delay }: { shortcode: string; delay: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [src, setSrc] = useState("");
 
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setSrc(`https://www.instagram.com/reel/${shortcode}/embed/`); obs.disconnect(); } },
+      { threshold: 0.2 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [shortcode]);
+
+  return (
+    <FadeIn delay={delay}>
+      <motion.div
+        ref={ref}
+        whileHover={{ y: -6, scale: 1.015 }}
+        transition={{ type: "spring", stiffness: 80, damping: 18 }}
+        className="rounded-2xl border-2 border-black shadow-pop overflow-hidden bg-black relative"
+      >
+        {/* Pure-video crop — hides Instagram profile header & footer */}
+        <div className="reel-crop-wrap">
+          {src ? (
+            <iframe
+              src={src}
+              className="reel-crop-iframe"
+              allowFullScreen
+              allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+              title={`Reel ${shortcode}`}
+            />
+          ) : (
+            /* placeholder until in-view */
+            <div className="absolute inset-0 bg-black/80 flex items-center justify-center">
+              <div className="w-12 h-12 border-4 border-white/30 border-t-white rounded-full animate-spin" />
+            </div>
+          )}
+        </div>
+        {/* Floating Instagram badge — bottom left */}
+        <div className="absolute bottom-3 left-3 flex items-center gap-1.5 bg-black/60 backdrop-blur-sm px-2.5 py-1 rounded-full pointer-events-none">
+          <SiInstagram className="text-white w-3 h-3" />
+          <span className="text-white font-body text-[10px] font-semibold">{BUSINESS.instagramHandle}</span>
+        </div>
+      </motion.div>
+    </FadeIn>
+  );
+}
+
+function SocialMediaSection() {
   return (
     <section id="social" className="py-12 md:py-20 bg-muted relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4">
@@ -1663,34 +1712,10 @@ function SocialMediaSection() {
           </div>
         </FadeUp>
 
-        {/* Instagram Reels grid — direct iframe embeds */}
+        {/* Instagram Reels — cropped to pure video, lazy-loaded on scroll */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 items-start">
           {REELS.map((reel, i) => (
-            <FadeIn key={reel.shortcode} delay={i * 0.08}>
-              <motion.div
-                whileHover={{ y: -6, scale: 1.015 }}
-                transition={{ type: "spring", stiffness: 80, damping: 18 }}
-                className="rounded-2xl border-2 border-black shadow-pop overflow-hidden bg-black flex flex-col"
-              >
-                {/* Top badge */}
-                <div className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-pink-500 via-fuchsia-500 to-orange-500 flex-shrink-0">
-                  <SiInstagram className="text-white w-4 h-4 flex-shrink-0" />
-                  <span className="text-white font-body text-xs font-bold tracking-wide">Reel</span>
-                  <span className="ml-auto text-white/80 font-body text-[10px] truncate">{BUSINESS.instagramHandle}</span>
-                </div>
-                {/* 9:16 iframe — full video, no social chrome */}
-                <div className="relative w-full" style={{ paddingBottom: "177.78%" }}>
-                  <iframe
-                    src={`https://www.instagram.com/reel/${reel.shortcode}/embed/`}
-                    className="absolute inset-0 w-full h-full border-0"
-                    allowFullScreen
-                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                    loading="lazy"
-                    title={`Instagram Reel ${reel.shortcode}`}
-                  />
-                </div>
-              </motion.div>
-            </FadeIn>
+            <ReelCard key={reel.shortcode} shortcode={reel.shortcode} delay={i * 0.08} />
           ))}
         </div>
 

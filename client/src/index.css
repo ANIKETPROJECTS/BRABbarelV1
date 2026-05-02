@@ -210,18 +210,25 @@
 }
 .card-lift:hover { transform: translateY(-8px); }
 
-/* ── Instagram Reel embeds ────────────────────────── */
-.ig-reel-wrap {
+/* ── Instagram Reel crop — hides profile header & footer ─── */
+.reel-crop-wrap {
+  position: relative;
   overflow: hidden;
-  background: #fff;
+  width: 100%;
+  padding-bottom: 177.78%; /* 9:16 */
+  background: #000;
 }
-.ig-reel-wrap .instagram-media {
-  min-width: unset !important;
-  max-width: 100% !important;
-  width: 100% !important;
-  margin: 0 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
+.reel-crop-iframe {
+  position: absolute;
+  /* push up to hide ~58px profile header */
+  top: -58px;
+  /* tiny extra width to hide 1px border artifacts */
+  left: -1px;
+  width: calc(100% + 2px);
+  /* extend height so the ~95px footer is below the overflow:hidden boundary */
+  height: calc(100% + 153px);
+  border: 0;
+  display: block;
 }
 
 /* ── NEW: Blob Morph (background decoration) ────────── */
