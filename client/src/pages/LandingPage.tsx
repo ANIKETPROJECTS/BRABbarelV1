@@ -476,7 +476,7 @@ function HeroSection() {
             <motion.button
               whileHover={{ y: -4, scale: 1.05, boxShadow: "8px 8px 0px 0px black" }}
               whileTap={{ y: 2, scale: 0.97, boxShadow: "2px 2px 0px 0px black" }}
-              className="px-8 py-4 bg-secondary text-black font-display text-xl font-bold rounded-xl border-2 border-black shadow-pop glow-cta"
+              className="px-6 sm:px-8 py-3 sm:py-4 bg-secondary text-black font-display text-lg sm:text-xl font-bold rounded-xl border-2 border-black shadow-pop glow-cta"
             >
               🍽️ Explore Menu
             </motion.button>
@@ -485,7 +485,7 @@ function HeroSection() {
             whileHover={{ y: -4, scale: 1.05, boxShadow: "8px 8px 0px 0px rgba(255,255,255,0.5)" }}
             whileTap={{ y: 2, scale: 0.97 }}
             onClick={() => document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" })}
-            className="px-8 py-4 bg-white/15 backdrop-blur-sm text-white font-display text-xl font-bold rounded-xl border-2 border-white/60 hover:bg-white/25 transition-all"
+            className="px-6 sm:px-8 py-3 sm:py-4 bg-white/15 backdrop-blur-sm text-white font-display text-lg sm:text-xl font-bold rounded-xl border-2 border-white/60 hover:bg-white/25 transition-all"
           >
             📍 Find Us
           </motion.button>
@@ -558,7 +558,7 @@ function StatsBar() {
       <div className="absolute inset-y-0 right-0 w-40 bg-checkered opacity-10" />
       <div className="absolute inset-y-0 left-0 w-40 bg-checkered opacity-10" />
       <FloatingParticles count={12} color="rgba(0,0,0,0.12)" />
-      <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 relative z-10">
         {stats.map((s) => (
           <StatItem key={s.label} value={s.value} label={s.label} delay={s.delay} icon={s.icon} />
         ))}
@@ -615,14 +615,14 @@ function WhyChooseUs() {
   ];
 
   return (
-    <section id="why-us" className="py-20 bg-secondary relative overflow-hidden">
+    <section id="why-us" className="py-12 md:py-20 bg-secondary relative overflow-hidden">
       {/* Decorative pattern */}
       <div className="absolute top-0 left-0 right-0 h-4 bg-checkered border-b-4 border-black" />
       <div className="absolute bottom-0 left-0 right-0 h-4 bg-checkered border-t-4 border-black" />
       <div className="absolute right-0 top-0 bottom-0 w-24 bg-checkered opacity-10" />
 
       <div className="max-w-7xl mx-auto px-4 pt-4 pb-4">
-        <FadeUp className="text-center mb-14">
+        <FadeUp className="text-center mb-8 md:mb-14">
           <div className="inline-block bg-primary text-white font-display text-sm px-4 py-1 rounded-full border-2 border-black shadow-pop-sm mb-4">
             ✦ Why We're Different ✦
           </div>
@@ -978,9 +978,9 @@ function MenuShowcase() {
 
   return (
     <>
-      <section id="menu" className="py-20 bg-background relative overflow-hidden">
+      <section id="menu" className="py-12 md:py-20 bg-background relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4">
-          <FadeUp className="text-center mb-14">
+          <FadeUp className="text-center mb-8 md:mb-14">
             <div className="inline-block bg-secondary text-black font-display text-sm px-4 py-1 rounded-full border-2 border-black shadow-pop-sm mb-4">
               ✦ Signature Dishes ✦
             </div>
@@ -1109,10 +1109,10 @@ function HowToOrder() {
   ];
 
   return (
-    <section className="py-20 bg-background relative overflow-hidden">
+    <section className="py-12 md:py-20 bg-background relative overflow-hidden">
       <div className="absolute right-0 top-0 bottom-0 w-20 bg-checkered opacity-[0.04]" />
       <div className="max-w-7xl mx-auto px-4">
-        <FadeUp className="text-center mb-14">
+        <FadeUp className="text-center mb-8 md:mb-14">
           <div className="inline-block bg-primary text-white font-display text-sm px-4 py-1 rounded-full border-2 border-black shadow-pop-sm mb-4">
             ✦ Simple As 1-2-3 ✦
           </div>
@@ -1148,7 +1148,7 @@ function HowToOrder() {
                   {s.step}
                 </div>
                 <h3 className="font-display text-xl text-black mb-2">{s.title}</h3>
-                <p className="font-body text-sm text-gray-600 leading-relaxed max-w-[200px] mx-auto">{s.desc}</p>
+                <p className="font-body text-sm text-gray-600 leading-relaxed max-w-xs mx-auto">{s.desc}</p>
               </div>
             </FadeIn>
           ))}
@@ -1190,13 +1190,13 @@ function OurStory() {
   ];
 
   return (
-    <section className="py-20 bg-white relative overflow-hidden">
+    <section className="py-12 md:py-20 bg-white relative overflow-hidden">
       <div className="absolute left-0 top-0 bottom-0 w-20 bg-checkered opacity-[0.04]" />
       <div className="absolute top-20 right-10 w-60 h-60 rounded-full bg-secondary/20 blur-3xl blob-morph" />
       <div className="absolute bottom-20 left-10 w-40 h-40 rounded-full bg-primary/10 blur-3xl blob-morph" />
 
       <div className="max-w-7xl mx-auto px-4 relative">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center">
           {/* Text side */}
           <FadeUp>
             <div className="inline-block bg-secondary text-black font-display text-sm px-4 py-1 rounded-full border-2 border-black shadow-pop-sm mb-5">
@@ -1308,13 +1308,13 @@ function OrderOnlineSection() {
   ];
 
   return (
-    <section className="py-20 bg-secondary relative overflow-hidden">
+    <section className="py-12 md:py-20 bg-secondary relative overflow-hidden">
       <div className="absolute top-0 left-0 right-0 h-4 bg-checkered border-b-4 border-black" />
       <div className="absolute bottom-0 left-0 right-0 h-4 bg-checkered border-t-4 border-black" />
       <FloatingParticles count={16} color="rgba(0,0,0,0.08)" />
 
       <div className="max-w-7xl mx-auto px-4 pt-4 pb-4 relative z-10">
-        <FadeUp className="text-center mb-14">
+        <FadeUp className="text-center mb-8 md:mb-14">
           <div className="inline-block bg-primary text-white font-display text-sm px-4 py-1 rounded-full border-2 border-black shadow-pop-sm mb-4">
             ✦ Order Anytime ✦
           </div>
@@ -1409,13 +1409,13 @@ function Testimonials() {
   };
 
   return (
-    <section id="testimonials" className="py-20 bg-primary relative overflow-hidden">
+    <section id="testimonials" className="py-12 md:py-20 bg-primary relative overflow-hidden">
       <div className="absolute top-0 left-0 right-0 h-4 bg-checkered border-b-4 border-black" />
       <div className="absolute bottom-0 left-0 right-0 h-4 bg-checkered border-t-4 border-black" />
       <div className="absolute inset-0 bg-checkered opacity-[0.04]" />
 
       <div className="max-w-4xl mx-auto px-4 relative">
-        <FadeUp className="text-center mb-14">
+        <FadeUp className="text-center mb-8 md:mb-14">
           <div className="inline-block bg-secondary text-black font-display text-sm px-4 py-1 rounded-full border-2 border-black shadow-pop-sm mb-4">
             ✦ Happy Customers ✦
           </div>
@@ -1424,7 +1424,7 @@ function Testimonials() {
           </h2>
         </FadeUp>
 
-        <div className="relative min-h-[300px] flex items-center justify-center overflow-hidden">
+        <div className="relative min-h-[400px] sm:min-h-[300px] flex items-center justify-center overflow-hidden">
           <AnimatePresence mode="wait" custom={dir}>
             <motion.div
               key={current}
@@ -1436,7 +1436,7 @@ function Testimonials() {
               className="w-full"
             >
               <div
-                className="rounded-2xl border-2 border-white/20 p-8 mx-auto max-w-2xl relative overflow-hidden"
+                className="rounded-2xl border-2 border-white/20 p-5 sm:p-8 mx-auto max-w-2xl relative overflow-hidden"
                 style={{
                   background: "rgba(255,255,255,0.12)",
                   backdropFilter: "blur(20px)",
@@ -1447,7 +1447,7 @@ function Testimonials() {
                 {/* Quote decoration */}
                 <div className="absolute top-4 right-6 font-display text-8xl text-white/10 leading-none select-none">"</div>
 
-                <div className="flex items-center gap-4 mb-5">
+                <div className="flex flex-wrap items-center gap-3 mb-4 sm:mb-5">
                   <motion.img
                     src={testimonials[current].avatar}
                     alt={testimonials[current].name}
@@ -1586,9 +1586,9 @@ const socialPosts = [
 
 function SocialMediaSection() {
   return (
-    <section id="social" className="py-20 bg-muted relative overflow-hidden">
+    <section id="social" className="py-12 md:py-20 bg-muted relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4">
-        <FadeUp className="text-center mb-14">
+        <FadeUp className="text-center mb-8 md:mb-14">
           <div className="inline-block bg-primary text-white font-display text-sm px-4 py-1 rounded-full border-2 border-black shadow-pop-sm mb-4">
             ✦ Follow The Flavor ✦
           </div>
@@ -1666,7 +1666,7 @@ function SocialMediaSection() {
             rel="noopener noreferrer"
             whileHover={{ y: -4, boxShadow: "8px 8px 0px 0px black" }}
             whileTap={{ y: 2 }}
-            className="flex flex-col sm:flex-row items-center justify-between gap-6 p-7 bg-gradient-to-r from-pink-500 via-purple-500 to-orange-500 rounded-2xl border-2 border-black shadow-pop cursor-pointer"
+            className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 sm:p-7 bg-gradient-to-r from-pink-500 via-purple-500 to-orange-500 rounded-2xl border-2 border-black shadow-pop cursor-pointer text-center sm:text-left"
             data-testid="link-instagram-follow"
           >
             <div className="flex items-center gap-4">
@@ -1706,14 +1706,14 @@ function ContactSection() {
   };
 
   return (
-    <section id="contact" className="py-20 bg-white relative overflow-hidden">
+    <section id="contact" className="py-12 md:py-20 bg-white relative overflow-hidden">
       <div className="absolute top-0 left-0 right-0 h-4 bg-checkered border-b-4 border-black" />
       <div className="absolute bottom-0 left-0 right-0 h-4 bg-checkered border-t-4 border-black" />
       <div className="absolute top-0 left-0 w-40 h-40 bg-secondary opacity-20 rounded-full blur-3xl" />
       <div className="absolute bottom-0 right-0 w-60 h-60 bg-primary opacity-10 rounded-full blur-3xl" />
 
       <div className="max-w-7xl mx-auto px-4">
-        <FadeUp className="text-center mb-14">
+        <FadeUp className="text-center mb-8 md:mb-14">
           <div className="inline-block bg-secondary text-black font-display text-sm px-4 py-1 rounded-full border-2 border-black shadow-pop-sm mb-4">
             ✦ Get In Touch ✦
           </div>
@@ -1725,7 +1725,7 @@ function ContactSection() {
           </p>
         </FadeUp>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 items-start">
           {/* Contact Info */}
           <FadeUp delay={0.1}>
             <div className="space-y-6">
@@ -1817,7 +1817,7 @@ function ContactSection() {
                     whileHover={{ y: -3, boxShadow: "5px 5px 0px 0px black" }}
                     className="flex items-center gap-2 px-5 py-3 bg-green-500 text-white font-bold rounded-xl border-2 border-black shadow-pop-sm font-body"
                   >
-                    💬 WhatsApp
+                    <SiWhatsapp className="text-xl" /> WhatsApp
                   </motion.a>
                 </div>
               </div>
@@ -1828,7 +1828,7 @@ function ContactSection() {
           <FadeUp delay={0.2}>
             <form
               onSubmit={handleSubmit}
-              className="bg-muted rounded-2xl border-2 border-black shadow-pop p-8 space-y-5"
+              className="bg-muted rounded-2xl border-2 border-black shadow-pop p-5 sm:p-8 space-y-5"
             >
               <h3 className="font-display text-2xl text-black">Send a Message 💬</h3>
 
@@ -2008,10 +2008,10 @@ function Footer() {
 // ─── MENU PHOTOS SECTION ──────────────────────────────────────────────
 function MenuPhotosSection() {
   return (
-    <section className="py-20 bg-white relative overflow-hidden">
+    <section className="py-12 md:py-20 bg-white relative overflow-hidden">
       <div className="absolute inset-0 opacity-[0.03] bg-checkered" />
       <div className="max-w-7xl mx-auto px-4 relative">
-        <FadeUp className="text-center mb-14">
+        <FadeUp className="text-center mb-8 md:mb-14">
           <div className="inline-block bg-secondary text-black font-display text-sm px-4 py-1 rounded-full border-2 border-black shadow-pop-sm mb-4">
             ✦ Real Menu Cards ✦
           </div>
@@ -2105,7 +2105,7 @@ function MenuPhotosSection() {
               whileHover={{ y: -3, boxShadow: "5px 5px 0px 0px black" }}
               className="flex items-center gap-2 px-6 py-3 bg-green-600 text-white font-bold rounded-xl border-2 border-black shadow-pop-sm font-body"
             >
-              💬 WhatsApp Order
+              <SiWhatsapp className="text-xl" /> WhatsApp Order
             </motion.a>
           </div>
         </FadeUp>
