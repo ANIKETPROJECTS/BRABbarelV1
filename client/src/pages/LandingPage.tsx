@@ -810,7 +810,7 @@ function MenuItemModal({ item, onClose }: { item: MenuItem | null; onClose: () =
     <AnimatePresence>
       {item && (
         <>
-          {/* Backdrop */}
+          {/* Backdrop — click to dismiss */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -819,13 +819,16 @@ function MenuItemModal({ item, onClose }: { item: MenuItem | null; onClose: () =
             className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100]"
           />
 
+          {/* Centering wrapper — pointer-events-none so backdrop still fires */}
+          <div className="fixed inset-0 z-[101] flex items-end md:items-center justify-center pointer-events-none px-0 md:px-4">
           {/* Dialog panel — bottom-sheet on mobile, centered on desktop */}
           <motion.div
             initial={{ y: "100%", opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: "100%", opacity: 0 }}
             transition={{ type: "spring", stiffness: 280, damping: 30 }}
-            className="fixed bottom-0 left-0 right-0 md:bottom-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-2xl max-h-[92vh] md:max-h-[88vh] overflow-y-auto bg-white rounded-t-3xl md:rounded-3xl border-t-4 md:border-4 border-black z-[101] no-scrollbar"
+            onClick={(e) => e.stopPropagation()}
+            className="pointer-events-auto w-full md:max-w-2xl max-h-[92vh] md:max-h-[88vh] overflow-y-auto bg-white rounded-t-3xl md:rounded-3xl border-t-4 md:border-4 border-black no-scrollbar"
           >
             {/* Close row */}
             <div className="sticky top-0 z-10 bg-white pt-3 pb-2 px-4 flex items-center justify-between border-b-2 border-black/10">
@@ -994,6 +997,7 @@ function MenuItemModal({ item, onClose }: { item: MenuItem | null; onClose: () =
               </div>
             </div>
           </motion.div>
+          </div>
         </>
       )}
     </AnimatePresence>
