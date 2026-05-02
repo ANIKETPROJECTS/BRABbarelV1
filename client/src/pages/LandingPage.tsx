@@ -1302,103 +1302,6 @@ function OurStory() {
 }
 
 // ─── ORDER ONLINE PLATFORMS ───────────────────────────────────────────
-function OrderOnlineSection() {
-  const platforms = [
-    {
-      name: "Zomato",
-      tagline: "Fast delivery to your door",
-      icon: <SiZomato className="text-4xl" />,
-      bg: "bg-red-500",
-      hoverBg: "hover:bg-red-600",
-      badge: "4.2★ Rated",
-      detail: "20–35 min delivery",
-      url: BUSINESS.zomato,
-    },
-    {
-      name: "Swiggy",
-      tagline: "Quick & fresh to your home",
-      icon: <SiSwiggy className="text-4xl" />,
-      bg: "bg-orange-500",
-      hoverBg: "hover:bg-orange-600",
-      badge: "Top Rated",
-      detail: "25–40 min delivery",
-      url: BUSINESS.swiggy,
-    },
-    {
-      name: "WhatsApp",
-      tagline: "Direct personal order",
-      icon: <SiWhatsapp className="w-10 h-10 text-4xl" />,
-      bg: "bg-green-500",
-      hoverBg: "hover:bg-green-600",
-      badge: "Instant Reply",
-      detail: "Bulk orders welcome",
-      url: BUSINESS.whatsapp,
-    },
-    {
-      name: "Call Directly",
-      tagline: "Talk to us directly",
-      icon: <Phone className="w-10 h-10" />,
-      bg: "bg-blue-500",
-      hoverBg: "hover:bg-blue-600",
-      badge: "1–11 PM",
-      detail: BUSINESS.phoneDisplay,
-      url: `tel:+91${BUSINESS.phone}`,
-    },
-  ];
-
-  return (
-    <section className="py-12 md:py-20 bg-secondary relative overflow-hidden">
-      <div className="absolute top-0 left-0 right-0 h-4 bg-checkered border-b-4 border-black" />
-      <div className="absolute bottom-0 left-0 right-0 h-4 bg-checkered border-t-4 border-black" />
-      <FloatingParticles count={8} color="rgba(0,0,0,0.08)" />
-
-      <div className="max-w-7xl mx-auto px-4 pt-4 pb-4 relative z-10">
-        <FadeUp className="text-center mb-8 md:mb-14">
-          <div className="inline-block bg-primary text-white font-display text-sm px-4 py-1 rounded-full border-2 border-black shadow-pop-sm mb-4">
-            ✦ Order Anytime ✦
-          </div>
-          <h2 className="font-display text-4xl md:text-6xl text-black drop-shadow-[3px_3px_0px_rgba(0,0,0,0.15)]">
-            Order Online Now
-          </h2>
-          <p className="font-body text-black/70 mt-4 max-w-xl mx-auto text-lg">
-            Choose your favourite platform — we're live on Zomato, Swiggy and WhatsApp. Fresh food, delivered fast.
-          </p>
-        </FadeUp>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {platforms.map((p, i) => (
-            <FadeIn key={p.name} delay={i * 0.1}>
-              <TiltCard>
-                <motion.a
-                  href={p.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ y: -8 }}
-                  whileTap={{ y: 2, boxShadow: "2px 2px 0px 0px black" }}
-                  className={`block ${p.bg} ${p.hoverBg} text-white rounded-2xl border-2 border-black shadow-pop p-6 text-center transition-colors card-shine`}
-                >
-                  <div className="w-16 h-16 mx-auto mb-4 bg-white/20 rounded-2xl border-2 border-white/30 flex items-center justify-center">
-                    {p.icon}
-                  </div>
-                  <div className="font-display text-2xl mb-1">{p.name}</div>
-                  <div className="font-body text-white/80 text-sm mb-4">{p.tagline}</div>
-                  <div className="bg-black/20 rounded-xl px-4 py-2 border border-white/20 mb-3">
-                    <div className="font-display text-lg">{p.badge}</div>
-                    <div className="font-body text-xs text-white/70">{p.detail}</div>
-                  </div>
-                  <div className="flex items-center justify-center gap-2 font-display text-sm">
-                    Order Now <ArrowRight className="w-4 h-4" />
-                  </div>
-                </motion.a>
-              </TiltCard>
-            </FadeIn>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 // ─── TESTIMONIALS ────────────────────────────────────────────────────
 const testimonials = [
   {
@@ -2387,16 +2290,6 @@ export default function LandingPage() {
       </div>
       <HowToOrder />
 
-      {/* White → Yellow */}
-      <div className="bg-white" style={{ marginBottom: "-1px" }}>
-        <WaveDivider fill="#FFD700" />
-      </div>
-      <OrderOnlineSection />
-
-      {/* Yellow → White */}
-      <div className="bg-secondary" style={{ marginBottom: "-1px" }}>
-        <WaveDivider fill="#ffffff" />
-      </div>
       <MenuShowcase />
 
       {/* White → White (subtle) */}
