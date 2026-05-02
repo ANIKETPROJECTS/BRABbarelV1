@@ -421,7 +421,7 @@ function HeroSection() {
   ];
 
   return (
-    <section id="hero" className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-[96px] md:pt-[112px]">
+    <section id="hero" className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-[96px] md:pt-[112px] pb-12 sm:pb-16">
       {/* Ken Burns + Parallax background */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <motion.div
