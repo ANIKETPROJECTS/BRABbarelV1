@@ -2114,27 +2114,6 @@ function MenuPhotosSection() {
   );
 }
 
-// ─── WHATSAPP FLOATING BUTTON ─────────────────────────────────────────
-function WhatsAppButton() {
-  return (
-    <motion.a
-      href={BUSINESS.whatsapp}
-      target="_blank"
-      rel="noopener noreferrer"
-      initial={{ scale: 0, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{ delay: 2, type: "spring", stiffness: 200 }}
-      whileHover={{ scale: 1.1, y: -3, boxShadow: "5px 5px 0px 0px black" }}
-      whileTap={{ scale: 0.95 }}
-      className="fixed bottom-24 right-6 z-50 w-14 h-14 bg-green-500 text-white rounded-2xl border-2 border-black shadow-pop flex items-center justify-center text-2xl"
-      data-testid="button-whatsapp-float"
-      aria-label="Chat on WhatsApp"
-      title="Chat on WhatsApp"
-    >
-      <SiWhatsapp className="w-7 h-7" />
-    </motion.a>
-  );
-}
 
 // ─── SCROLL TO TOP ────────────────────────────────────────────────────
 function ScrollToTop() {
@@ -2225,7 +2204,6 @@ export default function LandingPage() {
       <SocialMediaSection />
       <ContactSection />
       <Footer />
-      <WhatsAppButton />
       <ScrollToTop />
     </div>
   );
