@@ -239,13 +239,17 @@ function Navbar() {
 
   return (
     <motion.nav
-      initial={{ y: -120, opacity: 0 }}
+      initial={{ y: -100, opacity: 0 }}
       animate={
         hidden
-          ? { y: "-120%", opacity: 0, scale: 0.96 }
+          ? { y: "-110%", opacity: 0, scale: 0.97 }
           : { y: 0, opacity: 1, scale: 1 }
       }
-      transition={{ duration: 0.42, ease: [0.32, 0.72, 0, 1] }}
+      transition={
+        hidden
+          ? { duration: 0.32, ease: [0.4, 0, 0.2, 1] }
+          : { type: "spring", stiffness: 120, damping: 20, mass: 1, delay: 0.08 }
+      }
       className="fixed top-0 left-0 right-0 z-50"
       style={{
         background: "linear-gradient(135deg, #FFF8E6 0%, #FFF0F3 50%, #F0F8FF 100%)",
@@ -293,7 +297,7 @@ function Navbar() {
               onClick={() => scrollTo(l.href)}
               whileHover={{ y: -2, backgroundColor: "rgba(0,0,0,0.06)" }}
               whileTap={{ y: 1 }}
-              className="font-display text-sm text-black/70 hover:text-primary px-4 py-2 rounded-xl transition-all"
+              className="font-display text-base text-black/70 hover:text-primary px-5 py-2.5 rounded-xl transition-all"
             >
               {l.label}
             </motion.button>
