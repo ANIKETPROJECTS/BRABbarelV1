@@ -196,13 +196,23 @@ function FloatingSticker({ emoji, style, delay = 0, amplitude = 18 }: {
 
 // ─── NAVBAR ─────────────────────────────────────────────────────────
 function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
+    const handleScroll = () => {
+      const current = window.scrollY;
+      if (current > lastScrollY.current && current > 90) {
+        setHidden(true);
+        setMobileOpen(false);
+      } else {
+        setHidden(false);
+      }
+      lastScrollY.current = current;
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const links = [
@@ -220,20 +230,25 @@ function Navbar() {
 
   return (
     <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-foreground shadow-[0_4px_0px_0px_black]"
-          : "bg-foreground/95 backdrop-blur-sm"
-      }`}
+      initial={{ y: -120, opacity: 0 }}
+      animate={
+        hidden
+          ? { y: "-120%", opacity: 0, scale: 0.96, filter: "blur(4px)" }
+          : { y: 0, opacity: 1, scale: 1, filter: "blur(0px)" }
+      }
+      transition={{ duration: 0.42, ease: [0.32, 0.72, 0, 1] }}
+      className="fixed top-0 left-0 right-0 z-50"
+      style={{
+        background: "linear-gradient(135deg, #FFF8E6 0%, #FFF0F3 50%, #F0F8FF 100%)",
+        borderBottom: "2px solid rgba(0,0,0,0.1)",
+        boxShadow: "0 2px 20px rgba(0,0,0,0.08)",
+      }}
     >
       {/* Top checkered stripe */}
-      <div className="h-2 w-full bg-checkered" />
+      <div className="h-2 w-full bg-checkered opacity-40" />
 
       {/* Main header bar */}
-      <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between gap-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 flex items-center justify-between gap-4">
 
         {/* Logo + Brand */}
         <button
@@ -244,32 +259,32 @@ function Navbar() {
           <motion.img
             src={logoImage}
             alt="Bomb Rolls & Bowls"
-            className="w-16 h-16 object-contain drop-shadow-[3px_3px_0px_rgba(0,0,0,0.6)]"
+            className="w-12 h-12 sm:w-14 sm:h-14 object-contain drop-shadow-[2px_2px_0px_rgba(0,0,0,0.3)]"
             whileHover={{ rotate: [-5, 5, -5, 0], scale: 1.05 }}
             transition={{ duration: 0.4 }}
           />
           <div className="text-left hidden sm:block">
-            <div className="font-display text-xl leading-none text-white drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]">
+            <div className="font-display text-lg leading-none text-black drop-shadow-[1px_1px_0px_rgba(0,0,0,0.2)]">
               BOMB ROLLS
             </div>
-            <div className="font-display text-xl leading-none text-secondary drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]">
+            <div className="font-display text-lg leading-none text-primary drop-shadow-[1px_1px_0px_rgba(0,0,0,0.2)]">
               & BOWLS
             </div>
-            <div className="font-body text-[10px] text-white/50 tracking-widest uppercase mt-0.5">
+            <div className="font-body text-[9px] text-black/40 tracking-widest uppercase mt-0.5">
               Ambernath · Thane
             </div>
           </div>
         </button>
 
         {/* Desktop nav links */}
-        <div className="hidden lg:flex items-center gap-1 flex-1 justify-center">
+        <div className="hidden lg:flex items-center gap-0.5 flex-1 justify-center">
           {links.map(l => (
             <motion.button
               key={l.label}
               onClick={() => scrollTo(l.href)}
-              whileHover={{ y: -2 }}
+              whileHover={{ y: -2, backgroundColor: "rgba(0,0,0,0.06)" }}
               whileTap={{ y: 1 }}
-              className="font-display text-base text-white/80 hover:text-secondary px-4 py-2 rounded-xl hover:bg-white/10 transition-all"
+              className="font-display text-sm text-black/70 hover:text-primary px-4 py-2 rounded-xl transition-all"
             >
               {l.label}
             </motion.button>
@@ -280,18 +295,18 @@ function Navbar() {
         <div className="hidden md:flex items-center gap-3 flex-shrink-0">
           <motion.a
             href={`tel:+91${BUSINESS.phone}`}
-            whileHover={{ y: -2 }}
-            className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 text-white font-body text-sm rounded-xl border border-white/20 transition-all"
+            whileHover={{ y: -2, scale: 1.02 }}
+            className="flex items-center gap-2 px-4 py-2 bg-black/5 hover:bg-black/10 text-black/80 font-body text-sm rounded-xl border border-black/10 transition-all"
           >
-            <Phone className="w-4 h-4 text-secondary" />
+            <Phone className="w-4 h-4 text-primary" />
             <span className="hidden xl:block">{BUSINESS.phoneDisplay}</span>
-            <span className="xl:hidden">Call</span>
+            <span className="xl:hidden font-semibold">Call</span>
           </motion.a>
           <Link href="/menu">
             <motion.button
-              whileHover={{ y: -2, boxShadow: "6px 6px 0px 0px rgba(0,0,0,0.8)" }}
-              whileTap={{ y: 2, boxShadow: "2px 2px 0px 0px rgba(0,0,0,0.8)" }}
-              className="px-5 py-2.5 bg-secondary text-black font-display text-base rounded-xl border-2 border-black shadow-pop"
+              whileHover={{ y: -2, boxShadow: "5px 5px 0px 0px black" }}
+              whileTap={{ y: 2, boxShadow: "2px 2px 0px 0px black" }}
+              className="px-5 py-2.5 bg-primary text-white font-display text-sm rounded-xl border-2 border-black shadow-pop-sm"
               data-testid="button-digital-menu"
             >
               Digital Menu →
@@ -308,7 +323,7 @@ function Navbar() {
           {[0, 1, 2].map(i => (
             <motion.span
               key={i}
-              className="block h-0.5 w-7 bg-white rounded-full"
+              className="block h-0.5 w-6 bg-black/70 rounded-full"
               animate={mobileOpen ? {
                 rotate: i === 0 ? 45 : i === 2 ? -45 : 0,
                 y: i === 0 ? 8 : i === 2 ? -8 : 0,
@@ -320,24 +335,29 @@ function Navbar() {
       </div>
 
       {/* Bottom accent stripe */}
-      <div className="h-1 w-full bg-gradient-to-r from-primary via-secondary to-primary opacity-80" />
+      <div className="h-0.5 w-full bg-gradient-to-r from-primary via-secondary to-primary opacity-60" />
 
       {/* Mobile menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            className="lg:hidden bg-foreground border-t-2 border-white/10 overflow-hidden"
+            initial={{ height: 0, opacity: 0, y: -10 }}
+            animate={{ height: "auto", opacity: 1, y: 0 }}
+            exit={{ height: 0, opacity: 0, y: -10 }}
+            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:hidden overflow-hidden border-t border-black/10"
+            style={{ background: "linear-gradient(135deg, #FFF8E6 0%, #FFF0F3 50%, #F0F8FF 100%)" }}
           >
-            <div className="px-6 py-5 flex flex-col gap-2">
-              {links.map(l => (
+            <div className="px-5 py-4 flex flex-col gap-1">
+              {links.map((l, i) => (
                 <motion.button
                   key={l.label}
+                  initial={{ opacity: 0, x: -16 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.05 }}
                   whileHover={{ x: 6 }}
                   onClick={() => scrollTo(l.href)}
-                  className="font-display text-2xl text-white hover:text-secondary text-left py-2 border-b border-white/10 transition-colors"
+                  className="font-display text-xl text-black/80 hover:text-primary text-left py-2.5 border-b border-black/6 transition-colors"
                 >
                   {l.label}
                 </motion.button>
@@ -345,12 +365,12 @@ function Navbar() {
               <div className="pt-3 flex flex-col gap-3">
                 <a
                   href={`tel:+91${BUSINESS.phone}`}
-                  className="flex items-center gap-3 px-4 py-3 bg-white/10 text-white rounded-xl font-body"
+                  className="flex items-center gap-3 px-4 py-3 bg-black/5 text-black rounded-xl font-body border border-black/10"
                 >
-                  <Phone className="w-5 h-5 text-secondary" /> {BUSINESS.phoneDisplay}
+                  <Phone className="w-5 h-5 text-primary" /> {BUSINESS.phoneDisplay}
                 </a>
                 <Link href="/menu">
-                  <button className="px-5 py-3 bg-secondary text-black font-display text-lg rounded-xl border-2 border-black shadow-pop w-full">
+                  <button className="px-5 py-3 bg-primary text-white font-display text-base rounded-xl border-2 border-black shadow-pop-sm w-full">
                     Digital Menu →
                   </button>
                 </Link>
