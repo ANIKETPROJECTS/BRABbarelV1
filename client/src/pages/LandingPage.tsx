@@ -526,24 +526,6 @@ function HeroSection() {
           </motion.button>
         </motion.div>
 
-        {/* Scroll indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
-          className="mt-8 sm:mt-12 flex flex-col items-center gap-3 text-white/60 scroll-bounce"
-        >
-          <span className="text-xs font-body tracking-widest uppercase">Scroll Down</span>
-          <motion.div
-            className="w-6 h-10 rounded-full border-2 border-white/40 flex items-start justify-center pt-2"
-          >
-            <motion.div
-              className="w-1.5 h-2.5 bg-white/60 rounded-full"
-              animate={{ y: [0, 12, 0], opacity: [1, 0.3, 1] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-            />
-          </motion.div>
-        </motion.div>
       </div>
     </section>
   );
