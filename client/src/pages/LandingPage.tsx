@@ -1434,70 +1434,9 @@ const testimonials = [
   },
 ];
 
-function TestimonialCard({ t, position }: { t: typeof testimonials[0]; position: "left" | "center" | "right" }) {
-  const isCenter = position === "center";
-  const isLeft   = position === "left";
-
-  const variants = {
-    left:   { x: "-42%", scale: 0.82, rotate: -6,  zIndex: 1, opacity: 0.72, filter: "brightness(0.7)" },
-    center: { x: "0%",   scale: 1,    rotate: 0,   zIndex: 3, opacity: 1,    filter: "brightness(1)"   },
-    right:  { x: "42%",  scale: 0.82, rotate:  6,  zIndex: 1, opacity: 0.72, filter: "brightness(0.7)" },
-  };
-
-  return (
-    <motion.div
-      layout
-      key={t.name}
-      animate={variants[position]}
-      transition={{ type: "spring", stiffness: 120, damping: 22 }}
-      className="absolute w-full max-w-md"
-      style={{ transformOrigin: isLeft ? "right center" : isLeft === false && !isCenter ? "left center" : "center" }}
-    >
-      <div
-        className="rounded-2xl border-2 p-5 sm:p-7 relative overflow-hidden select-none"
-        style={{
-          background: isCenter ? "rgba(255,255,255,0.18)" : "rgba(255,255,255,0.09)",
-          backdropFilter: "blur(20px)",
-          WebkitBackdropFilter: "blur(20px)",
-          borderColor: isCenter ? "rgba(255,215,0,0.6)" : "rgba(255,255,255,0.15)",
-          boxShadow: isCenter
-            ? "0 12px 48px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.25)"
-            : "0 4px 20px rgba(0,0,0,0.25)",
-        }}
-      >
-        <div className="absolute top-3 right-5 font-display text-7xl text-white/10 leading-none select-none pointer-events-none">"</div>
-
-        <div className="flex flex-wrap items-center gap-3 mb-4">
-          <img
-            src={t.avatar}
-            alt={t.name}
-            className="w-14 h-14 rounded-full flex-shrink-0"
-            style={{ border: "3px solid #FFD700" }}
-          />
-          <div className="min-w-0">
-            <div className="font-display text-lg text-white truncate">{t.name}</div>
-            <div className="flex gap-0.5 mt-0.5">
-              {Array.from({ length: t.rating }).map((_, i) => (
-                <Star key={i} className="w-3.5 h-3.5 fill-secondary text-secondary" />
-              ))}
-            </div>
-          </div>
-          <span className="ml-auto bg-secondary text-black font-display text-xs px-3 py-1 rounded-full border-2 border-black shadow-pop-sm whitespace-nowrap flex-shrink-0">
-            {t.tag}
-          </span>
-        </div>
-
-        <p className="font-body text-white/90 text-base leading-relaxed italic line-clamp-4 relative z-10">
-          "{t.text}"
-        </p>
-      </div>
-    </motion.div>
-  );
-}
-
 function Testimonials() {
   const [current, setCurrent] = useState(0);
-  const [paused, setPaused] = useState(false);
+  const [paused,  setPaused]  = useState(false);
   const n = testimonials.length;
 
   const navigate = useCallback((next: number) => {
@@ -1509,9 +1448,6 @@ function Testimonials() {
     const id = setInterval(() => navigate(current + 1), 3500);
     return () => clearInterval(id);
   }, [current, navigate, paused]);
-
-  const prev = (current - 1 + n) % n;
-  const next = (current + 1) % n;
 
   return (
     <section id="testimonials" className="py-12 md:py-20 bg-primary relative overflow-hidden">
@@ -1529,26 +1465,92 @@ function Testimonials() {
           </h2>
         </FadeUp>
 
-        {/* Stacked 3-card stage — pauses on hover */}
+        {/* Stage — all testimonials rendered with stable keys, positioned by offset */}
         <div
           className="relative flex items-center justify-center"
-          style={{ height: 360 }}
+          style={{ height: 380 }}
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
         >
-          <TestimonialCard t={testimonials[prev]}    position="left"   />
-          <TestimonialCard t={testimonials[next]}    position="right"  />
-          <TestimonialCard t={testimonials[current]} position="center" />
+          {testimonials.map((t, i) => {
+            // signed offset: 0 = center, +1 = right, -1 = left, anything else = hidden
+            const rawOffset = i - current;
+            const offset = ((rawOffset + n + Math.floor(n / 2)) % n) - Math.floor(n / 2);
+            const isCenter = offset === 0;
+            const isLeft   = offset === -1;
+            const isRight  = offset === 1;
+            const visible  = isCenter || isLeft || isRight;
+
+            const target = isCenter
+              ? { x: "0%",    scale: 1,    rotate: 0,  opacity: 1,    zIndex: 3, pointerEvents: "auto"  as const }
+              : isLeft
+              ? { x: "-52%",  scale: 0.82, rotate: -5, opacity: 1,    zIndex: 2, pointerEvents: "none"  as const }
+              : isRight
+              ? { x: "52%",   scale: 0.82, rotate:  5, opacity: 1,    zIndex: 2, pointerEvents: "none"  as const }
+              : { x: offset < 0 ? "-80%" : "80%", scale: 0.6, rotate: 0, opacity: 0, zIndex: 0, pointerEvents: "none" as const };
+
+            return (
+              <motion.div
+                key={t.name}
+                animate={target}
+                transition={{ type: "spring", stiffness: 200, damping: 28 }}
+                className="absolute w-full max-w-md"
+                style={{ transformOrigin: "center" }}
+              >
+                {/* Card face */}
+                <div
+                  className="rounded-2xl border-2 p-5 sm:p-7 relative overflow-hidden select-none"
+                  style={{
+                    background: isCenter
+                      ? "#ffffff"
+                      : "rgba(255,255,255,0.82)",
+                    borderColor: isCenter ? "#FFD700" : "rgba(255,255,255,0.6)",
+                    boxShadow: isCenter
+                      ? "0 16px 56px rgba(0,0,0,0.35), 0 2px 0 #FFD700"
+                      : "0 6px 24px rgba(0,0,0,0.22)",
+                    filter: visible && !isCenter ? "brightness(0.88)" : undefined,
+                  }}
+                >
+                  {/* Decorative quote */}
+                  <div className="absolute top-2 right-5 font-display text-8xl text-black/[0.06] leading-none select-none pointer-events-none">"</div>
+
+                  <div className="flex flex-wrap items-center gap-3 mb-4">
+                    <img
+                      src={t.avatar}
+                      alt={t.name}
+                      className="w-14 h-14 rounded-full flex-shrink-0"
+                      style={{ border: "3px solid #FFD700" }}
+                    />
+                    <div className="min-w-0">
+                      <div className="font-display text-lg text-gray-900 truncate">{t.name}</div>
+                      <div className="flex gap-0.5 mt-0.5">
+                        {Array.from({ length: t.rating }).map((_, si) => (
+                          <Star key={si} className="w-3.5 h-3.5 fill-secondary text-secondary" />
+                        ))}
+                      </div>
+                    </div>
+                    <span className="ml-auto bg-secondary text-black font-display text-xs px-3 py-1 rounded-full border-2 border-black shadow-pop-sm whitespace-nowrap flex-shrink-0">
+                      {t.tag}
+                    </span>
+                  </div>
+
+                  <p className="font-body text-gray-700 text-base leading-relaxed italic line-clamp-4 relative z-10">
+                    "{t.text}"
+                  </p>
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
 
         {/* Controls */}
-        <div className="flex items-center justify-center gap-4 mt-14">
+        <div className="flex items-center justify-center gap-4 mt-16">
           <motion.button
             whileHover={{ scale: 1.15, y: -2 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => navigate(current - 1)}
-            className="w-12 h-12 text-black rounded-full border-2 border-black shadow-pop flex items-center justify-center"
-            style={{ background: "rgba(255,255,255,0.9)" }}
+            className="w-12 h-12 text-black rounded-full border-2 border-black shadow-pop flex items-center justify-center bg-white"
+            data-testid="button-testimonial-prev"
           >
             <ChevronLeft className="w-5 h-5" />
           </motion.button>
@@ -1560,9 +1562,10 @@ function Testimonials() {
                 onClick={() => navigate(i)}
                 animate={{
                   scale: i === current ? 1.4 : 1,
-                  backgroundColor: i === current ? "#FFD700" : "rgba(255,255,255,0.35)"
+                  backgroundColor: i === current ? "#FFD700" : "rgba(255,255,255,0.45)"
                 }}
-                className="w-3 h-3 rounded-full border-2 border-white/40"
+                className="w-3 h-3 rounded-full border-2 border-white/50"
+                data-testid={`button-testimonial-dot-${i}`}
               />
             ))}
           </div>
@@ -1571,8 +1574,8 @@ function Testimonials() {
             whileHover={{ scale: 1.15, y: -2 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => navigate(current + 1)}
-            className="w-12 h-12 text-black rounded-full border-2 border-black shadow-pop flex items-center justify-center"
-            style={{ background: "rgba(255,255,255,0.9)" }}
+            className="w-12 h-12 text-black rounded-full border-2 border-black shadow-pop flex items-center justify-center bg-white"
+            data-testid="button-testimonial-next"
           >
             <ChevronRight className="w-5 h-5" />
           </motion.button>
