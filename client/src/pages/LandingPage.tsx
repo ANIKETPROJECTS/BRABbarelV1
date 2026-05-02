@@ -507,7 +507,7 @@ function HeroSection() {
         >
           <Link href="/menu">
             <motion.button
-              whileHover={{ y: -4, scale: 1.05, boxShadow: "8px 8px 0px 0px black" }}
+              whileHover={{ y: -4, scale: 1.05 }}
               whileTap={{ y: 2, scale: 0.97, boxShadow: "2px 2px 0px 0px black" }}
               className="px-6 sm:px-8 py-3 sm:py-4 bg-secondary text-black font-display text-lg sm:text-xl font-bold rounded-xl border-2 border-black shadow-pop glow-cta"
             >
@@ -516,7 +516,7 @@ function HeroSection() {
             </motion.button>
           </Link>
           <motion.button
-            whileHover={{ y: -4, scale: 1.05, boxShadow: "8px 8px 0px 0px rgba(255,255,255,0.5)" }}
+            whileHover={{ y: -4, scale: 1.05 }}
             whileTap={{ y: 2, scale: 0.97 }}
             onClick={() => document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" })}
             className="px-6 sm:px-8 py-3 sm:py-4 bg-white/15 backdrop-blur-sm text-white font-display text-lg sm:text-xl font-bold rounded-xl border-2 border-white/60 hover:bg-white/25 transition-all"
@@ -682,7 +682,7 @@ function WhyChooseUs() {
             <FadeIn key={r.title} delay={i * 0.09}>
               <TiltCard>
                 <motion.div
-                  whileHover={{ y: -8, boxShadow: "8px 8px 0px 0px black" }}
+                  whileHover={{ y: -8 }}
                   className="rounded-2xl border-2 border-black p-6 shadow-pop bg-white cursor-default h-full card-shine"
                 >
                   <motion.div
@@ -1042,7 +1042,8 @@ function MenuShowcase() {
                 <TiltCard>
                   <motion.div
                     onClick={() => setSelectedItem(item)}
-                    whileHover={{ y: -10, boxShadow: "8px 8px 0px 0px black" }}
+                    whileHover={{ y: -8 }}
+                    transition={{ type: "tween", duration: 0.2, ease: "easeOut" }}
                     className={`rounded-2xl border-2 border-black overflow-hidden shadow-pop group ${item.bg} card-shine h-full cursor-pointer`}
                   >
                     <div className="relative h-48 overflow-hidden">
@@ -1099,7 +1100,7 @@ function MenuShowcase() {
           <FadeUp className="text-center">
             <Link href="/menu">
               <motion.button
-                whileHover={{ y: -3, boxShadow: "7px 7px 0px 0px black" }}
+                whileHover={{ y: -3 }}
                 whileTap={{ y: 2 }}
                 className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white font-display text-xl rounded-xl border-2 border-black shadow-pop glow-cta"
               >
@@ -1208,17 +1209,17 @@ function HowToOrder() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <motion.a
               href={BUSINESS.zomato} target="_blank" rel="noopener noreferrer"
-              whileHover={{ y: -3, boxShadow: "6px 6px 0px 0px black" }}
+              whileHover={{ y: -3 }}
               whileTap={{ y: 1 }}
-              className="inline-flex items-center gap-3 px-7 py-4 bg-red-500 text-white font-display text-lg rounded-xl border-2 border-black shadow-pop"
+              className="inline-flex items-center gap-3 px-7 py-4 bg-red-500 text-white font-display text-lg rounded-xl border-2 border-black shadow-pop hover-shadow-md"
             >
               <SiZomato className="text-xl" /> Order on Zomato
             </motion.a>
             <motion.a
               href={BUSINESS.swiggy} target="_blank" rel="noopener noreferrer"
-              whileHover={{ y: -3, boxShadow: "6px 6px 0px 0px black" }}
+              whileHover={{ y: -3 }}
               whileTap={{ y: 1 }}
-              className="inline-flex items-center gap-3 px-7 py-4 bg-orange-500 text-white font-display text-lg rounded-xl border-2 border-black shadow-pop"
+              className="inline-flex items-center gap-3 px-7 py-4 bg-orange-500 text-white font-display text-lg rounded-xl border-2 border-black shadow-pop hover-shadow-md"
             >
               <SiSwiggy className="text-xl" /> Order on Swiggy
             </motion.a>
@@ -1283,7 +1284,7 @@ function OurStory() {
               {facts.map((f, i) => (
                 <motion.div
                   key={f.label}
-                  whileHover={{ y: -6, boxShadow: "6px 6px 0px 0px black" }}
+                  whileHover={{ y: -6 }}
                   initial={{ opacity: 0, scale: 0.8 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
@@ -1385,7 +1386,7 @@ function OrderOnlineSection() {
                   href={p.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  whileHover={{ y: -10, boxShadow: "8px 8px 0px 0px black" }}
+                  whileHover={{ y: -8 }}
                   whileTap={{ y: 2, boxShadow: "2px 2px 0px 0px black" }}
                   className={`block ${p.bg} ${p.hoverBg} text-white rounded-2xl border-2 border-black shadow-pop p-6 text-center transition-colors card-shine`}
                 >
@@ -1677,7 +1678,7 @@ function SocialMediaSection() {
                 href={BUSINESS.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                whileHover={{ y: -6, boxShadow: "6px 6px 0px 0px black" }}
+                whileHover={{ y: -6 }}
                 className="group relative rounded-2xl border-2 border-black overflow-hidden shadow-pop cursor-pointer aspect-square block"
               >
                 <img
@@ -1715,7 +1716,7 @@ function SocialMediaSection() {
             href={BUSINESS.instagram}
             target="_blank"
             rel="noopener noreferrer"
-            whileHover={{ y: -4, boxShadow: "8px 8px 0px 0px black" }}
+            whileHover={{ y: -4 }}
             whileTap={{ y: 2 }}
             className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 sm:p-7 bg-gradient-to-r from-pink-500 via-purple-500 to-orange-500 rounded-2xl border-2 border-black shadow-pop cursor-pointer text-center sm:text-left"
             data-testid="link-instagram-follow"
@@ -1847,7 +1848,7 @@ function ContactSection() {
                     href={BUSINESS.zomato}
                     target="_blank"
                     rel="noopener noreferrer"
-                    whileHover={{ y: -3, boxShadow: "5px 5px 0px 0px black" }}
+                    whileHover={{ y: -3 }}
                     className="flex items-center gap-2 px-5 py-3 bg-red-500 text-white font-bold rounded-xl border-2 border-black shadow-pop-sm font-body"
                   >
                     <SiZomato className="text-xl" /> Zomato
@@ -1856,7 +1857,7 @@ function ContactSection() {
                     href={BUSINESS.swiggy}
                     target="_blank"
                     rel="noopener noreferrer"
-                    whileHover={{ y: -3, boxShadow: "5px 5px 0px 0px black" }}
+                    whileHover={{ y: -3 }}
                     className="flex items-center gap-2 px-5 py-3 bg-orange-500 text-white font-bold rounded-xl border-2 border-black shadow-pop-sm font-body"
                   >
                     <SiSwiggy className="text-xl" /> Swiggy
@@ -1865,7 +1866,7 @@ function ContactSection() {
                     href={BUSINESS.whatsapp}
                     target="_blank"
                     rel="noopener noreferrer"
-                    whileHover={{ y: -3, boxShadow: "5px 5px 0px 0px black" }}
+                    whileHover={{ y: -3 }}
                     className="flex items-center gap-2 px-5 py-3 bg-green-500 text-white font-bold rounded-xl border-2 border-black shadow-pop-sm font-body"
                   >
                     <SiWhatsapp className="text-xl" /> WhatsApp
@@ -1936,7 +1937,7 @@ function ContactSection() {
                   <motion.button
                     key="submit"
                     type="submit"
-                    whileHover={{ y: -3, boxShadow: "6px 6px 0px 0px black" }}
+                    whileHover={{ y: -3 }}
                     whileTap={{ y: 2, boxShadow: "2px 2px 0px 0px black" }}
                     className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-primary text-white font-display text-lg rounded-xl border-2 border-black shadow-pop"
                     data-testid="button-contact-submit"
@@ -2214,7 +2215,7 @@ function MenuPhotosSection() {
           ].map((item, i) => (
             <FadeUp key={i} delay={i * 0.15}>
               <motion.div
-                whileHover={{ y: -6, boxShadow: "8px 8px 0px 0px black" }}
+                whileHover={{ y: -6 }}
                 className="rounded-2xl border-2 border-black shadow-pop overflow-hidden bg-muted"
               >
                 <div className="relative">
@@ -2252,7 +2253,7 @@ function MenuPhotosSection() {
               href={BUSINESS.zomato}
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ y: -3, boxShadow: "5px 5px 0px 0px black" }}
+              whileHover={{ y: -3 }}
               className="flex items-center gap-2 px-6 py-3 bg-red-500 text-white font-bold rounded-xl border-2 border-black shadow-pop-sm font-body"
             >
               <SiZomato className="text-lg" /> Order on Zomato
@@ -2261,7 +2262,7 @@ function MenuPhotosSection() {
               href={BUSINESS.swiggy}
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ y: -3, boxShadow: "5px 5px 0px 0px black" }}
+              whileHover={{ y: -3 }}
               className="flex items-center gap-2 px-6 py-3 bg-orange-500 text-white font-bold rounded-xl border-2 border-black shadow-pop-sm font-body"
             >
               <SiSwiggy className="text-lg" /> Order on Swiggy
@@ -2270,7 +2271,7 @@ function MenuPhotosSection() {
               href={BUSINESS.whatsapp}
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ y: -3, boxShadow: "5px 5px 0px 0px black" }}
+              whileHover={{ y: -3 }}
               className="flex items-center gap-2 px-6 py-3 bg-green-600 text-white font-bold rounded-xl border-2 border-black shadow-pop-sm font-body"
             >
               <SiWhatsapp className="text-xl" /> WhatsApp Order
@@ -2300,7 +2301,7 @@ function ScrollToTop() {
           initial={{ opacity: 0, scale: 0.5, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.5, y: 20 }}
-          whileHover={{ y: -4, boxShadow: "5px 5px 0px 0px black" }}
+          whileHover={{ y: -4 }}
           whileTap={{ y: 2 }}
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-secondary text-black rounded-2xl border-2 border-black shadow-pop flex items-center justify-center"
