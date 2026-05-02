@@ -210,6 +210,20 @@
 }
 .card-lift:hover { transform: translateY(-8px); }
 
+/* ── Instagram Reel embeds ────────────────────────── */
+.ig-reel-wrap {
+  overflow: hidden;
+  background: #fff;
+}
+.ig-reel-wrap .instagram-media {
+  min-width: unset !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
 /* ── NEW: Blob Morph (background decoration) ────────── */
 @keyframes blobMorph {
   0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
